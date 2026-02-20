@@ -1,0 +1,12 @@
+/* theme.css - UMAEDI STORE color and theme variables */
+:root {
+  --luxury-gold: #bfa14a;
+  --luxury-gold-light: #fffbe6;
+  --luxury-black: #181818;
+  --luxury-red: #e53935;
+  --luxury-red-gradient: linear-gradient(90deg, #e53935 0%, #ff6f61 100%);
+  --luxury-gold-gradient: linear-gradient(90deg, #bfa14a 0%, #fffbe6 100%);
+  --luxury-shadow: 0 4px 32px 0 rgba(191,161,74,0.18);
+  --luxury-glow: 0 0 32px 0 #bfa14a88;
+  --luxury-radius: 32px;
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PM JKT48 · UMAEDI STORE</title>  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/animation.css">
+  <link rel="stylesheet" href="../css/tag.css">
+  <link rel="stylesheet" href="../css/member.css">
+  <link rel="stylesheet" href="../css/member-search.css">
+</head>
+<body>
+  <div id="loader" class="loader"></div>
+  <nav id="navbar"></nav>
+  <main id="main-content">
+    <h1 class="page-title">👑 PM Member JKT48</h1>
+    <section id="owner-member" class="luxury-owner-card"></section>
+    
+    <!-- Search Section -->
+    <section class="search-container">
+      <div class="search-wrapper">
+        <input 
+          type="text" 
+          id="member-search" 
+          class="member-search" 
+          placeholder="🔍 Cari member berdasarkan nama atau peran..."
+          aria-label="Search members"
+        >
+        <span class="search-icon">🔍</span>
+      </div>
+    </section>
+
+    <h2 style="text-align:center;margin:2em 0 1.5em 0;color:#1a1a1a;">Other Members</h2>
+    
+    <!-- Search Results -->
+    <section id="search-results" class="member-list"></section>
+    
+    <!-- Original Members Section -->
+    <section id="jkt48-members" class="member-list"></section>
+  </main>
+  <footer id="footer"></footer>
+  
+  <script defer src="../js/sidebar.js"></script>
+  <script defer src="../js/footer.js"></script>
+  <script defer src="../js/animation.js"></script>
+  <script defer src="../js/theme.js"></script>
+  <script defer src="../js/member.js"></script>  
+  <script defer src="../js/page-transition.js"></script>
+  <script defer src="../js/member-search.js"></script></body>
+</html>

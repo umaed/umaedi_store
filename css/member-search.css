@@ -1,0 +1,194 @@
+/* member-search.css - Search styles for PM JKT48 */
+
+.search-container {
+  margin: 2em 0;
+  animation: slideDownIn 0.4s ease;
+}
+
+.search-wrapper {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.member-search {
+  width: 100%;
+  padding: 16px 48px 16px 20px;
+  font-size: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.3s ease;
+  background: white;
+  color: #333;
+  font-family: inherit;
+}
+
+.member-search:focus {
+  border-color: #bfa14a;
+  box-shadow: 0 0 0 3px rgba(191, 161, 74, 0.1);
+  background: #fffef9;
+}
+
+.member-search::placeholder {
+  color: #aaa;
+}
+
+.search-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+  font-size: 18px;
+}
+
+.member-search:focus ~ .search-icon {
+  color: #bfa14a;
+}
+
+/* Search Results */
+#search-results {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+#search-results.show {
+  display: block;
+}
+
+.search-header {
+  text-align: center;
+  padding: 20px 0;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.search-header p {
+  margin: 0;
+}
+
+.search-header strong {
+  color: #bfa14a;
+  font-weight: 600;
+}
+
+.search-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+}
+
+.search-empty p {
+  font-size: 18px;
+  margin: 0 0 8px 0;
+  color: #666;
+}
+
+.search-empty strong {
+  color: #bfa14a;
+}
+
+.search-empty small {
+  display: block;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.search-result-item {
+  animation: slideUpFade 0.3s ease;
+}
+
+/* Search box in header alternative style */
+.search-box-alt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+}
+
+.search-box-alt:focus-within {
+  border-color: #bfa14a;
+  box-shadow: 0 0 0 3px rgba(191, 161, 74, 0.1);
+}
+
+.search-box-alt input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 8px 0;
+  font-size: 14px;
+  background: transparent;
+}
+
+.search-box-alt button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #999;
+  padding: 0 4px;
+  transition: color 0.2s;
+}
+
+.search-box-alt button:hover {
+  color: #bfa14a;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .search-container {
+    margin: 1.5em 0;
+  }
+
+  .member-search {
+    padding: 14px 40px 14px 16px;
+    font-size: 14px;
+  }
+
+  .search-empty {
+    padding: 40px 20px;
+  }
+
+  .search-empty p {
+    font-size: 16px;
+  }
+}
+
+@keyframes slideDownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UMAEDI STORE · UMAVERSE × UMAVALENCIA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/animation.css">
+  <link rel="stylesheet" href="css/tag.css">
+  <link rel="stylesheet" href="css/product.css">
+  <link rel="stylesheet" href="css/modern-features.css">
+</head>
+<body>
+  <div id="loader" class="loader"></div>
+  <nav id="navbar"></nav>
+  <main id="main-content">
+    <!-- Banner Carousel Section -->
+    <section class="banner-section">
+      <div class="banner-carousel-wrapper">
+        <div class="banner-carousel" id="bannerCarousel">
+          <!-- Banner 1 -->
+          <div class="banner-slide">
+            <img src="assets/img/banererine.jpg" alt="Banner 1 - Premium Collection" class="banner-image" onerror="this.src='assets/img/placeholder-banner.png'" />
+            <div class="banner-overlay"></div>
+            <div class="banner-text">
+              <h3>✨ Premium Collection</h3>
+              <p>Discover our exclusive digital creator store</p>
+            </div>
+          </div>
+
+          <!-- Banner 2 -->
+          <div class="banner-slide">
+            <img src="assets/img/banner2.jpg" alt="Banner 2 - Limited Edition" class="banner-image" onerror="this.src='https://i.pinimg.com/736x/33/10/80/3310806e7ae7e8beaea535791c6994dc.jpg'" />
+            <div class="banner-overlay"></div>
+            <div class="banner-text">
+              <h3>🎁 Limited Edition</h3>
+              <p>Exclusive items available for a short time only</p>
+            </div>
+          </div>
+
+          <!-- Banner 3 -->
+          <div class="banner-slide">
+            <img src="https://tse3.mm.bing.net/th/id/OIP.n_DNQUzBWJv1jBmycG8OQwAAAA?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Banner 3 - New Arrivals" class="banner-image" onerror="this.src='assets/img/placeholder-banner.png'" />
+            <div class="banner-overlay"></div>
+            <div class="banner-text">
+              <h3>🆕 New Arrivals</h3>
+              <p>Check out the latest additions to our collection</p>
+            </div>
+          </div>
+
+          <!-- Banner 4 -->
+          <div class="banner-slide">
+            <img src="assets/img/banner4.jpg" alt="Banner 4 - Trending Now" class="banner-image" onerror="this.src='https://i.pinimg.com/736x/48/04/f0/4804f05d2c6ab8e06bc78e135099ddbc.jpg'" />
+            <div class="banner-overlay"></div>
+            <div class="banner-text">
+              <h3>🔥 Trending Now</h3>
+              <p>The most popular items this season</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <button class="banner-nav-btn banner-prev" id="bannerPrev" aria-label="Previous banner">❮</button>
+        <button class="banner-nav-btn banner-next" id="bannerNext" aria-label="Next banner">❯</button>
+
+        <!-- Carousel Indicators -->
+        <div class="banner-indicators" id="bannerIndicators">
+          <button class="indicator active" data-slide="0" aria-label="Go to banner 1"></button>
+          <button class="indicator" data-slide="1" aria-label="Go to banner 2"></button>
+          <button class="indicator" data-slide="2" aria-label="Go to banner 3"></button>
+          <button class="indicator" data-slide="3" aria-label="Go to banner 4"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+      <h2 class="categories-title">Shop By Category</h2>
+      <div class="categories-scroll-wrapper">
+        <div class="categories-scroll">
+          <button class="category-btn category-all" data-category="all" onclick="filterProductsByCategory('all')">
+            <span class="category-btn-icon">🏪</span>
+            <span class="category-btn-label">Semua</span>
+          </button>
+          <button class="category-btn category-fashion" data-category="fashion" onclick="filterProductsByCategory('fashion')">
+            <span class="category-btn-icon">👗</span>
+            <span class="category-btn-label">Fashion</span>
+          </button>
+          <button class="category-btn category-preset" data-category="preset" onclick="filterProductsByCategory('preset')">
+            <span class="category-btn-icon">🎨</span>
+            <span class="category-btn-label">Preset</span>
+          </button>
+          <button class="category-btn category-limited" data-category="limited" onclick="filterProductsByCategory('limited')">
+            <span class="category-btn-icon">🎁</span>
+            <span class="category-btn-label">Limited</span>
+          </button>
+          <button class="category-btn category-rare" data-category="rare" onclick="filterProductsByCategory('rare')">
+            <span class="category-btn-icon">💎</span>
+            <span class="category-btn-label">Rare</span>
+          </button>
+          <button class="category-btn category-jkt48" data-category="jkt48" onclick="filterProductsByCategory('jkt48')">
+            <span class="category-btn-icon">⭐</span>
+            <span class="category-btn-label">JKT48</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <h2 class="page-title">Featured Products</h2>
+    <section id="featured-products" class="products"></section>
+  </main>
+  <footer id="footer"></footer>
+  
+  <!-- Scroll to Top Button -->
+  <button id="scroll-to-top" title="Back to top">↑</button>
+  
+  <script defer src="js/sidebar.js"></script>
+  <script defer src="js/footer.js"></script>
+  <script defer src="js/animation.js"></script>
+  <script defer src="js/theme.js"></script>
+  <script defer src="js/product.js"></script>
+  <script defer src="js/page-transition.js"></script>
+  <script defer src="js/banner-carousel.js"></script>
+  <script defer src="js/category-filter.js"></script>
+  <script defer src="js/toast.js"></script>
+  <script defer src="js/lazy-load.js"></script>
+  <script defer src="js/smooth-scroll.js"></script>
+  <script defer src="js/quick-preview.js"></script>
+</body>
+</html>

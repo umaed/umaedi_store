@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ulasan Pelanggan · UMAEDI STORE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/animation.css">
+  <link rel="stylesheet" href="../css/tag.css">
+  <link rel="stylesheet" href="../css/product.css">
+  <style>
+    .reviews-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .reviews-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5em;
+      margin: 2.5em 0;
+    }
+    .stat-card {
+      background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+      padding: 1.8em;
+      border-radius: 16px;
+      text-align: center;
+      border-left: 4px solid #bfa14a;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      animation: slideUpLuxury 0.6s ease-out;
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      color: #bfa14a;
+      font-weight: 800;
+      margin-bottom: 0.5em;
+    }
+    .stat-label {
+      color: #555;
+      font-size: 1.05rem;
+      margin: 0;
+    }
+    .rating-bars {
+      margin: 2em 0;
+      background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+      padding: 2em;
+      border-radius: 16px;
+      border-left: 4px solid #bfa14a;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+    .rating-bar {
+      display: flex;
+      align-items: center;
+      gap: 1.5em;
+      margin-bottom: 1.5em;
+    }
+    .rating-label {
+      width: 120px;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .rating-stars {
+      color: #ffc107;
+      font-size: 1.1rem;
+    }
+    .rating-percentage {
+      flex: 1;
+      height: 20px;
+      background: #eee;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .rating-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #bfa14a 0%, #d4af37 100%);
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+    .rating-count {
+      width: 60px;
+      text-align: right;
+      color: #555;
+      font-weight: 600;
+    }
+    .reviews-list {
+      margin: 2.5em 0;
+    }
+    .review-item {
+      background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+      padding: 2em;
+      border-radius: 16px;
+      border-left: 4px solid #bfa14a;
+      margin-bottom: 1.5em;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      animation: slideUpLuxury 0.6s ease-out;
+    }
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1em;
+    }
+    .review-user {
+      font-weight: 700;
+      color: #1a1a1a;
+      font-size: 1.1rem;
+    }
+    .review-date {
+      color: #999;
+      font-size: 0.95rem;
+    }
+    .review-rating {
+      color: #ffc107;
+      font-size: 1.2rem;
+      letter-spacing: 0.3em;
+    }
+    .review-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0.8em 0;
+    }
+    .review-text {
+      color: #555;
+      line-height: 1.8;
+      margin: 1em 0;
+    }
+    .review-product {
+      display: inline-block;
+      background: rgba(191, 161, 74, 0.1);
+      color: #bfa14a;
+      padding: 0.4em 0.8em;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 1em;
+    }
+    .review-helpful {
+      display: flex;
+      gap: 1em;
+      margin-top: 1.5em;
+      padding-top: 1.5em;
+      border-top: 1px solid #eee;
+    }
+    .helpful-btn {
+      background: none;
+      border: 2px solid #ddd;
+      padding: 0.5em 1em;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #555;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .helpful-btn:hover {
+      border-color: #bfa14a;
+      color: #bfa14a;
+    }
+  </style>
+</head>
+<body>
+  <div id="loader" class="loader"></div>
+  <nav id="navbar"></nav>
+  <main id="main-content">
+    <div class="reviews-container">
+      <h1 class="page-title">⭐ Ulasan Pelanggan</h1>
+      
+      <div class="reviews-stats">
+        <div class="stat-card">
+          <div class="stat-number">4.8</div>
+          <p class="stat-label">Rating Rata-rata</p>
+          <div style="color: #ffc107; font-size: 1.3rem;">★★★★★</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">2,847</div>
+          <p class="stat-label">Total Ulasan</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">98%</div>
+          <p class="stat-label">Kepuasan Pelanggan</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">95%</div>
+          <p class="stat-label">Rekomendasi</p>
+        </div>
+      </div>
+
+      <div class="rating-bars">
+        <h2 style="margin-top: 0; color: #1a1a1a; font-weight: 800;">Distribusi Rating</h2>
+        
+        <div class="rating-bar">
+          <div class="rating-label">
+            <span class="rating-stars">★★★★★</span>
+          </div>
+          <div class="rating-percentage">
+            <div class="rating-fill" style="width: 75%;"></div>
+          </div>
+          <div class="rating-count">1,845</div>
+        </div>
+
+        <div class="rating-bar">
+          <div class="rating-label">
+            <span class="rating-stars">★★★★</span>
+          </div>
+          <div class="rating-percentage">
+            <div class="rating-fill" style="width: 15%;"></div>
+          </div>
+          <div class="rating-count">428</div>
+        </div>
+
+        <div class="rating-bar">
+          <div class="rating-label">
+            <span class="rating-stars">★★★</span>
+          </div>
+          <div class="rating-percentage">
+            <div class="rating-fill" style="width: 7%;"></div>
+          </div>
+          <div class="rating-count">194</div>
+        </div>
+
+        <div class="rating-bar">
+          <div class="rating-label">
+            <span class="rating-stars">★★</span>
+          </div>
+          <div class="rating-percentage">
+            <div class="rating-fill" style="width: 2%;"></div>
+          </div>
+          <div class="rating-count">58</div>
+        </div>
+
+        <div class="rating-bar">
+          <div class="rating-label">
+            <span class="rating-stars">★</span>
+          </div>
+          <div class="rating-percentage">
+            <div class="rating-fill" style="width: 1%;"></div>
+          </div>
+          <div class="rating-count">22</div>
+        </div>
+      </div>
+
+      <div class="reviews-list">
+        <h2 style="color: #1a1a1a; font-weight: 800; margin: 2em 0 1.5em 0;">Ulasan Terbaru</h2>
+
+        <div class="review-item">
+          <div class="review-header">
+            <div>
+              <div class="review-user">Sarah Putri</div>
+              <div class="review-date">2 hari yang lalu</div>
+            </div>
+            <div class="review-rating">★★★★★</div>
+          </div>
+          <div class="review-title">Produk Berkualitas Tinggi dan Pengiriman Cepat!</div>
+          <p class="review-text">Saya sangat puas dengan pembelian fashion item dari toko ini. Kualitasnya sangat bagus, sesuai dengan deskripsi, dan pengiriman datang lebih cepat dari estimasi. Customer service juga sangat responsif. Pasti akan belanja lagi!</p>
+          <span class="review-product">👗 Fashion</span>
+          <div class="review-helpful">
+            <button class="helpful-btn">👍 Membantu (234)</button>
+            <button class="helpful-btn">👎 Tidak (5)</button>
+          </div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header">
+            <div>
+              <div class="review-user">Ahmad Rizky</div>
+              <div class="review-date">5 hari yang lalu</div>
+            </div>
+            <div class="review-rating">★★★★★</div>
+          </div>
+          <div class="review-title">Preset Fotografi Sangat Profesional!</div>
+          <p class="review-text">Membeli preset photography dan hasilnya luar biasa! Preset ini benar-benar meningkatkan kualitas foto saya. Aplikasi sangat user-friendly dan tutorial lengkap. Sangat worth it untuk harga yang ditawarkan.</p>
+          <span class="review-product">🎨 Preset</span>
+          <div class="review-helpful">
+            <button class="helpful-btn">👍 Membantu (156)</button>
+            <button class="helpful-btn">👎 Tidak (3)</button>
+          </div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header">
+            <div>
+              <div class="review-user">Lisa Chen</div>
+              <div class="review-date">1 minggu yang lalu</div>
+            </div>
+            <div class="review-rating">★★★★★</div>
+          </div>
+          <div class="review-title">Limited Edition Item yang Sangat Eksklusif</div>
+          <p class="review-text">Akhirnya bisa mendapatkan limited edition item yang selama ini saya cari! Stok terbatas dan UMAEDI STORE memilikinya. Packaging sangat mewah dan item dalam kondisi sempurna. Terima kasih UMAEDI!</p>
+          <span class="review-product">🎁 Limited</span>
+          <div class="review-helpful">
+            <button class="helpful-btn">👍 Membantu (289)</button>
+            <button class="helpful-btn">👎 Tidak (7)</button>
+          </div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header">
+            <div>
+              <div class="review-user">Budi Santoso</div>
+              <div class="review-date">1 minggu yang lalu</div>
+            </div>
+            <div class="review-rating">★★★★</div>
+          </div>
+          <div class="review-title">Bagus, Hanya Sedikit Perbaikan</div>
+          <p class="review-text">Secara keseluruhan sangat puas dengan produk dan layanannya. Kualitas bagus dan harga terjangkau. Satu-satunya yang sedikit mengecewakan adalah waktu pengiriman yang sedikit lebih lama dari estimasi, tapi tetap dalam waktu yang wajar.</p>
+          <span class="review-product">💎 Rare</span>
+          <div class="review-helpful">
+            <button class="helpful-btn">👍 Membantu (98)</button>
+            <button class="helpful-btn">👎 Tidak (2)</button>
+          </div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header">
+            <div>
+              <div class="review-user">Maya Kartika</div>
+              <div class="review-date">2 minggu yang lalu</div>
+            </div>
+            <div class="review-rating">★★★★★</div>
+          </div>
+          <div class="review-title">JKT48 Merchandise Original & Lengkap</div>
+          <p class="review-text">Sebagai fans JKT48, saya sangat senang menemukan marketplace yang menjual merchandise JKT48 original dan lengkap. Harganya kompetitif dan autentikasinya terjamin. Will recommend ke teman-teman fans JKT48 lainnya!</p>
+          <span class="review-product">⭐ JKT48</span>
+          <div class="review-helpful">
+            <button class="helpful-btn">👍 Membantu (212)</button>
+            <button class="helpful-btn">👎 Tidak (4)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer id="footer"></footer>
+  
+  <script defer src="../js/sidebar.js"></script>
+  <script defer src="../js/footer.js"></script>
+  <script defer src="../js/animation.js"></script>
+  <script defer src="../js/theme.js"></script>
+  <script defer src="../js/page-transition.js"></script>
+</body>
+</html>

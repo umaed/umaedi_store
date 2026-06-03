@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UMAEDI STORE Quick Start</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f8f8f8 0%, #fff 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2em;
+    }
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.1);
+      padding: 3em 2em;
+      max-width: 600px;
+      text-align: center;
+    }
+    h1 {
+      color: #1a1a1a;
+      margin-bottom: 0.5em;
+      font-size: 2.5em;
+    }
+    .gold { color: #bfa14a; }
+    .subtitle {
+      color: #bfa14a;
+      font-weight: 600;
+      margin-bottom: 1.5em;
+      font-size: 1.1em;
+    }
+    .desc {
+      color: #666;
+      margin-bottom: 2em;
+      line-height: 1.8;
+    }
+    .button {
+      display: inline-block;
+      background: linear-gradient(90deg, #bfa14a, #d4af89);
+      color: white;
+      padding: 1em 2.5em;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      margin: 0.5em;
+      transition: box-shadow 0.3s, transform 0.3s;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1em;
+    }
+    .button:hover {
+      box-shadow: 0 8px 24px rgba(191,161,74,0.3);
+      transform: translateY(-2px);
+    }
+    .button.secondary {
+      background: #f0f0f0;
+      color: #1a1a1a;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .button.secondary:hover {
+      background: #e8e8e8;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .features {
+      text-align: left;
+      background: #f8f8f8;
+      padding: 1.5em;
+      border-radius: 8px;
+      margin: 2em 0;
+    }
+    .features h3 {
+      color: #1a1a1a;
+      margin-bottom: 1em;
+    }
+    .features li {
+      color: #666;
+      margin-bottom: 0.6em;
+      list-style: none;
+    }
+    .features li:before {
+      content: '✓ ';
+      color: #bfa14a;
+      font-weight: 700;
+      margin-right: 0.5em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>UMAEDI <span class="gold">STORE</span></h1>
+    <p class="subtitle">UMAVERSE × UMAVALENCIA</p>
+    <p class="desc">Modern · Luxury · Exclusive · Digital Creator Store</p>
+    
+    <div class="features">
+      <h3>🎯 Ready to Launch!</h3>
+      <ul>
+        <li>Responsive mobile design (like Lazada)</li>
+        <li>Smooth luxury animations</li>
+        <li>Shopping cart with WhatsApp checkout</li>
+        <li>Product categories & filtering</li>
+        <li>Owner member showcase</li>
+        <li>Pure vanilla JavaScript (no frameworks)</li>
+      </ul>
+    </div>
+
+    <div>
+      <a href="index.html" class="button">🚀 Launch Store</a>
+      <a href="README.md" class="button secondary">📖 View Docs</a>
+    </div>
+
+    <p style="color:#aaa;margin-top:2em;font-size:0.9em;">
+      For best experience, use local server:<br>
+      <code style="background:#f0f0f0;padding:0.3em 0.6em;border-radius:4px;">python -m http.server 8000</code>
+    </p>
+  </div>
+</body>
+</html>

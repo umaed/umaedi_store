@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Gacha PM JKT48 - UMADIGI STORE</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/animation.css">
+  <link rel="stylesheet" href="../css/event-gacha.css">
+</head>
+<body>
+  <div id="loader" class="loader"></div>
+  <nav id="navbar"></nav>
+
+  <main id="main-content" class="gacha-page">
+    <section class="gacha-hero">
+      <span>UMADIGI EVENT</span>
+      <h1>Gacha PM JKT48 Gratis</h1>
+      <p>Kumpulkan 5 kartu Ultra Rare. Setelah lengkap, akses PM member gratis akan terbuka secara random.</p>
+    </section>
+
+    <nav class="gacha-event-menu" aria-label="Menu event gacha">
+      <a href="#gacha-play">Gacha Pack</a>
+      <a href="#collection-album">Koleksi Kartu</a>
+    </nav>
+
+    <section id="gacha-play" class="gacha-machine">
+      <div class="gacha-progress">
+        <span>Progress Ultra Rare</span>
+        <strong id="ur-progress">0 / 5</strong>
+      </div>
+      <div class="pack-status">
+        <span>Isi Pack</span>
+        <strong id="pack-remaining">Pack baru siap</strong>
+      </div>
+      <div id="gacha-result" class="gacha-result">
+        <div class="gacha-pack">
+          <div class="pack-top"></div>
+          <div class="pack-body">
+            <span>UMADIGI</span>
+            <strong>JKT48 PM PACK</strong>
+          </div>
+        </div>
+      </div>
+      <button id="gacha-button" class="gacha-button">Gacha Sekarang</button>
+      <details class="gacha-backup-panel">
+        <summary>Backup & Restore</summary>
+        <div class="gacha-save-tools">
+          <button id="gacha-backup" class="gacha-tool-button">Backup</button>
+          <button id="gacha-restore" class="gacha-tool-button">Restore</button>
+        </div>
+        <textarea id="gacha-backup-data" class="gacha-backup-data" placeholder="Tempel atau simpan kode backup di sini." rows="2"></textarea>
+      </details>
+    </section>
+
+    <section id="reward-panel" class="reward-panel" hidden>
+      <span>Reward Terbuka</span>
+      <h2>PM Member Gratis</h2>
+      <p id="reward-member">Kumpulkan 5 Ultra Rare untuk membuka satu channel PM gratis random.</p>
+      <a id="reward-link" href="#" target="_blank" rel="noopener">Buka Reward PM</a>
+      <small>Reward dipilih random dari daftar PM gratis yang tersedia.</small>
+    </section>
+
+    <section class="gacha-rules">
+      <h2>Cara Main</h2>
+      <div class="rule-list">
+        <div><strong>01</strong><span>Tekan tombol Gacha Sekarang.</span></div>
+        <div><strong>02</strong><span>Buka pack dan kumpulkan kartu Common, Uncommon, Rare, sampai Ultra Rare.</span></div>
+        <div><strong>03</strong><span>Jika sudah mendapat 5 Ultra Rare unik, reward PM gratis terbuka.</span></div>
+      </div>
+    </section>
+
+    <section id="collection-album" class="collection-section">
+      <div class="collection-heading">
+        <div>
+          <span>OSHIDEX</span>
+          <h2>Koleksi Kartu</h2>
+        </div>
+        <strong id="collection-progress">0/0 cards</strong>
+      </div>
+      <div id="ultra-collection" class="ultra-collection card-collection"></div>
+      <div class="overall-progress">
+        <span>Overall Progress</span>
+        <strong id="overall-progress-text">0/0 cards</strong>
+        <div><i id="overall-progress-bar"></i></div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <script defer src="../js/sidebar.js"></script>
+  <script defer src="../js/footer.js"></script>
+  <script defer src="../js/animation.js"></script>
+  <script defer src="../js/theme.js"></script>
+  <script defer src="../js/toast.js"></script>
+  <script defer src="../js/event-gacha.js"></script>
+  <script defer src="../js/page-transition.js"></script>
+</body>
+</html>

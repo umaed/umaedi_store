@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - UMADIGI STORE</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/animation.css">
+  <link rel="stylesheet" href="../css/checkout.css">
+</head>
+<body>
+  <div id="loader" class="loader"></div>
+  <nav id="navbar"></nav>
+
+  <main id="main-content" class="order-page">
+    <section class="order-hero checkout-hero">
+      <span>Checkout</span>
+      <h1>Finalisasi pesanan UMADIGI STORE.</h1>
+      <p>Isi data singkat agar pesan WhatsApp ke admin lebih lengkap dan mudah diproses.</p>
+    </section>
+
+    <section class="checkout-form-card">
+      <label>
+        Nama pemesan
+        <input id="buyer-name" type="text" placeholder="Contoh: Umaedi">
+      </label>
+      <label>
+        Nomor WhatsApp
+        <input id="buyer-phone" type="tel" placeholder="Contoh: 08xxxxxxxxxx">
+      </label>
+      <label>
+        Catatan order
+        <textarea id="buyer-note" rows="3" placeholder="Contoh: kirim detail setelah pembayaran ya admin"></textarea>
+      </label>
+    </section>
+
+    <section id="checkout-summary" class="checkout-summary"></section>
+
+    <div class="sticky-order-bar">
+      <button id="send-whatsapp" class="checkout-main-btn">Kirim Pesanan ke WhatsApp</button>
+    </div>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <script defer src="../js/sidebar.js"></script>
+  <script defer src="../js/footer.js"></script>
+  <script defer src="../js/animation.js"></script>
+  <script defer src="../js/theme.js"></script>
+  <script defer src="../js/page-transition.js"></script>
+  <script defer src="../js/cart.js"></script>
+  <script defer src="../js/whatsapp.js"></script>
+</body>
+</html>

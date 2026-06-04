@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ · UMAEDI STORE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/animation.css">
+  <link rel="stylesheet" href="../css/tag.css">
+  <link rel="stylesheet" href="../css/product.css">
+  <style>
+    .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .faq-tabs {
+      display: flex;
+      gap: 1em;
+      margin: 2em 0;
+      flex-wrap: wrap;
+    }
+    .faq-tab {
+      padding: 0.8em 1.8em;
+      background: #f5f5f5;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: #555;
+    }
+    .faq-tab:hover {
+      border-color: #bfa14a;
+      color: #bfa14a;
+    }
+    .faq-tab.active {
+      background: linear-gradient(135deg, #bfa14a 0%, #d4af37 100%);
+      color: #1a1a1a;
+      border-color: #bfa14a;
+    }
+    .faq-content {
+      display: none;
+    }
+    .faq-content.active {
+      display: block;
+    }
+    .faq-category {
+      margin: 2.5em 0;
+    }
+    .faq-category h2 {
+      font-size: 1.4rem;
+      color: #1a1a1a;
+      margin: 0 0 1.5em 0;
+      font-weight: 800;
+      padding-bottom: 0.8em;
+      border-bottom: 2px solid #bfa14a;
+    }
+    .faq-item {
+      margin-bottom: 1.2em;
+      background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+      border-radius: 12px;
+      overflow: hidden;
+      border-left: 4px solid #bfa14a;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      animation: slideUpLuxury 0.6s ease-out;
+    }
+    .faq-question {
+      padding: 1.5em;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(191, 161, 74, 0.05) 0%, transparent 100%);
+      transition: all 0.3s ease;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+    .faq-question:hover {
+      background: linear-gradient(135deg, rgba(191, 161, 74, 0.12) 0%, transparent 100%);
+      padding-left: 2em;
+    }
+    .faq-toggle {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      transition: transform 0.3s ease;
+      color: #bfa14a;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+    .faq-item.active .faq-toggle {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+      padding: 0 1.5em 1.5em 1.5em;
+    }
+    .faq-answer p {
+      margin: 0;
+      color: #555;
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+    .faq-answer ul {
+      margin: 1em 0 0 0;
+      padding-left: 1.5em;
+    }
+    .faq-answer li {
+      margin: 0.5em 0;
+      color: #555;
+      line-height: 1.6;
+    }
+    .faq-search {
+      margin: 2em 0;
+      position: relative;
+    }
+    .faq-search input {
+      width: 100%;
+      padding: 1em 1.5em 1em 3em;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      transition: border-color 0.3s ease;
+    }
+    .faq-search input:focus {
+      outline: none;
+      border-color: #bfa14a;
+      box-shadow: 0 0 0 3px rgba(191, 161, 74, 0.1);
+    }
+    .faq-search::before {
+      content: '🔍';
+      position: absolute;
+      left: 1em;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <div id="loader" class="loader"></div>
+  <nav id="navbar"></nav>
+  <main id="main-content">
+    <div class="faq-container">
+      <h1 class="page-title">📋 Pertanyaan yang Sering Diajukan</h1>
+      
+      <div class="faq-search">
+        <input type="text" id="searchFaq" placeholder="Cari pertanyaan Anda...">
+      </div>
+
+      <div class="faq-tabs">
+        <button class="faq-tab active" data-tab="umum">Umum</button>
+        <button class="faq-tab" data-tab="belanja">Belanja</button>
+        <button class="faq-tab" data-tab="pembayaran">Pembayaran</button>
+        <button class="faq-tab" data-tab="pengiriman">Pengiriman</button>
+        <button class="faq-tab" data-tab="teknis">Teknis</button>
+      </div>
+
+      <!-- UMUM -->
+      <div id="umum" class="faq-content active">
+        <div class="faq-category">
+          <h2>Pertanyaan Umum</h2>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Siapa kami dan apa yang kami jual?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>UMAEDI STORE adalah platform e-commerce eksklusif yang menjual produk premium seperti fashion, preset fotografi, limited edition items, rare collectibles, dan merchandise JKT48. Kami berkomitmen memberikan produk berkualitas terbaik dengan harga yang kompetitif.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Bagaimana cara menghubungi customer service?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Anda dapat menghubungi kami melalui:</p>
+              <ul>
+                <li>WhatsApp: +62 812-3456-789</li>
+                <li>Email: support@umaedi-store.com</li>
+                <li>Chat: Tersedia di aplikasi</li>
+                <li>Jam operasional: Senin-Jumat 08:00-17:00, Sabtu 09:00-15:00</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Apakah UMAEDI STORE aman dan terpercaya?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Ya! UMAEDI STORE memiliki sertifikasi keamanan internasional, enkripsi SSL, dan customer service yang responsif. Kami memiliki rating 4.8/5 dari ribuan ulasan pelanggan. Semua transaksi dijamin aman dan produk original.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BELANJA -->
+      <div id="belanja" class="faq-content">
+        <div class="faq-category">
+          <h2>Belanja Online</h2>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Apakah perlu login untuk belanja?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Disarankan untuk membuat akun agar lebih mudah melacak pesanan, menyimpan wishlist, dan mendapatkan notifikasi tentang promo spesial. Namun, Anda juga bisa berbelanja tanpa login dengan checkout sebagai guest.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Bisakah saya melihat review produk?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Tentu! Setiap produk menampilkan rating dan review dari pembeli lain. Anda bisa membaca pengalaman mereka sebelum membeli. Anda juga bisa memberikan review setelah menerima produk.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Bagaimana jika saya ingin membatalkan pesanan?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Anda dapat membatalkan pesanan sebelum produk dikirim. Masuk ke akun Anda, buka halaman "Pesanan Saya", pilih pesanan yang ingin dibatalkan, dan klik tombol "Batalkan Pesanan". Refund akan diproses dalam 3-5 hari kerja.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PEMBAYARAN -->
+      <div id="pembayaran" class="faq-content">
+        <div class="faq-category">
+          <h2>Metode Pembayaran</h2>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Metode pembayaran apa yang diterima?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Kami menerima berbagai metode pembayaran:</p>
+              <ul>
+                <li>Transfer Bank (BCA, Mandiri, BNI, Permata)</li>
+                <li>E-wallet (GCash, OVO, Dana, Gopay)</li>
+                <li>Kartu Kredit (Visa, Mastercard)</li>
+                <li>Cicilan (0% hingga 12 bulan)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Apakah pembayaran aman?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Sangat aman! Kami menggunakan enkripsi SSL 256-bit, gateway pembayaran terpercaya, dan tidak pernah menyimpan data kartu kredit Anda. Semua transaksi terenkripsi dan dilindungi oleh sistem keamanan berlapis.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Berapa lama proses konfirmasi pembayaran?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Pembayaran online (e-wallet, kartu kredit) dikonfirmasi langsung secara instan. Transfer bank biasanya dikonfirmasi dalam 1-2 jam. Jika sudah lama, hubungi customer service untuk bantuan.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PENGIRIMAN -->
+      <div id="pengiriman" class="faq-content">
+        <div class="faq-category">
+          <h2>Pengiriman</h2>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Ke mana saja bisa dikirim?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Kami mengirim ke seluruh nusantara! Termasuk Indonesia, Filipina, dan Singapura. Anda dapat memilih kurir pengiriman sesuai preferensi Anda saat checkout.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Bagaimana tracking pesanan?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Setelah pesanan dikirim, Anda akan menerima email dengan nomor tracking. Masukkan nomor ini di website kurir untuk melacak lokasi real-time paket Anda. Anda juga bisa melacak di aplikasi UMAEDI STORE.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Bagaimana jika paket belum sampai?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Jika paket hilang atau belum sampai melewati estimasi waktu, laporkan segera ke customer service kami dengan nomor tracking. Kami akan melakukan investigasi dan memberikan kompensasi sesuai kebijakan asuransi pengiriman.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEKNIS -->
+      <div id="teknis" class="faq-content">
+        <div class="faq-category">
+          <h2>Pertanyaan Teknis</h2>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Apakah ada aplikasi mobile untuk UMAEDI?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Ya! Aplikasi UMAEDI STORE tersedia di App Store (iOS) dan Google Play (Android). Dengan aplikasi, Anda mendapat notifikasi promo real-time dan pengalaman belanja yang lebih lancar.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Bagaimana jika website/app error?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Jika mengalami error, coba:</p>
+              <ul>
+                <li>Refresh halaman atau tutup dan buka ulang app</li>
+                <li>Clear cache browser/app</li>
+                <li>Update ke versi terbaru</li>
+                <li>Gunakan browser/device berbeda</li>
+                <li>Hubungi customer service jika masalah persisten</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Bagaimana cara reset password?</span>
+              <span class="faq-toggle">▼</span>
+            </div>
+            <div class="faq-answer">
+              <p>Klik "Lupa Password" di halaman login. Masukkan email Anda, dan kami akan mengirim link reset password. Buka link tersebut dan buat password baru. Link berlaku selama 1 jam. Jika tidak menerima email, cek folder Spam/Junk.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer id="footer"></footer>
+  
+  <script defer src="../js/sidebar.js"></script>
+  <script defer src="../js/footer.js"></script>
+  <script defer src="../js/animation.js"></script>
+  <script defer src="../js/theme.js"></script>
+  <script defer src="../js/page-transition.js"></script>
+  <script>
+    // FAQ Tabs
+    document.querySelectorAll('.faq-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.faq-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.faq-content').forEach(c => c.classList.remove('active'));
+        
+        tab.classList.add('active');
+        const tabId = tab.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    // FAQ Items Toggle
+    document.querySelectorAll('.faq-item').forEach(item => {
+      const question = item.querySelector('.faq-question');
+      question.addEventListener('click', () => {
+        item.classList.toggle('active');
+      });
+    });
+
+    // Search FAQ
+    document.getElementById('searchFaq').addEventListener('keyup', function() {
+      const searchTerm = this.value.toLowerCase();
+      document.querySelectorAll('.faq-item').forEach(item => {
+        const question = item.querySelector('.faq-question').textContent.toLowerCase();
+        const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+        
+        if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

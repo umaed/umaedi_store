@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Gacha PM JKT48 - UMADIGI STORE</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/animation.css">
+  <link rel="stylesheet" href="../css/event-gacha.css">
+</head>
+<body>
+  <div id="loader" class="loader"></div>
+  <nav id="navbar"></nav>
+
+  <main id="main-content" class="gacha-page">
+    <section class="gacha-hero">
+      <span>UMADIGI EVENT</span>
+      <h1>Gacha PM JKT48 Gratis</h1>
+      <p>Kumpulkan kartu, simpan koleksi permanen, lalu tukarkan stok kartu di inventori untuk PM gratis, JKT Point, dan voucher diskon.</p>
+    </section>
+
+    <div class="event-ticker" aria-label="Aktivitas event terbaru">
+      <div class="event-ticker-track" id="event-live-track"></div>
+    </div>
+
+    <nav class="gacha-event-menu" aria-label="Menu event gacha">
+      <button class="is-active" type="button" data-event-tab="gacha">Gacha Pack</button>
+      <button type="button" data-event-tab="exchange">Penukaran</button>
+      <button type="button" data-event-tab="collection">Koleksi Kartu</button>
+    </nav>
+
+    <section id="gacha-play" class="gacha-machine event-tab-panel is-active" data-event-panel="gacha">
+      <div class="gacha-progress">
+        <span>Progress Ultra Rare</span>
+        <strong id="ur-progress">0 / 5</strong>
+      </div>
+      <div class="pack-status">
+        <span>Isi Pack</span>
+        <strong id="pack-remaining">Pack baru siap</strong>
+      </div>
+      <div id="pack-board" class="pack-board" aria-label="Pilihan 10 pack event"></div>
+      <div id="gacha-result" class="gacha-result">
+        <div class="gacha-pack">
+          <div class="pack-grip pack-grip-left"></div>
+          <div class="pack-grip pack-grip-right"></div>
+          <div class="pack-plastic-glare"></div>
+          <div class="pack-card-stack stack-1"></div>
+          <div class="pack-card-stack stack-2"></div>
+          <div class="pack-top"></div>
+          <div class="pack-body">
+            <span>UMADIGI</span>
+            <strong>JKT48 PM PACK</strong>
+            <small>Tap untuk buka</small>
+          </div>
+        </div>
+      </div>
+      <button id="gacha-button" class="gacha-button">Gacha Sekarang</button>
+      <details class="gacha-backup-panel">
+        <summary>Backup & Restore</summary>
+        <div class="gacha-save-tools">
+          <button id="gacha-backup" class="gacha-tool-button">Backup</button>
+          <button id="gacha-restore" class="gacha-tool-button">Restore</button>
+        </div>
+        <textarea id="gacha-backup-data" class="gacha-backup-data" placeholder="Tempel atau simpan kode backup di sini." rows="2"></textarea>
+      </details>
+    </section>
+
+    <section id="exchange-panel" class="reward-panel exchange-panel event-tab-panel" data-event-panel="exchange">
+      <span>Penukaran Event</span>
+      <h2>Inventori & Reward</h2>
+      <div class="point-card">
+        <small>Saldo JKT Point</small>
+        <strong id="jkt-point-balance">0</strong>
+      </div>
+      <div class="inventory-summary" id="inventory-summary"></div>
+      <div class="exchange-actions">
+        <div class="exchange-box pm-exchange-card popular-card">
+          <span class="exchange-tag">Populer</span>
+          <strong>PM Gratis Random</strong>
+          <p>Butuh 5 Ultra Rare dan 2.300 JKT Point. Reward PM member akan dipilih random oleh sistem.</p>
+          <div class="exchange-cost"><b>5 UR</b><b>2.300 JP</b></div>
+          <button id="exchange-random-pm-button" class="exchange-button" type="button">Tukar PM Random</button>
+        </div>
+        <div class="exchange-box pm-exchange-card premium-card">
+          <span class="exchange-tag premium">Populer</span>
+          <strong>Pilih PM Member Semaumu</strong>
+          <p>Pilih sendiri member PM yang kamu mau. Butuh 10 Ultra Rare dan 5.000 JKT Point.</p>
+          <select id="pm-reward-select" class="reward-select"></select>
+          <div class="exchange-cost"><b>10 UR</b><b>5.000 JP</b></div>
+          <button id="exchange-choice-pm-button" class="exchange-button premium" type="button">Tukar PM Pilihan</button>
+        </div>
+        <div class="exchange-box">
+          <strong>Jual Kartu Lain</strong>
+          <p>Common, Uncommon, dan Rare bisa dijual menjadi JKT Point. Kartu yang dijual hilang dari inventori.</p>
+          <button id="sell-cards-button" class="exchange-button secondary" type="button">Jual Semua Non-UR</button>
+        </div>
+        <div class="exchange-box">
+          <strong>Beli Voucher Diskon</strong>
+          <p>Gunakan JKT Point untuk membeli voucher diskon checkout.</p>
+          <div id="voucher-shop" class="voucher-shop"></div>
+        </div>
+      </div>
+      <div id="reward-panel" class="reward-result" hidden>
+        <strong id="reward-member">Reward PM kamu akan muncul di sini.</strong>
+        <a id="reward-link" href="#" target="_blank" rel="noopener">Buka Reward PM</a>
+      </div>
+      <div class="voucher-list" id="voucher-list"></div>
+    </section>
+
+    <section class="gacha-rules event-tab-panel is-active" data-event-panel="gacha">
+      <h2>Cara Main</h2>
+      <div class="rule-list">
+        <div><strong>01</strong><span>Pilih salah satu dari 10 pack yang tersedia.</span></div>
+        <div><strong>02</strong><span>Tap pack untuk menyobek plastik, lalu ambil 5 kartu di dalamnya.</span></div>
+        <div><strong>03</strong><span>Tukar 5 Ultra Rare dan 2.300 JKT Point untuk akses PM gratis random.</span></div>
+        <div><strong>04</strong><span>Tukar 10 Ultra Rare dan 5.000 JKT Point untuk memilih PM member semaumu.</span></div>
+        <div><strong>05</strong><span>Kartu Common, Uncommon, dan Rare bisa dijual menjadi JKT Point untuk membeli voucher diskon.</span></div>
+      </div>
+    </section>
+
+    <section id="collection-album" class="collection-section event-tab-panel" data-event-panel="collection">
+      <div class="collection-heading">
+        <div>
+          <span>OSHIDEX</span>
+          <h2>Koleksi Kartu</h2>
+        </div>
+        <strong id="collection-progress">0/0 cards</strong>
+      </div>
+      <div id="ultra-collection" class="ultra-collection card-collection"></div>
+      <div class="overall-progress">
+        <span>Overall Progress</span>
+        <strong id="overall-progress-text">0/0 cards</strong>
+        <div><i id="overall-progress-bar"></i></div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <script defer src="../js/sidebar.js"></script>
+  <script defer src="../js/footer.js"></script>
+  <script defer src="../js/animation.js"></script>
+  <script defer src="../js/theme.js"></script>
+  <script defer src="../js/toast.js"></script>
+  <script defer src="../js/event-gacha.js"></script>
+  <script defer src="../js/page-transition.js"></script>
+</body>
+</html>

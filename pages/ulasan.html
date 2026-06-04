@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ulasan Pelanggan - UMADIGI STORE</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/animation.css">
+  <style>
+    .reviews-page {
+      max-width: 760px;
+      padding-bottom: 28px;
+    }
+
+    .review-hero {
+      margin: 12px 0 14px;
+      padding: 22px 18px;
+      color: #fff;
+      border-radius: 20px;
+      background:
+        linear-gradient(135deg, rgba(17, 24, 39, 0.92), rgba(190, 24, 93, 0.72)),
+        url("../assets/img/pmjkt48.png") center / cover;
+      box-shadow: 0 18px 40px rgba(190, 24, 93, 0.18);
+    }
+
+    .review-hero span {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+
+    .review-hero h1 {
+      margin: 12px 0 0;
+      font-size: clamp(1.7rem, 8vw, 2.8rem);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .review-hero p {
+      margin: 12px 0 0;
+      color: #f8fafc;
+      line-height: 1.6;
+    }
+
+    .review-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .review-stat {
+      padding: 14px 10px;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.92);
+      text-align: center;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .review-stat strong {
+      display: block;
+      color: #ee4d2d;
+      font-size: 1.35rem;
+      font-weight: 900;
+    }
+
+    .review-stat span {
+      display: block;
+      margin-top: 4px;
+      color: #64748b;
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .review-section-title {
+      margin: 20px 0 12px;
+      color: #111827;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 900;
+    }
+
+    .review-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .review-card {
+      position: relative;
+      overflow: hidden;
+      padding: 15px;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.07);
+      backdrop-filter: blur(10px);
+    }
+
+    .review-card::after {
+      content: "";
+      position: absolute;
+      right: -24px;
+      top: -24px;
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: #fff1f2;
+      z-index: 0;
+    }
+
+    .review-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .review-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .review-user {
+      color: #111827;
+      font-weight: 900;
+    }
+
+    .review-date {
+      margin-top: 2px;
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .review-stars {
+      color: #f59e0b;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .review-title {
+      margin: 12px 0 0;
+      color: #111827;
+      font-size: 1.02rem;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .review-text {
+      margin: 8px 0 0;
+      color: #475569;
+      line-height: 1.65;
+      font-size: 0.92rem;
+    }
+
+    .review-product {
+      width: fit-content;
+      display: inline-flex;
+      margin-top: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #be123c;
+      background: #ffe4e6;
+      font-size: 0.76rem;
+      font-weight: 900;
+    }
+
+    @media (max-width: 420px) {
+      .review-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loader" class="loader"></div>
+  <nav id="navbar"></nav>
+
+  <main id="main-content" class="reviews-page">
+    <section class="review-hero">
+      <span>RATING PELANGGAN</span>
+      <h1>Ulasan positif Private Message JKT48.</h1>
+      <p>Review dari pelanggan yang sudah mencoba layanan PM JKT48 8K via UMADIGI STORE.</p>
+    </section>
+
+    <section class="review-stats" aria-label="Statistik ulasan">
+      <div class="review-stat">
+        <strong>4.9</strong>
+        <span>Rating PM JKT48</span>
+      </div>
+      <div class="review-stat">
+        <strong>98%</strong>
+        <span>Puas dengan layanan</span>
+      </div>
+      <div class="review-stat">
+        <strong>8K</strong>
+        <span>Harga terjangkau</span>
+      </div>
+    </section>
+
+    <h2 class="review-section-title">Ulasan Terbaru</h2>
+
+    <section class="review-list">
+      <article class="review-card">
+        <div class="review-top">
+          <div>
+            <div class="review-user">Rafi A.</div>
+            <div class="review-date">Hari ini</div>
+          </div>
+          <div class="review-stars">5/5</div>
+        </div>
+        <h3 class="review-title">PM JKT48 murah tapi tetap rapi prosesnya</h3>
+        <p class="review-text">Awalnya coba karena harganya cuma 8K, ternyata prosesnya jelas. Admin bantu konfirmasi member, total pembayaran, dan langkah ordernya sampai selesai. Worth it buat pelajar.</p>
+        <span class="review-product">Private Message JKT48</span>
+      </article>
+
+      <article class="review-card">
+        <div class="review-top">
+          <div>
+            <div class="review-user">Nabila F.</div>
+            <div class="review-date">1 hari lalu</div>
+          </div>
+          <div class="review-stars">5/5</div>
+        </div>
+        <h3 class="review-title">Bisa pilih oshi favorit dan checkout gampang</h3>
+        <p class="review-text">Suka banget karena tinggal pilih member, masuk keranjang, lalu detailnya otomatis dikirim ke WhatsApp admin. Tidak ribet dan tampilannya enak dipakai di HP.</p>
+        <span class="review-product">PM Member JKT48 Access</span>
+      </article>
+
+      <article class="review-card">
+        <div class="review-top">
+          <div>
+            <div class="review-user">Dimas K.</div>
+            <div class="review-date">2 hari lalu</div>
+          </div>
+          <div class="review-stars">5/5</div>
+        </div>
+        <h3 class="review-title">Admin fast response dan detail order jelas</h3>
+        <p class="review-text">Yang paling enak itu format pesan WhatsApp-nya sudah lengkap. Nama member, harga, admin fee, dan total bayar langsung kebaca. Jadi tidak bingung pas konfirmasi.</p>
+        <span class="review-product">Private Message via WhatsApp</span>
+      </article>
+
+      <article class="review-card">
+        <div class="review-top">
+          <div>
+            <div class="review-user">Salsa R.</div>
+            <div class="review-date">3 hari lalu</div>
+          </div>
+          <div class="review-stars">5/5</div>
+        </div>
+        <h3 class="review-title">Cocok buat fans yang mau PM hemat</h3>
+        <p class="review-text">Dengan harga 8K, layanan ini terasa sangat terjangkau. Buat yang mau coba private message tanpa keluar biaya besar, ini pilihan yang bagus.</p>
+        <span class="review-product">PM JKT48 8K</span>
+      </article>
+
+      <article class="review-card">
+        <div class="review-top">
+          <div>
+            <div class="review-user">Aldi M.</div>
+            <div class="review-date">5 hari lalu</div>
+          </div>
+          <div class="review-stars">5/5</div>
+        </div>
+        <h3 class="review-title">Bonus dan info promo bikin makin menarik</h3>
+        <p class="review-text">Selain PM berbayar, admin juga sering kasih info promo PM gratis dan event edit foto realistis bareng oshi. Jadi bukan cuma jualan, tapi terasa ada komunitasnya.</p>
+        <span class="review-product">Promo PM Gratis</span>
+      </article>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <script defer src="../js/sidebar.js"></script>
+  <script defer src="../js/footer.js"></script>
+  <script defer src="../js/animation.js"></script>
+  <script defer src="../js/theme.js"></script>
+  <script defer src="../js/page-transition.js"></script>
+</body>
+</html>

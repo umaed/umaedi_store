@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontak Kami · UMAEDI STORE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/animation.css">
+  <link rel="stylesheet" href="../css/tag.css">
+  <link rel="stylesheet" href="../css/product.css">
+  <style>
+    .contact-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2em;
+      margin: 2.5em 0;
+    }
+    .contact-info-card {
+      background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+      padding: 2em;
+      border-radius: 16px;
+      border-left: 4px solid #bfa14a;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      animation: slideUpLuxury 0.6s ease-out;
+    }
+    .contact-info-card h3 {
+      font-size: 1.3rem;
+      color: #1a1a1a;
+      margin: 0 0 1em 0;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.8em;
+    }
+    .contact-info-card .icon {
+      font-size: 1.8em;
+    }
+    .contact-info-card p {
+      margin: 0.8em 0;
+      color: #555;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+    .contact-info-card a {
+      color: #bfa14a;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .contact-info-card a:hover {
+      color: #1a1a1a;
+      text-decoration: underline;
+    }
+    .contact-form {
+      background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+      padding: 2em;
+      border-radius: 16px;
+      border-left: 4px solid #bfa14a;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      animation: slideUpLuxury 0.6s ease-out 0.1s backwards;
+    }
+    .contact-form h2 {
+      font-size: 1.6rem;
+      color: #1a1a1a;
+      margin: 0 0 1.5em 0;
+      font-weight: 800;
+    }
+    .form-group {
+      margin-bottom: 1.5em;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5em;
+      color: #1a1a1a;
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.9em 1em;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: white;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #bfa14a;
+      box-shadow: 0 0 0 3px rgba(191, 161, 74, 0.1);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .submit-btn {
+      background: linear-gradient(135deg, #bfa14a 0%, #d4af37 100%);
+      color: #1a1a1a;
+      padding: 1.1em 2.5em;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(191, 161, 74, 0.25);
+      width: 100%;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(191, 161, 74, 0.35);
+    }
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+    @media (max-width: 768px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loader" class="loader"></div>
+  <nav id="navbar"></nav>
+  <main id="main-content">
+    <div class="contact-container">
+      <h1 class="page-title">📞 Hubungi Kami</h1>
+      
+      <div class="contact-grid">
+        <div>
+          <div class="contact-info-card">
+            <h3>
+              <span class="icon">📱</span>
+              WhatsApp
+            </h3>
+            <p>Hubungi kami via WhatsApp untuk respon yang lebih cepat!</p>
+            <p><a href="https://wa.me/628123456789" target="_blank">+62 812-3456-789</a></p>
+          </div>
+
+          <div class="contact-info-card">
+            <h3>
+              <span class="icon">📧</span>
+              Email
+            </h3>
+            <p>Kirim email untuk pertanyaan lebih detail atau feedback</p>
+            <p><a href="mailto:support@umaedi-store.com">support@umaedi-store.com</a></p>
+          </div>
+
+          <div class="contact-info-card">
+            <h3>
+              <span class="icon">🕐</span>
+              Jam Operasional
+            </h3>
+            <p>
+              Senin - Jumat: 08:00 - 17:00<br>
+              Sabtu: 09:00 - 15:00<br>
+              Minggu: Tutup
+            </p>
+          </div>
+
+          <div class="contact-info-card">
+            <h3>
+              <span class="icon">📍</span>
+              Lokasi
+            </h3>
+            <p>
+              Jakarta, Indonesia<br>
+              <small style="color: #999;">Kami melayani pengiriman ke seluruh Indonesia</small>
+            </p>
+          </div>
+        </div>
+
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <h2>Kirim Pesan</h2>
+          
+          <div class="form-group">
+            <label for="name">Nama Lengkap</label>
+            <input type="text" id="name" name="name" required placeholder="Masukkan nama Anda">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Masukkan email Anda">
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Nomor WhatsApp</label>
+            <input type="tel" id="phone" name="phone" required placeholder="Contoh: 628123456789">
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subjek</label>
+            <input type="text" id="subject" name="subject" required placeholder="Masukkan subjek pesan">
+          </div>
+
+          <div class="form-group">
+            <label for="message">Pesan</label>
+            <textarea id="message" name="message" required placeholder="Tulis pesan Anda di sini..."></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn">Kirim Pesan</button>
+        </form>
+      </div>
+    </div>
+  </main>
+  <footer id="footer"></footer>
+  
+  <script defer src="../js/sidebar.js"></script>
+  <script defer src="../js/footer.js"></script>
+  <script defer src="../js/animation.js"></script>
+  <script defer src="../js/theme.js"></script>
+  <script defer src="../js/page-transition.js"></script>
+  <script>
+    function handleSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const subject = document.getElementById('subject').value;
+      const message = document.getElementById('message').value;
+      
+      // Redirect ke WhatsApp dengan pesan yang sudah diformat
+      const whatsappMessage = `Halo, nama saya ${name}. Email: ${email}, Nomor: ${phone}. Subjek: ${subject}. Pesan: ${message}`;
+      const whatsappUrl = `https://wa.me/628123456789?text=${encodeURIComponent(whatsappMessage)}`;
+      window.open(whatsappUrl, '_blank');
+      
+      // Reset form
+      event.target.reset();
+    }
+  </script>
+</body>
+</html>

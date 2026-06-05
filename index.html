@@ -23,18 +23,23 @@
   <main id="main-content">
     <section class="store-hero hero-slider" aria-label="Banner promo UMADIGI STORE">
       <a class="hero-slide slide-one" href="pages/pm-jkt48.html" aria-label="PM JKT48 Access">
-        <img src="assets/img/banererine.jpg" alt="PM JKT48 Access">
+        <img src="assets/img/pm-jkt48-access-banner.png" alt="PM JKT48 Access">
         <span>PM JKT48 Access</span>
       </a>
       <a class="hero-slide slide-two" href="pages/event-gacha.html" aria-label="Event Gacha PM gratis">
-        <img src="assets/img/pmjkt48.png" alt="Event Gacha PM JKT48">
+        <img src="assets/img/event-gacha-banner.png" alt="Event Gacha PM JKT48">
         <span>Event Gacha PM Gratis</span>
       </a>
       <a class="hero-slide slide-three" href="#featured-products" aria-label="Produk digital pilihan">
-        <img src="assets/img/umadigi-hero.png" alt="Produk digital UMADIGI STORE">
+        <img src="assets/img/digital-products-banner.png" alt="Produk digital UMADIGI STORE">
         <span>Produk Digital Pilihan</span>
       </a>
+      <a class="hero-slide slide-four" href="#featured-products" aria-label="Produk limited UMADIGI Valerie Set">
+        <img src="assets/img/limited-valerie-banner.png" alt="UMADIGI Valerie Set limited collection">
+        <span>Produk Limited</span>
+      </a>
       <div class="hero-dots" aria-hidden="true">
+        <i></i>
         <i></i>
         <i></i>
         <i></i>
@@ -81,36 +86,42 @@
               <svg viewBox="0 0 24 24"><path d="M4 5h7v7H4V5Zm9 0h7v7h-7V5ZM4 14h7v5H4v-5Zm9 0h7v5h-7v-5Z"/></svg>
             </span>
             <span class="category-btn-label">Semua</span>
+            <span class="category-btn-meta">Semua produk</span>
           </button>
           <button class="category-btn category-fashion" data-category="fashion" onclick="filterProductsByCategory('fashion')">
             <span class="category-btn-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M8 4h8l2 4 3 2-2 4-2-1v7H7v-7l-2 1-2-4 3-2 2-4Z"/></svg>
             </span>
             <span class="category-btn-label">Fashion</span>
+            <span class="category-btn-meta">Style pilihan</span>
           </button>
           <button class="category-btn category-preset" data-category="preset" onclick="filterProductsByCategory('preset')">
             <span class="category-btn-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4V5Zm3 3v8h10V8H7Zm2 2h6v4H9v-4Z"/></svg>
             </span>
-            <span class="category-btn-label">Preset</span>
+            <span class="category-btn-label">Digital</span>
+            <span class="category-btn-meta">Preset & jasa AI</span>
           </button>
           <button class="category-btn category-limited" data-category="limited" onclick="filterProductsByCategory('limited')">
             <span class="category-btn-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M20 7h-3.2A3 3 0 0 0 12 3.6 3 3 0 0 0 7.2 7H4v5h1v8h14v-8h1V7Zm-8 0H9.8A1.4 1.4 0 1 1 12 5.4V7Zm2.2 0H12V5.4A1.4 1.4 0 1 1 14.2 7Z"/></svg>
             </span>
             <span class="category-btn-label">Limited</span>
+            <span class="category-btn-meta">Stok spesial</span>
           </button>
           <button class="category-btn category-rare" data-category="rare" onclick="filterProductsByCategory('rare')">
             <span class="category-btn-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M12 2 4 8l8 14 8-14-8-6Zm0 3 3 3H9l3-3Zm-4.8 5h9.6L12 18.2 7.2 10Z"/></svg>
             </span>
             <span class="category-btn-label">Rare</span>
+            <span class="category-btn-meta">Item favorit</span>
           </button>
           <button class="category-btn category-jkt48" data-category="jkt48" onclick="filterProductsByCategory('jkt48')">
             <span class="category-btn-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M12 3.5 14.5 9l6 .7-4.4 4.1 1.1 5.9L12 16.8l-5.2 2.9 1.1-5.9-4.4-4.1 6-.7L12 3.5Z"/></svg>
             </span>
             <span class="category-btn-label">JKT48</span>
+            <span class="category-btn-meta">PM member 8K</span>
           </button>
         </div>
       </div>
@@ -130,6 +141,27 @@
 
   <footer id="footer"></footer>
   <button id="scroll-to-top" title="Kembali ke atas">UP</button>
+  <button class="floating-review-btn" id="floating-review-btn" type="button" aria-label="Tulis ulasan">★</button>
+  <div class="floating-review-panel" id="floating-review-panel" aria-hidden="true">
+    <form class="floating-review-form" id="home-review-form">
+      <div class="review-form-head">
+        <strong>Tulis Ulasan</strong>
+        <button type="button" id="close-review-panel" aria-label="Tutup">×</button>
+      </div>
+      <input id="home-review-name" type="text" maxlength="32" placeholder="Nama kamu">
+      <select id="home-review-category" aria-label="Kategori ulasan">
+        <option>Private Message JKT48</option>
+        <option>PM Member JKT48 Access</option>
+        <option>Private Message via WhatsApp</option>
+        <option>PM JKT48 8K</option>
+        <option>Promo PM Gratis</option>
+        <option>Event Gacha PM JKT48</option>
+      </select>
+      <textarea id="home-review-message" maxlength="180" placeholder="Tulis komentar singkat..."></textarea>
+      <button type="submit">Kirim Ulasan</button>
+      <a href="pages/ulasan.html">Lihat halaman ulasan</a>
+    </form>
+  </div>
 
   <script defer src="js/sidebar.js"></script>
   <script defer src="js/footer.js"></script>
@@ -138,6 +170,7 @@
   <script defer src="js/product.js"></script>
   <script defer src="js/page-transition.js"></script>
   <script defer src="js/category-filter.js"></script>
+  <script defer src="js/home-reviews.js"></script>
   <script defer src="js/toast.js"></script>
   <script defer src="js/lazy-load.js"></script>
   <script defer src="js/smooth-scroll.js"></script>

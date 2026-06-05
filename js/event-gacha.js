@@ -493,12 +493,10 @@ function renderPackIdle() {
 
   result.innerHTML = `
     <div class="gacha-pack is-sealed ${cooldownRemaining > 0 ? 'is-cooldown' : ''}">
-      <div class="pack-grip pack-grip-left"></div>
-      <div class="pack-grip pack-grip-right"></div>
+      <img class="pack-image" src="../assets/img/gacha-booster-pack.png" alt="JKT48 booster pack">
       <div class="pack-plastic-glare"></div>
       <div class="pack-card-stack stack-1"></div>
       <div class="pack-card-stack stack-2"></div>
-      <div class="pack-top"></div>
       <div class="pack-body">
         <span>${cooldownRemaining > 0 ? 'COOLDOWN' : state.activePack ? `PACK #${state.activePack}` : 'PILIH PACK'}</span>
         <strong>${cooldownRemaining > 0 ? 'TUNGGU SEBENTAR' : 'JKT48 PM PACK'}</strong>
@@ -1025,16 +1023,10 @@ function openPackAnimation() {
 
   result.innerHTML = `
     <div class="gacha-pack is-opening">
-      <div class="pack-tear"></div>
-      <div class="pack-shred shred-1"></div>
-      <div class="pack-shred shred-2"></div>
-      <div class="pack-shred shred-3"></div>
-      <div class="pack-grip pack-grip-left"></div>
-      <div class="pack-grip pack-grip-right"></div>
+      <img class="pack-image" src="../assets/img/gacha-booster-pack.png" alt="JKT48 booster pack">
       <div class="pack-plastic-glare"></div>
       <div class="pack-card-stack stack-1"></div>
       <div class="pack-card-stack stack-2"></div>
-      <div class="pack-top"></div>
       <div class="pack-body">
         <span>OPENING</span>
         <strong>JKT48 PM PACK</strong>

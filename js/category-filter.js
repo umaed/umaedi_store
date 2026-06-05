@@ -49,9 +49,9 @@ function displayProductsByCategory(category) {
   if (category === 'all') {
     const rareProducts = products.filter(p => p.category === 'rare');
     const limitedProducts = products.filter(p => p.category === 'limited');
-    const presetProducts = products.filter(p => p.category === 'preset');
+    const digitalProducts = products.filter(p => p.category === 'preset');
     const fashionProducts = products.filter(p => p.category === 'fashion');
-    productsToDisplay = [...rareProducts, ...limitedProducts, ...presetProducts, ...fashionProducts];
+    productsToDisplay = [...rareProducts, ...limitedProducts, ...digitalProducts, ...fashionProducts];
   } else if (category === 'jkt48') {
     productsToDisplay = products.filter(p =>
       p.category === 'rare' ||

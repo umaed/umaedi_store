@@ -29,12 +29,12 @@ const products = [
   },
   {
     id: 'limited-hoodie',
-    name: 'UMADIGI Signature Hoodie',
+    name: 'UMADIGI VALERIE SET',
     price: 189000,
     originalPrice: 260000,
-    img: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=700&q=80',
+    img: getAssetPath('assets/img/umadigi-valerie-set.png'),
     category: 'limited',
-    tag: 'FLASH',
+    tag: 'NEW ARRIVAL',
     tagClass: 'tag-limited',
     selectType: 'cart',
     rating: 4.7,
@@ -127,13 +127,39 @@ const products = [
     selectType: 'cart',
     rating: 4.9,
     sold: 276
+  },
+  {
+    id: 'digital-jj-alight-motion',
+    name: 'Preset JJ Alight Motion',
+    price: 25000,
+    originalPrice: 55000,
+    img: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=700&q=80',
+    category: 'preset',
+    tag: 'DIGITAL',
+    tagClass: 'tag-limited',
+    selectType: 'cart',
+    rating: 4.9,
+    sold: 318
+  },
+  {
+    id: 'digital-ai-photo-edit',
+    name: 'Jasa Edit Foto AI',
+    price: 15000,
+    originalPrice: 35000,
+    img: 'https://images.unsplash.com/photo-1682685797828-d3b2561deef4?auto=format&fit=crop&w=700&q=80',
+    category: 'preset',
+    tag: 'AI EDIT',
+    tagClass: 'tag-rare',
+    selectType: 'cart',
+    rating: 4.8,
+    sold: 246
   }
 ];
 
 const localProductFallbacks = {
   'rare-pm-jkt48': getAssetPath('assets/img/pmjkt48.png'),
   'limited-creator-bundle': getAssetPath('assets/img/product-creator-bundle.png'),
-  'limited-hoodie': getAssetPath('assets/img/product-hoodie.png'),
+  'limited-hoodie': getAssetPath('assets/img/umadigi-valerie-set.png'),
   'fashion-1': getAssetPath('assets/img/product-jacket.png'),
   'fashion-2': getAssetPath('assets/img/product-pants.png'),
   'fashion-3': getAssetPath('assets/img/product-sneakers.png'),
@@ -141,7 +167,9 @@ const localProductFallbacks = {
   'preset-1': getAssetPath('assets/img/product-preset-warm.png'),
   'preset-2': getAssetPath('assets/img/product-cinematic.png'),
   'preset-3': getAssetPath('assets/img/product-color-grade.png'),
-  'preset-4': getAssetPath('assets/img/product-lut.png')
+  'preset-4': getAssetPath('assets/img/product-lut.png'),
+  'digital-jj-alight-motion': getAssetPath('assets/img/product-cinematic.png'),
+  'digital-ai-photo-edit': getAssetPath('assets/img/product-color-grade.png')
 };
 
 function getProductDetailUrl(productId) {

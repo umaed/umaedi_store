@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengaturan · UMAEDI STORE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/animation.css">
+  <link rel="stylesheet" href="../css/tag.css">
+  <link rel="stylesheet" href="../css/product.css">
+  <style>
+    .settings-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .settings-section {
+      background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+      padding: 2em;
+      border-radius: 16px;
+      border-left: 4px solid #bfa14a;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      margin: 2em 0;
+      animation: slideUpLuxury 0.6s ease-out;
+    }
+    .settings-section h2 {
+      font-size: 1.6rem;
+      color: #1a1a1a;
+      margin: 0 0 1.5em 0;
+      font-weight: 800;
+    }
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2em;
+      border-bottom: 1px solid #eee;
+      transition: all 0.3s ease;
+    }
+    .settings-item:last-child {
+      border-bottom: none;
+    }
+    .settings-item:hover {
+      background: rgba(191, 161, 74, 0.05);
+      border-radius: 8px;
+      padding: 1.2em 1.5em;
+    }
+    .setting-info h3 {
+      margin: 0 0 0.3em 0;
+      color: #1a1a1a;
+      font-size: 1.1rem;
+    }
+    .setting-info p {
+      margin: 0;
+      color: #777;
+      font-size: 0.95rem;
+    }
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 26px;
+      background: #ddd;
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .toggle-switch.active {
+      background: #bfa14a;
+    }
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: left 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .toggle-switch.active::after {
+      left: 26px;
+    }
+    .settings-button {
+      background: linear-gradient(135deg, #bfa14a 0%, #d4af37 100%);
+      color: #1a1a1a;
+      padding: 0.8em 1.8em;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(191, 161, 74, 0.25);
+    }
+    .settings-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(191, 161, 74, 0.35);
+    }
+    .settings-button.danger {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+    }
+    .settings-button.danger:hover {
+      box-shadow: 0 8px 20px rgba(255, 107, 107, 0.35);
+    }
+  </style>
+</head>
+<body>
+  <div id="loader" class="loader"></div>
+  <nav id="navbar"></nav>
+  <main id="main-content">
+    <div class="settings-container">
+      <h1 class="page-title">⚙️ Pengaturan</h1>
+      
+      <section class="settings-section">
+        <h2>Notifikasi</h2>
+        
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Email Notifikasi</h3>
+            <p>Terima notifikasi tentang pesanan dan promo via email</p>
+          </div>
+          <div class="toggle-switch active" id="emailNotif"></div>
+        </div>
+
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>SMS Notifikasi</h3>
+            <p>Terima notifikasi pengiriman via SMS</p>
+          </div>
+          <div class="toggle-switch active" id="smsNotif"></div>
+        </div>
+
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Push Notification</h3>
+            <p>Aktifkan notifikasi push untuk update real-time</p>
+          </div>
+          <div class="toggle-switch" id="pushNotif"></div>
+        </div>
+
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Promosi & Diskon</h3>
+            <p>Terima update tentang sale dan penawaran spesial</p>
+          </div>
+          <div class="toggle-switch active" id="promoNotif"></div>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <h2>Preferensi Tampilan</h2>
+        
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Mode Gelap</h3>
+            <p>Gunakan tema gelap untuk membaca yang lebih nyaman di malam hari</p>
+          </div>
+          <div class="toggle-switch" id="darkMode"></div>
+        </div>
+
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Tampilkan Harga Lengkap</h3>
+            <p>Tampilkan termasuk atau tidak termasuk pajak</p>
+          </div>
+          <div class="toggle-switch active" id="priceDisplay"></div>
+        </div>
+
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Animated Elements</h3>
+            <p>Tampilkan animasi dan efek visual</p>
+          </div>
+          <div class="toggle-switch active" id="animations"></div>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <h2>Privasi & Keamanan</h2>
+        
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Riwayat Pencarian</h3>
+            <p>Simpan riwayat pencarian Anda</p>
+          </div>
+          <div class="toggle-switch active" id="searchHistory"></div>
+        </div>
+
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Saran Produk Personalized</h3>
+            <p>Dapatkan rekomendasi produk berdasarkan history Anda</p>
+          </div>
+          <div class="toggle-switch active" id="personalized"></div>
+        </div>
+
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Data Pribadi</h3>
+            <p>Kelola data pribadi dan informasi akun Anda</p>
+          </div>
+          <button class="settings-button">Kelola</button>
+        </div>
+
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Keamanan Akun</h3>
+            <p>Ubah password dan pengaturan keamanan lainnya</p>
+          </div>
+          <button class="settings-button">Ubah Password</button>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <h2>Data & Penyimpanan</h2>
+        
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Hapus Cache</h3>
+            <p>Bersihkan cache untuk mempercepat aplikasi</p>
+          </div>
+          <button class="settings-button">Hapus</button>
+        </div>
+
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Download Data</h3>
+            <p>Download semua data pribadi Anda dalam format ZIP</p>
+          </div>
+          <button class="settings-button">Download</button>
+        </div>
+
+        <div class="settings-item">
+          <div class="setting-info">
+            <h3>Hapus Akun</h3>
+            <p>Hapus akun Anda secara permanen (tidak bisa dikembalikan)</p>
+          </div>
+          <button class="settings-button danger">Hapus Akun</button>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer id="footer"></footer>
+  
+  <script defer src="../js/sidebar.js"></script>
+  <script defer src="../js/footer.js"></script>
+  <script defer src="../js/animation.js"></script>
+  <script defer src="../js/theme.js"></script>
+  <script defer src="../js/page-transition.js"></script>
+  <script>
+    // Toggle switches functionality
+    document.querySelectorAll('.toggle-switch').forEach(toggle => {
+      toggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const settingName = this.id;
+        const isActive = this.classList.contains('active');
+        localStorage.setItem(`setting_${settingName}`, isActive);
+      });
+    });
+
+    // Load saved settings
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.toggle-switch').forEach(toggle => {
+        const settingName = toggle.id;
+        const saved = localStorage.getItem(`setting_${settingName}`);
+        if (saved === 'false') {
+          toggle.classList.remove('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

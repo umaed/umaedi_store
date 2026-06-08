@@ -45,6 +45,31 @@
   transform: scale(1.04);
 }
 
+.product-card.is-unavailable {
+  border-color: #fecaca;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 241, 242, 0.72));
+}
+
+.product-card.is-unavailable .product-img {
+  filter: grayscale(0.35) brightness(0.88);
+}
+
+.product-card.is-unavailable::after {
+  content: "SEDANG KENDALA";
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  padding: 6px 9px;
+  border-radius: 999px;
+  color: #fff;
+  background: #be123c;
+  font-size: 0.68rem;
+  font-weight: 900;
+  box-shadow: 0 8px 16px rgba(190, 18, 60, 0.22);
+}
+
 .discount-badge {
   position: absolute;
   top: 10px;
@@ -166,6 +191,24 @@
 .product-btn:hover {
   background: #c7381c;
   transform: translateY(-1px);
+}
+
+.product-btn:disabled {
+  color: #fff;
+  background: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.product-notice {
+  margin: 9px 0 0;
+  padding: 9px;
+  border-radius: 8px;
+  color: #991b1b;
+  background: #fee2e2;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.45;
 }
 
 .product-btn.secondary {

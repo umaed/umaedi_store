@@ -8,6 +8,59 @@
   margin: 10px 0 12px;
 }
 
+.pm-attention {
+  margin: 12px 0 14px;
+  padding: 16px;
+  border: 1px solid #fecaca;
+  border-radius: 18px;
+  color: #7f1d1d;
+  background:
+    linear-gradient(135deg, rgba(254, 226, 226, 0.96), rgba(255, 247, 237, 0.94)),
+    radial-gradient(circle at 100% 0, rgba(238, 77, 45, 0.2), transparent 34%);
+  box-shadow: 0 14px 30px rgba(190, 18, 60, 0.12);
+}
+
+.pm-attention-badge {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: #fff;
+  background: #be123c;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.pm-attention h1 {
+  margin: 10px 0 8px;
+  color: #111827;
+  font-size: 1.22rem;
+  line-height: 1.2;
+}
+
+.pm-attention p {
+  margin: 0 0 9px;
+  color: #7f1d1d;
+  font-size: 0.92rem;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.pm-attention a {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: #fff;
+  background: #111827;
+  font-size: 0.84rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
 .pm-info-trigger {
   width: 100%;
   min-height: 62px;
@@ -481,6 +534,13 @@
   color: #fff;
   background: linear-gradient(135deg, #64748b, #334155);
   box-shadow: 0 10px 20px rgba(51, 65, 85, 0.18);
+}
+
+.member-add-btn.is-closed,
+.member-add-btn.is-closed:disabled {
+  color: #fff;
+  background: linear-gradient(135deg, #991b1b, #64748b);
+  box-shadow: 0 10px 20px rgba(153, 27, 27, 0.18);
 }
 
 @keyframes vipBorderMove {

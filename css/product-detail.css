@@ -99,6 +99,18 @@
   line-height: 1.7;
 }
 
+.detail-alert {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #fecaca;
+  border-radius: 14px;
+  color: #991b1b;
+  background: #fee2e2;
+  font-size: 0.9rem;
+  font-weight: 850;
+  line-height: 1.5;
+}
+
 .detail-benefits {
   display: grid;
   gap: 8px;
@@ -157,6 +169,13 @@
   color: #fff;
   background: #ee4d2d;
   box-shadow: 0 14px 26px rgba(238, 77, 45, 0.25);
+}
+
+.detail-action-btn:disabled {
+  color: #fff;
+  background: #94a3b8;
+  box-shadow: none;
+  cursor: not-allowed;
 }
 
 .detail-empty {

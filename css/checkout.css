@@ -185,6 +185,18 @@
   font-weight: 900;
 }
 
+.checkout-warning {
+  margin: 0 0 12px;
+  padding: 12px;
+  border: 1px solid #fecaca;
+  border-radius: 14px;
+  color: #991b1b;
+  background: #fee2e2;
+  font-size: 0.88rem;
+  font-weight: 850;
+  line-height: 1.5;
+}
+
 .summary-row,
 .checkout-item-row {
   display: flex;

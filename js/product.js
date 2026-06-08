@@ -7,10 +7,12 @@ const products = [
     price: 8000,
     img: getAssetPath('assets/img/pmjkt48.png'),
     category: 'rare',
-    tag: 'RARE',
+    tag: 'DITUTUP',
     tagClass: 'tag-rare',
     link: '../pages/pm-jkt48.html',
     selectType: 'redirect',
+    unavailable: true,
+    notice: 'Sedang ada kendala dari aplikasi resmi JKT48. Pemesanan PM JKT48 Access ditutup sementara.',
     rating: 4.9,
     sold: 428
   },
@@ -218,7 +220,7 @@ function renderProducts(sectionId, filterCategory, keyword = '') {
 
 function createProductCard(product, idx) {
   const card = document.createElement('div');
-  card.className = 'product-card';
+  card.className = `product-card ${product.unavailable ? 'is-unavailable' : ''}`;
   card.style.animation = `slideUpLuxury 0.45s ease-out ${idx * 0.04}s forwards`;
 
   const discount = product.originalPrice
@@ -244,11 +246,12 @@ function createProductCard(product, idx) {
         ${product.originalPrice ? `<span class="product-original-price">Rp${product.originalPrice.toLocaleString('id-ID')}</span>` : ''}
       </div>
       <div class="product-actions">
-        <button class="product-btn" data-id="${product.id}" data-type="${product.selectType}">
-          ${product.selectType === 'redirect' ? 'Lihat Detail' : 'Tambah'}
+        <button class="product-btn" data-id="${product.id}" data-type="${product.selectType}" ${product.unavailable ? 'disabled' : ''}>
+          ${product.unavailable ? 'Ditutup Sementara' : product.selectType === 'redirect' ? 'Lihat Detail' : 'Tambah'}
         </button>
         ${product.selectType === 'cart' ? `<button class="product-btn secondary" data-id="${product.id}" data-action="favorite">Suka</button>` : ''}
       </div>
+      ${product.unavailable ? `<p class="product-notice">${product.notice}</p>` : ''}
     </div>
   `;
 
@@ -263,6 +266,10 @@ function attachProductButtonEvents(section) {
       const action = btn.getAttribute('data-action');
       const product = products.find(p => p.id === id);
       if (!product) return;
+      if (product.unavailable) {
+        if (window.toast) window.toast.warning(product.notice || 'Produk sedang ditutup sementara.', 2600);
+        return;
+      }
 
       if (action === 'favorite') {
         handleFavorite(btn);

@@ -19,6 +19,8 @@ function isPmMember(item) {
   return item.type === 'PM Member JKT48' || item.adminFee === 3000 || String(item.id || '').startsWith('pm-');
 }
 
+const PM_CHECKOUT_CLOSED_MESSAGE = 'PM JKT48 Access sedang ditutup sementara karena ada kendala dari aplikasi resmi JKT48. Hapus item PM JKT48 dari keranjang untuk checkout produk lain.';
+
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('send-whatsapp');
   if (!btn) return;
@@ -37,6 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const pmItems = totals.grouped.filter(isPmMember);
     const productItems = totals.grouped.filter(item => !isPmMember(item));
+
+    if (pmItems.length > 0) {
+      if (window.toast) {
+        window.toast.warning(PM_CHECKOUT_CLOSED_MESSAGE, 3200);
+      } else {
+        alert(PM_CHECKOUT_CLOSED_MESSAGE);
+      }
+      return;
+    }
+
     const buyerName = getBuyerValue('buyer-name');
     const buyerPhone = getBuyerValue('buyer-phone');
     const buyerNote = getBuyerValue('buyer-note');

@@ -266,6 +266,8 @@ const regularMembers = [
 
 const membersList = [...gen14Members, ...regularMembers];
 let activeMemberCategory = 'all';
+const PM_ACCESS_CLOSED = true;
+const PM_ACCESS_CLOSED_MESSAGE = 'PM JKT48 Access sedang ditutup sementara karena ada kendala dari aplikasi resmi JKT48.';
 
 function getInitials(name) {
   return name
@@ -277,6 +279,15 @@ function getInitials(name) {
 }
 
 function addMemberToCart(memberId, button) {
+  if (PM_ACCESS_CLOSED) {
+    if (window.toast) {
+      window.toast.warning(PM_ACCESS_CLOSED_MESSAGE, 2600);
+    } else {
+      alert(PM_ACCESS_CLOSED_MESSAGE);
+    }
+    return;
+  }
+
   const member = membersList.find(item => item.id === memberId);
   if (!member) return;
 
@@ -366,10 +377,10 @@ function createMemberCard(member, idx) {
       <h3 class="member-name">${member.name}</h3>
       <p class="member-role">${member.status === 'Lulus dari JKT48' ? 'Graduate - Lulus dari JKT48' : member.nickname ? `${member.role} - ${member.nickname}` : member.role}</p>
       <div class="member-price">
-        <span>Harga akses</span>
-        <strong>Rp8.000</strong>
+        <span>${PM_ACCESS_CLOSED ? 'Status akses' : 'Harga akses'}</span>
+        <strong>${PM_ACCESS_CLOSED ? 'Ditutup sementara' : 'Rp8.000'}</strong>
       </div>
-      <button class="member-add-btn ${member.status === 'Lulus dari JKT48' ? 'is-graduate' : ''}" data-member-id="${member.id}">${member.status === 'Lulus dari JKT48' ? 'Graduate' : 'Pesan 8K'}</button>
+      <button class="member-add-btn ${member.status === 'Lulus dari JKT48' ? 'is-graduate' : ''} ${PM_ACCESS_CLOSED && member.status !== 'Lulus dari JKT48' ? 'is-closed' : ''}" data-member-id="${member.id}" ${PM_ACCESS_CLOSED && member.status !== 'Lulus dari JKT48' ? 'disabled' : ''}>${member.status === 'Lulus dari JKT48' ? 'Graduate' : PM_ACCESS_CLOSED ? 'Sedang Kendala' : 'Pesan 8K'}</button>
     </div>
   `;
   return card;

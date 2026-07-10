@@ -2,6 +2,7 @@
 
 const PAYMENT_DURATION_MS = 10 * 60 * 1000;
 const PENDING_DURATION_MS = 3 * 60 * 1000;
+const COMPLETE_DURATION_MS = 10 * 60 * 1000;
 const PAYMENT_SESSION_KEY = 'umaedi_payment_session';
 const ORDER_HISTORY_KEY = 'umaedi_order_history';
 const BUYER_KEY = 'umaedi_checkout_buyer';
@@ -41,6 +42,13 @@ function getPaymentHistory() {
 
 function savePaymentHistory(history) {
   localStorage.setItem(ORDER_HISTORY_KEY, JSON.stringify(history.slice(0, 12)));
+}
+
+function resolveOrderStatus(order, now = Date.now()) {
+  const elapsed = now - Number(order.createdAt || 0);
+  if (elapsed >= COMPLETE_DURATION_MS) return 'Selesai';
+  if (elapsed >= PENDING_DURATION_MS) return 'Diproses';
+  return 'Pending';
 }
 
 function getPaymentSession() {
@@ -168,7 +176,7 @@ function renderPaymentHistory() {
   const now = Date.now();
   const history = getPaymentHistory().map(order => ({
     ...order,
-    status: now - order.createdAt >= PENDING_DURATION_MS ? 'Diproses' : 'Pending'
+    status: resolveOrderStatus(order, now)
   }));
   savePaymentHistory(history);
 
@@ -182,7 +190,7 @@ function renderPaymentHistory() {
       <strong>${order.id}</strong>
       <span>${order.itemCount} item - ${paymentRupiah(order.total)}</span>
       <small>${new Date(order.createdAt).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })}</small>
-      <div class="history-status ${order.status === 'Diproses' ? 'done' : ''}">${order.status}</div>
+      <div class="history-status ${order.status === 'Selesai' ? 'done' : order.status === 'Diproses' ? 'process' : ''}">${order.status}</div>
     </article>
   `).join('');
 }

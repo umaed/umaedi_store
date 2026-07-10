@@ -186,6 +186,12 @@ document.addEventListener('DOMContentLoaded', () => {
           </span>
           <span class="label">Bantuan</span>
         </a>
+        <a href="/pages/riwayat.html" class="sidebar-link">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5V4Zm3 4h8v2H8V8Zm0 4h8v2H8v-2Zm0 4h5v2H8v-2Z"/></svg>
+          </span>
+          <span class="label">Riwayat</span>
+        </a>
         <a href="/pages/kontak.html" class="sidebar-link">
           <span class="icon">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H8l-3 3V5Z"/></svg>

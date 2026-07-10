@@ -253,6 +253,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const file = proofInput.files?.[0];
     if (!file || !confirmButton) return;
 
+    const allowedTypes = ['image/png', 'image/jpeg'];
+    const allowedExtensions = /\.(png|jpe?g)$/i;
+    if (!allowedTypes.includes(file.type) || !allowedExtensions.test(file.name)) {
+      proofInput.value = '';
+      proofName.textContent = 'File ditolak. Upload bukti harus format PNG atau JPG.';
+      confirmButton.disabled = true;
+      confirmButton.classList.remove('is-ready');
+      confirmButton.textContent = 'Pesan';
+      if (window.toast) window.toast.warning('Bukti pembayaran harus PNG atau JPG.', 2400);
+      return;
+    }
+
     proofName.textContent = `Bukti dipilih: ${file.name}`;
     confirmButton.disabled = false;
     confirmButton.classList.add('is-ready');

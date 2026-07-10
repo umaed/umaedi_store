@@ -7,6 +7,7 @@ function getProductDetailId() {
 function detailDescription(product) {
   const descriptions = {
     'rare-pm-jkt48': 'Akses PM Member JKT48 resmi dari katalog UMADIGI STORE. Pilih member favorit dan lanjutkan pemesanan lewat halaman khusus PM.',
+    'digital-instagram-followers': 'Produk Followers Instagram sedang disiapkan dan akan segera hadir di kategori Digital UMADIGI STORE.',
     'limited-creator-bundle': 'Paket starter untuk kreator digital berisi kebutuhan editing, aset promosi, dan workflow konten yang siap dipakai.',
     'limited-hoodie': 'Hoodie signature UMADIGI dengan tampilan clean streetwear, cocok untuk daily outfit dan koleksi limited.',
     'fashion-1': 'Jacket techwear ringan untuk tampilan modern, rapi, dan mudah dipadukan dengan outfit harian.',
@@ -58,7 +59,7 @@ function renderProductDetail() {
           <span>Fast response</span>
         </div>
         <div class="detail-price-box">
-          <span class="detail-price">Rp${product.price.toLocaleString('id-ID')}</span>
+          <span class="detail-price">${product.displayPrice || `Rp${product.price.toLocaleString('id-ID')}`}</span>
           ${product.originalPrice ? `<span class="detail-original">Rp${product.originalPrice.toLocaleString('id-ID')}</span>` : ''}
         </div>
         <p class="detail-description">${detailDescription(product)}</p>
@@ -72,7 +73,7 @@ function renderProductDetail() {
     </section>
     <div class="detail-actions">
       <button class="detail-action-btn secondary" id="detail-back">Kembali</button>
-      <button class="detail-action-btn primary" id="detail-add" ${product.unavailable ? 'disabled' : ''}>${product.unavailable ? 'Ditutup Sementara' : product.selectType === 'redirect' ? 'Pilih Member' : 'Tambah Keranjang'}</button>
+      <button class="detail-action-btn primary" id="detail-add" ${product.unavailable ? 'disabled' : ''}>${product.unavailable ? product.unavailableLabel || 'Ditutup Sementara' : product.selectType === 'redirect' ? 'Pilih Member' : 'Tambah Keranjang'}</button>
     </div>
   `;
 

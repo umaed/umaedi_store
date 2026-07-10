@@ -26,12 +26,29 @@ const products = [
     selectType: 'cart',
     rating: 4.8,
     sold: 246
+  },
+  {
+    id: 'digital-instagram-followers',
+    name: 'Followers Instagram',
+    price: 0,
+    displayPrice: '--',
+    img: getAssetPath('assets/img/product-color-grade.png'),
+    category: 'preset',
+    tag: 'COMING SOON',
+    tagClass: 'tag-coming-soon',
+    selectType: 'cart',
+    unavailable: true,
+    unavailableLabel: 'Akan Segera Hadir',
+    notice: 'Produk Followers Instagram masih tertutup dan akan segera hadir.',
+    rating: 4.9,
+    sold: 0
   }
 ];
 
 const localProductFallbacks = {
   'rare-pm-jkt48': getAssetPath('assets/img/pmjkt48.png'),
-  'digital-ai-photo-edit': getAssetPath('assets/img/product-color-grade.png')
+  'digital-ai-photo-edit': getAssetPath('assets/img/product-color-grade.png'),
+  'digital-instagram-followers': getAssetPath('assets/img/product-color-grade.png')
 };
 
 function getProductDetailUrl(productId) {
@@ -80,7 +97,7 @@ function renderProducts(sectionId, filterCategory, keyword = '') {
 
 function createProductCard(product, idx) {
   const card = document.createElement('div');
-  card.className = `product-card ${product.unavailable ? 'is-unavailable' : ''}`;
+  card.className = `product-card ${product.unavailable ? 'is-unavailable' : ''} ${product.unavailableLabel ? 'is-coming-soon' : ''}`;
   card.style.animation = `slideUpLuxury 0.45s ease-out ${idx * 0.04}s forwards`;
 
   const discount = product.originalPrice
@@ -102,14 +119,14 @@ function createProductCard(product, idx) {
         <span>Terjual ${product.sold || 50}</span>
       </div>
       <div class="product-price-section">
-        <span class="product-price">Rp${product.price.toLocaleString('id-ID')}</span>
+        <span class="product-price">${product.displayPrice || `Rp${product.price.toLocaleString('id-ID')}`}</span>
         ${product.originalPrice ? `<span class="product-original-price">Rp${product.originalPrice.toLocaleString('id-ID')}</span>` : ''}
       </div>
       <div class="product-actions">
-        <button class="product-btn" data-id="${product.id}" data-type="${product.selectType}" ${product.unavailable ? 'disabled' : ''}>
-          ${product.unavailable ? 'Ditutup Sementara' : product.selectType === 'redirect' ? 'Lihat Detail' : 'Tambah'}
+        <button class="product-btn ${product.unavailableLabel ? 'has-clock' : ''}" data-id="${product.id}" data-type="${product.selectType}" ${product.unavailable ? 'disabled' : ''}>
+          ${product.unavailable ? product.unavailableLabel || 'Ditutup Sementara' : product.selectType === 'redirect' ? 'Lihat Detail' : 'Tambah'}
         </button>
-        ${product.selectType === 'cart' ? `<button class="product-btn secondary" data-id="${product.id}" data-action="favorite">Suka</button>` : ''}
+        ${product.selectType === 'cart' && !product.unavailable ? `<button class="product-btn secondary" data-id="${product.id}" data-action="favorite">Suka</button>` : ''}
       </div>
       ${product.unavailable ? `<p class="product-notice">${product.notice}</p>` : ''}
     </div>

@@ -1,0 +1,97 @@
+/* Search styles for PM JKT48 */
+
+.search-container {
+  position: sticky;
+  top: 116px;
+  z-index: 8;
+  margin: 14px 0 18px;
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  border: 2px solid #ee4d2d;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.member-search {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  padding: 0 74px 0 14px;
+  color: #111827;
+  background: transparent;
+  font-size: 0.95rem;
+}
+
+.member-search::placeholder {
+  color: #94a3b8;
+}
+
+.search-icon {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  bottom: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 13px;
+  border-radius: 10px;
+  color: #fff;
+  background: #ee4d2d;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+#search-results {
+  display: none;
+}
+
+#search-results.show {
+  display: grid;
+}
+
+.search-header {
+  grid-column: 1 / -1;
+  padding: 12px;
+  border-radius: 12px;
+  color: #64748b;
+  background: #f8fafc;
+  font-size: 0.9rem;
+}
+
+.search-header p {
+  margin: 0;
+}
+
+.search-header strong,
+.search-empty strong {
+  color: #ee4d2d;
+}
+
+.search-empty {
+  grid-column: 1 / -1;
+  padding: 32px 16px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  color: #64748b;
+  background: #f8fafc;
+  text-align: center;
+}
+
+.search-empty p {
+  margin: 0 0 6px;
+}
+
+@media (min-width: 720px) {
+  .search-container {
+    top: 84px;
+  }
+}

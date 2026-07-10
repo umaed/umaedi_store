@@ -1,0 +1,255 @@
+/* navbar.css - UMAEDI STORE navigation styles */
+#navbar {
+  width: 100%;
+  background: linear-gradient(135deg, #e3f2fd 0%, #f0f4ff 100%);
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 15px,
+      rgba(13, 110, 253, 0.06) 15px,
+      rgba(13, 110, 253, 0.06) 30px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 15px,
+      rgba(30, 144, 255, 0.08) 15px,
+      rgba(30, 144, 255, 0.08) 30px
+    ),
+    linear-gradient(135deg, #e3f2fd 0%, #f0f4ff 100%);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(30, 144, 255, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2em 2em;
+  min-height: 75px;
+  transition: all 0.3s ease, background 0.3s, box-shadow 0.3s;
+  border-bottom: 1px solid rgba(30, 144, 255, 0.2);
+  border-left: 3px solid #ff4757;
+  border-right: 3px solid #ff4757;
+  border-radius: 0 0 18px 18px;
+  margin: 0;
+}
+
+.navbar-logo {
+  font-size: 2rem;
+  font-weight: 400;
+  font-family: 'Audiowide', cursive;
+  color: #1a1a1a;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: 2em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 
+    0 0 12px rgba(30, 144, 255, 0.7),
+    0 0 24px rgba(13, 110, 253, 0.5),
+    0 0 36px rgba(30, 144, 255, 0.3),
+    2px 2px 4px rgba(0, 0, 0, 0.1);
+  filter: drop-shadow(0 0 10px rgba(30, 144, 255, 0.6));
+}
+
+.navbar-logo:hover {
+  transform: scale(1.08);
+  text-shadow: 
+    0 0 18px rgba(30, 144, 255, 0.9),
+    0 0 30px rgba(13, 110, 253, 0.7),
+    0 0 42px rgba(30, 144, 255, 0.4),
+    2px 2px 4px rgba(0, 0, 0, 0.1);
+  filter: drop-shadow(0 0 15px rgba(30, 144, 255, 0.8));
+}
+
+.navbar-logo .gold {
+  color: #1e90ff;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  flex-grow: 1;
+  overflow-x: auto;
+  padding: 0 0.5em;
+}
+
+.navbar-link {
+  color: #666;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 0.7em 1.2em;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  position: relative;
+}
+
+.navbar-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #bfa14a, #fffbe6);
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.navbar-link:hover {
+  color: #bfa14a;
+  background: rgba(191, 161, 74, 0.08);
+  transform: translateY(-2px);
+}
+
+.navbar-link:hover::after {
+  width: 100%;
+}
+
+.navbar-link.active {
+  color: #bfa14a;
+  background: rgba(191, 161, 74, 0.08);
+}
+
+.navbar-link.active::after {
+  width: 100%;
+}
+
+.navbar-cart {
+  position: relative;
+  margin-left: 1em;
+  color: #1a1a1a;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.7em 0.8em;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(147, 112, 219, 0.25) 0%, rgba(186, 85, 211, 0.2) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.navbar-cart:hover {
+  color: #a855f7;
+  background: linear-gradient(135deg, rgba(147, 112, 219, 0.4) 0%, rgba(186, 85, 211, 0.35) 100%);
+  transform: scale(1.12) rotate(5deg);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.navbar-cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #e53935;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 50%;
+  padding: 0.2em 0.5em;
+  min-width: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  animation: pulse 2s infinite;
+}
+
+.navbar-cart.has-items {
+  animation: cartBounce 0.6s ease-out;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #fff;
+  border: 2px solid #f59e0b;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.navbar-cart.has-items:hover {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #fff;
+  transform: scale(1.15) rotate(-5deg);
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+/* Animations */
+@keyframes cartBounce {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 0 0 0 rgba(229, 57, 53, 0.7);
+  }
+  50% {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 0 0 8px rgba(229, 57, 53, 0);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  #navbar {
+    padding: 0.9em 1.2em;
+    min-height: 68px;
+  }
+
+  .navbar-logo {
+    font-size: 1.3rem;
+    margin-right: 1em;
+  }
+
+  .navbar-links {
+    gap: 0.2em;
+  }
+
+  .navbar-link {
+    font-size: 0.9rem;
+    padding: 0.6em 0.9em;
+  }
+
+  .navbar-cart {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #navbar {
+    padding: 0.7em 0.9em;
+    gap: 0.3em;
+    min-height: 62px;
+  }
+
+  .navbar-logo {
+    font-size: 1.1rem;
+    margin-right: 0.6em;
+  }
+
+  .navbar-links {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  .navbar-link {
+    font-size: 0.85rem;
+    padding: 0.5em 0.7em;
+  }
+
+  .navbar-cart {
+    font-size: 1.4rem;
+    margin-left: 0.5em;
+  }
+}

@@ -499,6 +499,100 @@ input {
   white-space: nowrap;
 }
 
+.home-order-check {
+  margin: 18px 0;
+  padding: 16px;
+  border: 1px solid rgba(20, 184, 166, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 253, 250, 0.9));
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.055);
+}
+
+.home-order-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.home-order-head h2 {
+  margin: 3px 0 0;
+  color: #111827;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.home-order-head button {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: #0f766e;
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.home-order-status {
+  display: grid;
+  gap: 9px;
+}
+
+.home-order-empty,
+.home-order-item {
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.home-order-empty {
+  color: #64748b;
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.home-order-item {
+  display: grid;
+  gap: 6px;
+}
+
+.home-order-item strong {
+  color: #111827;
+  font-size: 0.92rem;
+}
+
+.home-order-item span,
+.home-order-item small {
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.home-order-badge {
+  width: fit-content;
+  padding: 5px 8px;
+  border-radius: 999px;
+  color: #92400e;
+  background: #fef3c7;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.home-order-badge.process {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.home-order-badge.done {
+  color: #0f766e;
+  background: #ccfbf1;
+}
+
 .home-review-shell {
   margin: 18px 0;
   padding: 20px;

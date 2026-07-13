@@ -19,11 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function showUmadigiSplash() {
+  const savedLogo = localStorage.getItem('umadigi_brand_logo');
+  const logoSrc = savedLogo || '/assets/img/brand.png' || '/assets/img/umadigi-logo.svg';
   const splash = document.createElement('div');
   splash.className = 'umadigi-splash';
   splash.innerHTML = `
     <div class="splash-card">
-      <img src="/assets/img/umadigi-logo.svg" alt="UMADIGI STORE">
+      <img src="${logoSrc}" alt="UMADIGI STORE">
       <strong>UMADIGI STORE</strong>
       <span>Smart shopping for digital creators</span>
     </div>

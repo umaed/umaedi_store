@@ -127,6 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const navbar = document.getElementById('navbar');
   if (!navbar) return;
   const savedProfile = getUmadigiProfile();
+  const savedBrandLogo = localStorage.getItem('umadigi_brand_logo');
+  const brandLogoSrc = savedBrandLogo || '/assets/img/brand.png' || '/assets/img/umadigi-logo.svg';
 
   navbar.innerHTML = `
     <header class="umaedi-header">
@@ -138,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </span>
       </button>
       <a class="header-logo" href="/index.html">
-        <img src="/assets/img/umadigi-logo.svg" alt="" class="header-logo-mark">
+        <img src="${brandLogoSrc}" alt="Logo" class="header-logo-mark">
         <span class="header-logo-text">UMADIGI <strong>STORE</strong></span>
       </a>
       <form class="header-search" role="search">
@@ -165,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <aside class="sidebar" id="sidebar" aria-label="Menu samping">
       <div class="sidebar-header">
         <div class="sidebar-brand">
-          <img src="/assets/img/umadigi-logo.svg" alt="">
+          <img src="${brandLogoSrc}" alt="Logo">
           <div>
             <h3>UMADIGI STORE</h3>
             <span>Menu utama</span>
@@ -240,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <a href="/pages/preset.html" data-nav-path="/pages/preset.html">
         <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4V5Zm3 3v8h10V8H7Z"/></svg>
-        <span>Preset</span>
+        <span>Digital</span>
       </a>
       <a href="/pages/pm-jkt48.html" data-nav-path="/pages/pm-jkt48.html" class="nav-feature">
         <svg viewBox="0 0 24 24"><path d="M12 3.5 14.5 9l6 .7-4.4 4.1 1.1 5.9L12 16.8l-5.2 2.9 1.1-5.9-4.4-4.1 6-.7L12 3.5Z"/></svg>

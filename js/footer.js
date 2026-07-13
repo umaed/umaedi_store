@@ -3,6 +3,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   const footer = document.getElementById('footer');
   if (!footer) return;
+  // Only render footer on the main index page (root or index.html)
+  const pathname = window.location.pathname || '';
+  const isIndex = pathname === '/' || pathname.endsWith('index.html');
+  if (!isIndex) {
+    // remove footer element so it won't appear on other pages
+    footer.remove();
+    return;
+  }
 
   footer.innerHTML = `
     <div class="footer-content">

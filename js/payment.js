@@ -22,6 +22,43 @@ function paymentIsPmMember(item) {
   return item.type === 'PM Member JKT48' || item.adminFee === 3000 || String(item.id || '').startsWith('pm-');
 }
 
+// Speak a short Indonesian message using the Web Speech API.
+function speakText(text) {
+  if (!('speechSynthesis' in window)) return;
+  try {
+    const speakNow = () => {
+      const voices = window.speechSynthesis.getVoices() || [];
+      const femaleHint = /female|woman|wanita|perempuan|anna|nina|sara|amelia|lina|suzanne|susan|zira|aria/i;
+      const indHint = /(^id\b)|\bid(-|_)?|indonesia|bahasa/i;
+
+      // Prefer Indonesian voices first, then prefer female-sounding names.
+      const indVoices = voices.filter(v => indHint.test(v.lang || v.name || v.voiceURI || ''));
+      let selected = (indVoices.find(v => femaleHint.test(v.name || v.voiceURI || v.lang)) || indVoices[0]) || (voices.find(v => femaleHint.test(v.name || v.voiceURI || v.lang)) || voices[0]);
+
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'id-ID';
+      // Slightly slower and slightly higher pitch for a friendly, "cool" female voice
+      utter.rate = 0.95;
+      utter.pitch = 1.05;
+      utter.volume = 1;
+      if (selected) utter.voice = selected;
+
+      window.speechSynthesis.cancel();
+      setTimeout(() => window.speechSynthesis.speak(utter), 150);
+    };
+
+    // If voices are not yet loaded, wait for the event then speak.
+    const loaded = (window.speechSynthesis.getVoices() || []).length > 0;
+    if (!loaded) {
+      window.speechSynthesis.addEventListener('voiceschanged', () => speakNow(), { once: true });
+    } else {
+      speakNow();
+    }
+  } catch (err) {
+    console.warn('Speech synthesis failed', err);
+  }
+}
+
 function getPaymentBuyer() {
   try {
     return JSON.parse(localStorage.getItem(BUYER_KEY) || '{}');
@@ -224,6 +261,13 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelPayment('Tidak ada pesanan aktif. Silakan kembali belanja dan checkout ulang.');
     renderPaymentHistory();
     return;
+  }
+
+  // Speak instructions on page load (Indonesian)
+  try {
+    speakText('scan kiyuris untuk menyelesaikan pembayaran');
+  } catch (e) {
+    /* ignore speech errors */
   }
 
   const totals = getPaymentTotals(cart);

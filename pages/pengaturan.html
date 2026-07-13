@@ -108,6 +108,33 @@
     .settings-button.danger:hover {
       box-shadow: 0 8px 20px rgba(255, 107, 107, 0.35);
     }
+    .brand-logo-item {
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .brand-logo-controls {
+      display: grid;
+      gap: 0.9rem;
+      justify-items: end;
+      text-align: right;
+    }
+    .brand-logo-preview {
+      width: 96px;
+      height: 96px;
+      border-radius: 18px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(20, 184, 166, 0.08);
+    }
+    .brand-logo-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
   </style>
 </head>
 <body>
@@ -178,6 +205,25 @@
             <p>Tampilkan animasi dan efek visual</p>
           </div>
           <div class="toggle-switch active" id="animations"></div>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <h2>Brand & Logo</h2>
+        <div class="settings-item brand-logo-item">
+          <div class="setting-info">
+            <h3>Upload Logo Brand (PNG)</h3>
+            <p>Upload file PNG untuk mengganti logo di pojok kiri atas dan splash screen.</p>
+          </div>
+          <div class="brand-logo-controls">
+            <div class="brand-logo-preview" id="brandLogoPreviewWrapper">
+              <img id="brandLogoPreview" src="../assets/img/umadigi-logo.svg" alt="Preview Logo">
+            </div>
+            <div>
+              <input id="brandLogoInput" type="file" accept="image/png">
+              <button class="settings-button" type="button" id="brandLogoReset">Reset Logo</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -273,6 +319,47 @@
           toggle.classList.remove('active');
         }
       });
+
+      const brandLogoPreview = document.getElementById('brandLogoPreview');
+      const savedLogo = localStorage.getItem('umadigi_brand_logo');
+      if (brandLogoPreview && savedLogo) {
+        brandLogoPreview.src = savedLogo;
+    } else if (brandLogoPreview) {
+      brandLogoPreview.src = '../assets/img/brand.png';
+    }
+  });
+
+    const brandLogoInput = document.getElementById('brandLogoInput');
+    const brandLogoReset = document.getElementById('brandLogoReset');
+    const brandLogoPreview = document.getElementById('brandLogoPreview');
+    const defaultLogo = '../assets/img/brand.png';
+    }
+
+    brandLogoInput?.addEventListener('change', event => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      if (file.type !== 'image/png') {
+        alert('Logo harus dalam format PNG.');
+        event.target.value = '';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const logoDataUrl = reader.result;
+        if (typeof logoDataUrl === 'string') {
+          localStorage.setItem('umadigi_brand_logo', logoDataUrl);
+          updateBrandLogoPreview(logoDataUrl);
+          alert('Logo brand berhasil disimpan. Muat ulang halaman untuk melihat perubahan.');
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    brandLogoReset?.addEventListener('click', () => {
+      localStorage.removeItem('umadigi_brand_logo');
+      updateBrandLogoPreview(defaultLogo);
+      alert('Logo brand dikembalikan ke default. Muat ulang halaman untuk melihat perubahan.');
     });
   </script>
 </body>

@@ -1,5 +1,24 @@
 .payment-page {
-  padding-bottom: 92px;
+  padding-bottom: 148px;
+}
+
+body.payment-body,
+body:has(.payment-page) {
+  padding-bottom: 148px;
+}
+
+body.payment-body .sticky-order-bar,
+body:has(.payment-page) .sticky-order-bar {
+  z-index: 240;
+  bottom: 0;
+  padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+  box-shadow: 0 -14px 34px rgba(15, 23, 42, 0.14);
+}
+
+body.payment-body .checkout-main-btn,
+body:has(.payment-page) .checkout-main-btn {
+  min-height: 54px;
+  font-size: 1rem;
 }
 
 .payment-hero {
@@ -228,5 +247,30 @@
 @media (min-width: 760px) {
   .payment-page {
     max-width: 760px;
+  }
+}
+
+@media (max-width: 760px) {
+  body.payment-body .mobile-bottom-nav,
+  body:has(.payment-page) .mobile-bottom-nav {
+    display: none;
+  }
+}
+
+/* On small screens place the order bar in-flow below the content
+   so it won't be hidden by Android bottom bars. */
+@media (max-width: 760px) {
+  body.payment-body .sticky-order-bar,
+  body:has(.payment-page) .sticky-order-bar {
+    position: static;
+    margin-top: 12px;
+    box-shadow: none;
+    border-top: 0;
+    padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+  }
+
+  /* remove extra bottom padding on the page when the bar is in-flow */
+  .payment-page {
+    padding-bottom: 0;
   }
 }

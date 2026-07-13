@@ -1,6 +1,5 @@
 // payment.js - QRIS payment, proof upload, WhatsApp confirmation, and order history
 
-const PAYMENT_DURATION_MS = 10 * 60 * 1000;
 const PENDING_DURATION_MS = 3 * 60 * 1000;
 const COMPLETE_DURATION_MS = 10 * 60 * 1000;
 const PAYMENT_SESSION_KEY = 'umaedi_payment_session';
@@ -217,7 +216,6 @@ function cancelPayment(message) {
 document.addEventListener('DOMContentLoaded', () => {
   const session = getPaymentSession();
   const cart = session.cart || [];
-  const timer = document.getElementById('payment-timer');
   const proofInput = document.getElementById('payment-proof');
   const proofName = document.getElementById('proof-file-name');
   const confirmButton = document.getElementById('confirm-payment');
@@ -233,21 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderPaymentHistory();
   setInterval(renderPaymentHistory, 15000);
 
-  function tick() {
-    const remaining = PAYMENT_DURATION_MS - (Date.now() - session.createdAt);
-    if (remaining <= 0) {
-      if (timer) timer.textContent = '00:00';
-      cancelPayment('Waktu pembayaran habis. Pesanan otomatis dibatalkan.');
-      return;
-    }
-
-    const minutes = Math.floor(remaining / 60000);
-    const seconds = Math.floor((remaining % 60000) / 1000);
-    if (timer) timer.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  }
-
-  tick();
-  setInterval(tick, 1000);
+  // No automatic payment timeout; timer removed per request.
 
   proofInput?.addEventListener('change', () => {
     const file = proofInput.files?.[0];

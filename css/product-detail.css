@@ -77,12 +77,12 @@
   margin: 14px 0;
   padding: 14px;
   border-radius: 16px;
-  background: #fff7ed;
+  background: #eef2ff;
 }
 
 .detail-price {
   display: block;
-  color: #ee4d2d;
+  color: #4f46e5;
   font-size: 1.8rem;
   font-weight: 900;
 }
@@ -102,10 +102,10 @@
 .detail-alert {
   margin-top: 12px;
   padding: 12px;
-  border: 1px solid #fecaca;
+  border: 1px solid #c7d2fe;
   border-radius: 14px;
-  color: #991b1b;
-  background: #fee2e2;
+  color: #3730a3;
+  background: #eef2ff;
   font-size: 0.9rem;
   font-weight: 850;
   line-height: 1.5;
@@ -132,7 +132,7 @@
 
 .detail-benefit span {
   flex: 0 0 auto;
-  color: #ee4d2d;
+  color: #4f46e5;
   font-weight: 900;
 }
 
@@ -160,15 +160,15 @@
 }
 
 .detail-action-btn.secondary {
-  color: #ee4d2d;
-  background: #fff7ed;
-  border: 1px solid #fed7aa;
+  color: #4f46e5;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
 }
 
 .detail-action-btn.primary {
   color: #fff;
-  background: #ee4d2d;
-  box-shadow: 0 14px 26px rgba(238, 77, 45, 0.25);
+  background: #6366f1;
+  box-shadow: 0 14px 26px rgba(99, 102, 241, 0.25);
 }
 
 .detail-action-btn:disabled {
@@ -188,7 +188,7 @@
 }
 
 .detail-empty a {
-  color: #ee4d2d;
+  color: #4f46e5;
   font-weight: 900;
 }
 

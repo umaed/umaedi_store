@@ -34,7 +34,7 @@
   height: 5px;
   margin-top: 16px;
   border-radius: 999px;
-  background: #ee4d2d;
+  background: #6366f1;
 }
 
 .gacha-hero span,
@@ -42,7 +42,7 @@
   display: inline-flex;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(238, 77, 45, 0.12);
+  background: rgba(99, 102, 241, 0.12);
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -64,10 +64,10 @@
   display: none;
   margin: -4px 0 14px;
   overflow: hidden;
-  border: 1px solid rgba(238, 77, 45, 0.16);
+  border: 1px solid rgba(99, 102, 241, 0.16);
   border-radius: 14px;
   background:
-    linear-gradient(90deg, rgba(255, 247, 237, 0.96), rgba(255, 255, 255, 0.94));
+    linear-gradient(90deg, rgba(240, 245, 255, 0.96), rgba(255, 255, 255, 0.94));
   box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
 }
 
@@ -134,8 +134,8 @@
 
 .gacha-event-menu button.is-active {
   color: #fff;
-  background: linear-gradient(135deg, #ee4d2d, #ec4899);
-  box-shadow: 0 10px 18px rgba(238, 77, 45, 0.22);
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  box-shadow: 0 10px 18px rgba(99, 102, 241, 0.22);
 }
 
 .gacha-event-menu button:active {
@@ -253,7 +253,7 @@
 
 .pack-slot.is-selected,
 .pack-slot.is-active {
-  filter: drop-shadow(0 0 12px rgba(238, 77, 45, 0.34));
+  filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.34));
 }
 
 .pack-slot.is-opened {
@@ -275,7 +275,7 @@
 }
 
 .gacha-progress strong {
-  color: #ee4d2d;
+  color: #6366f1;
   font-size: 1.25rem;
 }
 
@@ -610,26 +610,26 @@
 
 .card-ultraRare .card-info strong,
 .collection-card.card-ultraRare strong {
-  color: #facc15;
+  color: #c7d2fe;
   text-shadow:
-    0 0 5px rgba(250, 204, 21, 0.95),
-    0 0 14px rgba(251, 191, 36, 0.7),
+    0 0 5px rgba(99, 102, 241, 0.95),
+    0 0 14px rgba(124, 58, 237, 0.7),
     0 1px 2px rgba(15, 23, 42, 0.85);
 }
 
 .card-ultraRare .card-info {
   background: rgba(15, 23, 42, 0.72);
-  border-color: rgba(250, 204, 21, 0.32);
+  border-color: rgba(99, 102, 241, 0.32);
   box-shadow:
-    0 0 18px rgba(250, 204, 21, 0.22),
+    0 0 18px rgba(99, 102, 241, 0.22),
     0 6px 12px rgba(15, 23, 42, 0.18);
 }
 
 .card-ultraRare .card-info span,
 .collection-card.card-ultraRare small {
-  color: #fde68a;
+  color: #c7d2fe;
   text-shadow:
-    0 0 8px rgba(250, 204, 21, 0.65),
+    0 0 8px rgba(124, 58, 237, 0.65),
     0 1px 2px rgba(15, 23, 42, 0.72);
 }
 
@@ -640,7 +640,7 @@
   z-index: 5;
   border-radius: inherit;
   padding: 3px;
-  background: linear-gradient(120deg, #ff004c, #ffae00, #35f6ff, #8b5cf6, #ff004c);
+  background: linear-gradient(120deg, #6366f1, #8b5cf6, #a78bfa, #4f46e5, #6366f1);
   background-size: 240% 240%;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
@@ -653,7 +653,7 @@
 .card-ultraRare::before {
   background:
     radial-gradient(circle at var(--shine-x, 18%) var(--shine-y, 16%), rgba(255, 255, 255, 0.9), transparent 19%),
-    linear-gradient(115deg, transparent 18%, rgba(255, 0, 76, 0.16), rgba(53, 246, 255, 0.18), rgba(255, 174, 0, 0.16), transparent 68%),
+    linear-gradient(115deg, transparent 18%, rgba(124, 58, 237, 0.16), rgba(59, 130, 246, 0.18), rgba(167, 139, 250, 0.16), transparent 68%),
     repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px 9px);
   mix-blend-mode: screen;
   opacity: 0.52;
@@ -683,8 +683,8 @@
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: #fbbf24;
-  box-shadow: 0 0 14px rgba(251, 191, 36, 0.8);
+  background: #a78bfa;
+  box-shadow: 0 0 14px rgba(124, 58, 237, 0.8);
   transform: rotate(calc(var(--i) * 36deg)) translateX(0) scale(0.4);
   animation: sparkleFly 1s ease-out both;
 }
@@ -692,10 +692,10 @@
 .card-sparkle-burst.is-ultra i {
   width: 11px;
   height: 11px;
-  background: linear-gradient(135deg, #fff, #facc15, #22d3ee);
+  background: linear-gradient(135deg, #fff, #c7d2fe, #3b82f6);
   box-shadow:
-    0 0 16px rgba(250, 204, 21, 0.95),
-    0 0 28px rgba(34, 211, 238, 0.55);
+    0 0 16px rgba(124, 58, 237, 0.95),
+    0 0 28px rgba(59, 130, 246, 0.55);
 }
 
 .card-code {
@@ -720,14 +720,14 @@
   place-items: center;
   transform: rotate(-18deg) translateZ(48px);
   border-radius: 50%;
-  color: #7c2d12;
+  color: #4f46e5;
   background:
-    radial-gradient(circle at 32% 28%, #fff7ad, transparent 28%),
-    linear-gradient(145deg, #facc15, #f97316);
-  border: 2px solid #fff7ed;
+    radial-gradient(circle at 32% 28%, #ede9fe, transparent 28%),
+    linear-gradient(145deg, #818cf8, #4f46e5);
+  border: 2px solid #e0e7ff;
   box-shadow:
-    0 0 18px rgba(250, 204, 21, 0.58),
-    0 8px 18px rgba(124, 45, 18, 0.22);
+    0 0 18px rgba(124, 58, 237, 0.58),
+    0 8px 18px rgba(79, 70, 229, 0.22);
   font-size: 1.55rem;
   line-height: 1;
 }
@@ -849,14 +849,14 @@
   margin: 14px 0;
   padding: 18px;
   text-align: center;
-  border-color: #fbbf24;
+  border-color: #c7d2fe;
   background:
-    linear-gradient(135deg, rgba(255, 251, 235, 0.96), rgba(255, 255, 255, 0.94));
+    linear-gradient(135deg, rgba(238, 242, 255, 0.96), rgba(255, 255, 255, 0.94));
 }
 
 .reward-panel span {
-  color: #92400e;
-  background: #fef3c7;
+  color: #4338ca;
+  background: #eef2ff;
 }
 
 .reward-panel h2 {
@@ -875,9 +875,9 @@
   border-radius: 16px;
   color: #111827;
   background:
-    linear-gradient(135deg, rgba(250, 204, 21, 0.26), rgba(45, 212, 191, 0.18)),
+    linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(191, 219, 254, 0.24)),
     #fff;
-  border: 1px solid rgba(250, 204, 21, 0.34);
+  border: 1px solid rgba(99, 102, 241, 0.24);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
 }
 
@@ -932,9 +932,9 @@
   align-items: center;
   justify-content: space-between;
   background:
-    linear-gradient(135deg, rgba(250, 204, 21, 0.24), rgba(236, 72, 153, 0.14)),
+    linear-gradient(135deg, rgba(124, 58, 237, 0.18), rgba(99, 102, 241, 0.14)),
     #fff;
-  border-color: rgba(250, 204, 21, 0.35);
+  border-color: rgba(124, 58, 237, 0.22);
 }
 
 .inventory-summary .collection-bonus span {
@@ -973,17 +973,17 @@
 
 .pm-exchange-card {
   padding: 16px;
-  border-color: rgba(238, 77, 45, 0.22);
+  border-color: rgba(99, 102, 241, 0.22);
   background:
-    radial-gradient(circle at 90% 0, rgba(236, 72, 153, 0.18), transparent 34%),
-    linear-gradient(135deg, rgba(255, 247, 237, 0.96), rgba(255, 255, 255, 0.94));
-  box-shadow: 0 14px 26px rgba(238, 77, 45, 0.12);
+    radial-gradient(circle at 90% 0, rgba(99, 102, 241, 0.18), transparent 34%),
+    linear-gradient(135deg, rgba(245, 246, 255, 0.96), rgba(255, 255, 255, 0.94));
+  box-shadow: 0 14px 26px rgba(99, 102, 241, 0.12);
 }
 
 .pm-exchange-card.premium-card {
-  border-color: rgba(250, 204, 21, 0.42);
+  border-color: rgba(124, 58, 237, 0.42);
   background:
-    radial-gradient(circle at 90% 0, rgba(250, 204, 21, 0.25), transparent 34%),
+    radial-gradient(circle at 90% 0, rgba(124, 58, 237, 0.25), transparent 34%),
     linear-gradient(135deg, rgba(17, 24, 39, 0.96), rgba(79, 70, 229, 0.9));
 }
 
@@ -1001,13 +1001,13 @@
   justify-content: center;
   transform: rotate(34deg);
   color: #fff;
-  background: linear-gradient(135deg, #ee4d2d, #ec4899);
-  box-shadow: 0 10px 20px rgba(236, 72, 153, 0.2);
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
 }
 
 .exchange-tag.premium {
   color: #111827;
-  background: linear-gradient(135deg, #fde68a, #f59e0b);
+  background: linear-gradient(135deg, #c7d2fe, #a78bfa);
 }
 
 .exchange-box strong {
@@ -1060,8 +1060,8 @@
   border: 0;
   border-radius: 13px;
   color: #fff;
-  background: linear-gradient(135deg, #ee4d2d, #ec4899);
-  box-shadow: 0 12px 24px rgba(238, 77, 45, 0.18);
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.18);
   cursor: pointer;
   font: inherit;
   font-weight: 900;
@@ -1074,8 +1074,8 @@
 
 .exchange-button.premium {
   color: #111827;
-  background: linear-gradient(135deg, #fde68a, #f59e0b);
-  box-shadow: 0 12px 24px rgba(245, 158, 11, 0.2);
+  background: linear-gradient(135deg, #c7d2fe, #a78bfa);
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.18);
 }
 
 .exchange-button:disabled,
@@ -1216,7 +1216,7 @@
 }
 
 .rule-list strong {
-  color: #ee4d2d;
+  color: #4f46e5;
 }
 
 .ultra-collection {
@@ -1667,7 +1667,7 @@
 @keyframes packOpenPulse {
   0% { transform: translateY(0) scale(1); filter: drop-shadow(0 22px 32px rgba(15, 23, 42, 0.18)); }
   24% { transform: translateY(-6px) scale(1.04); filter: drop-shadow(0 26px 38px rgba(20, 184, 166, 0.26)); }
-  52% { transform: translateY(3px) scale(0.98); filter: drop-shadow(0 18px 24px rgba(236, 72, 153, 0.22)); }
+  52% { transform: translateY(3px) scale(0.98); filter: drop-shadow(0 18px 24px rgba(99, 102, 241, 0.22)); }
   100% { transform: translateY(0) scale(1); filter: drop-shadow(0 22px 32px rgba(15, 23, 42, 0.18)); }
 }
 

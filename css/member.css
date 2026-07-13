@@ -11,13 +11,13 @@
 .pm-attention {
   margin: 12px 0 14px;
   padding: 16px;
-  border: 1px solid #fecaca;
+  border: 1px solid #c7d2fe;
   border-radius: 18px;
-  color: #7f1d1d;
+  color: #3730a3;
   background:
-    linear-gradient(135deg, rgba(254, 226, 226, 0.96), rgba(255, 247, 237, 0.94)),
-    radial-gradient(circle at 100% 0, rgba(238, 77, 45, 0.2), transparent 34%);
-  box-shadow: 0 14px 30px rgba(190, 18, 60, 0.12);
+    linear-gradient(135deg, rgba(233, 242, 255, 0.96), rgba(248, 250, 255, 0.94)),
+    radial-gradient(circle at 100% 0, rgba(79, 70, 229, 0.2), transparent 34%);
+  box-shadow: 0 14px 30px rgba(79, 70, 229, 0.12);
 }
 
 .pm-attention-badge {
@@ -27,7 +27,7 @@
   padding: 0 10px;
   border-radius: 999px;
   color: #fff;
-  background: #be123c;
+  background: #6366f1;
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -68,11 +68,11 @@
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  border: 1px solid #fecdd3;
+  border: 1px solid #c7d2fe;
   border-radius: 18px;
   color: #111827;
   background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 12px 24px rgba(190, 24, 93, 0.08);
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.08);
   cursor: pointer;
   text-align: left;
 }
@@ -86,9 +86,9 @@
   flex: 0 0 auto;
   border-radius: 14px;
   color: #fff;
-  background: linear-gradient(135deg, #ee4d2d, #be123c);
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
   font-weight: 900;
-  box-shadow: 0 10px 20px rgba(238, 77, 45, 0.24);
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.24);
 }
 
 .pm-info-trigger strong,
@@ -111,13 +111,13 @@
 .pm-info-panel {
   margin-top: 10px;
   padding: 16px;
-  border: 1px solid #fecdd3;
+  border: 1px solid #c7d2fe;
   border-radius: 18px;
   color: #334155;
   background:
-    linear-gradient(135deg, rgba(255, 241, 242, 0.96), rgba(255, 255, 255, 0.94)),
+    linear-gradient(135deg, rgba(238, 242, 255, 0.96), rgba(255, 255, 255, 0.94)),
     url("../assets/img/pmjkt48.png") right bottom / 150px auto no-repeat;
-  box-shadow: 0 14px 30px rgba(190, 24, 93, 0.1);
+  box-shadow: 0 14px 30px rgba(99, 102, 241, 0.1);
   animation: pmPanelIn 0.22s ease both;
 }
 
@@ -137,7 +137,7 @@
 .pm-info-panel ol {
   margin: 10px 0 0;
   padding-left: 20px;
-  color: #be123c;
+  color: #4f46e5;
   font-weight: 900;
   line-height: 1.7;
 }
@@ -169,12 +169,12 @@
   text-align: center;
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(120deg, #ff004c, #ffae00, #35f6ff, #8b5cf6, #ff004c, #35f6ff) border-box;
+    linear-gradient(120deg, #6366f1, #8b5cf6, #a78bfa, #4f46e5, #6366f1) border-box;
   background-size: 100% 100%, 320% 320%;
   box-shadow:
-    0 0 24px rgba(238, 77, 45, 0.36),
+    0 0 24px rgba(99, 102, 241, 0.36),
     0 0 38px rgba(53, 246, 255, 0.2),
-    0 16px 34px rgba(225, 29, 72, 0.12);
+    0 16px 34px rgba(79, 70, 229, 0.12);
   animation: vipBorderMove 2.2s linear infinite, vipGlow 1.8s ease-in-out infinite;
   overflow: hidden;
 }
@@ -227,11 +227,11 @@
   border: 3px solid transparent;
   border-radius: 50%;
   background:
-    linear-gradient(135deg, #ee4d2d, #be185d) padding-box,
-    linear-gradient(120deg, #ff004c, #ffae00, #35f6ff, #8b5cf6, #ff004c) border-box;
+    linear-gradient(135deg, #6366f1, #4f46e5) padding-box,
+    linear-gradient(120deg, #6366f1, #8b5cf6, #a78bfa, #4f46e5) border-box;
   background-size: 100% 100%, 260% 260%;
   box-shadow:
-    0 0 22px rgba(238, 77, 45, 0.36),
+    0 0 22px rgba(99, 102, 241, 0.36),
     0 0 34px rgba(139, 92, 246, 0.24);
   animation: vipBorderMove 1.8s linear infinite;
 }
@@ -264,7 +264,7 @@
 }
 
 .owner-label {
-  color: #be123c;
+  color: #4f46e5;
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -287,7 +287,7 @@
 
 .owner-collab {
   margin-top: 5px;
-  color: #be123c;
+  color: #4f46e5;
   font-size: 1.16rem;
   font-weight: 900;
   letter-spacing: 0.04em;
@@ -308,8 +308,8 @@
 .member-section-heading span {
   width: fit-content;
   padding: 5px 9px;
-  color: #be123c;
-  background: #ffe4e6;
+  color: #4f46e5;
+  background: #eef2ff;
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 900;
@@ -421,8 +421,8 @@
 }
 
 .member-card-new {
-  border-color: #fecdd3;
-  box-shadow: 0 12px 26px rgba(225, 29, 72, 0.08);
+  border-color: #c7d2fe;
+  box-shadow: 0 12px 26px rgba(79, 70, 229, 0.08);
 }
 
 .member-avatar {
@@ -448,7 +448,7 @@
 
 .member-card-new .member-avatar {
   background:
-    linear-gradient(135deg, rgba(238, 77, 45, 0.48), rgba(190, 24, 93, 0.62)),
+    linear-gradient(135deg, rgba(99, 102, 241, 0.48), rgba(79, 70, 229, 0.62)),
     url("../assets/img/product-jkt48.png") center / cover;
 }
 
@@ -497,7 +497,7 @@
 .member-price strong {
   display: block;
   margin-top: 2px;
-  color: #ee4d2d;
+  color: #4f46e5;
   font-size: 1.18rem;
   font-weight: 900;
 }
@@ -508,14 +508,14 @@
   border: 0;
   border-radius: 10px;
   color: #fff;
-  background: #ee4d2d;
+  background: #6366f1;
   cursor: pointer;
   font-weight: 900;
   transition: all 0.2s ease;
 }
 
 .member-add-btn:hover {
-  background: #c7381c;
+  background: #4f46e5;
 }
 
 .member-add-btn.is-added {
@@ -539,8 +539,8 @@
 .member-add-btn.is-closed,
 .member-add-btn.is-closed:disabled {
   color: #fff;
-  background: linear-gradient(135deg, #991b1b, #64748b);
-  box-shadow: 0 10px 20px rgba(153, 27, 27, 0.18);
+  background: linear-gradient(135deg, #3730a3, #4f46e5);
+  box-shadow: 0 10px 20px rgba(79, 70, 229, 0.18);
 }
 
 @keyframes vipBorderMove {
@@ -555,16 +555,16 @@
 @keyframes vipGlow {
   0%, 100% {
     box-shadow:
-      0 0 24px rgba(238, 77, 45, 0.38),
+      0 0 24px rgba(99, 102, 241, 0.38),
       0 0 38px rgba(53, 246, 255, 0.2),
-      0 16px 34px rgba(225, 29, 72, 0.12);
+      0 16px 34px rgba(79, 70, 229, 0.12);
   }
   50% {
     box-shadow:
       0 0 34px rgba(139, 92, 246, 0.46),
       0 0 52px rgba(20, 184, 166, 0.36),
-      0 0 18px rgba(255, 174, 0, 0.3),
-      0 16px 34px rgba(225, 29, 72, 0.12);
+      0 0 18px rgba(129, 140, 248, 0.3),
+      0 16px 34px rgba(79, 70, 229, 0.12);
   }
 }
 

@@ -1,0 +1,132 @@
+/* Layout Detail Produk */
+.detail-container {
+    padding: 0;
+    padding-bottom: 80px; /* Ruang untuk bottom nav & action buttons */
+    background-color: var(--background);
+}
+
+.product-image-large {
+    width: 100%;
+    height: 350px;
+    background-color: #e5e7eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.product-image-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-info-detail {
+    background-color: var(--surface);
+    padding: 20px;
+    border-radius: 20px 20px 0 0;
+    margin-top: -20px;
+    position: relative;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+}
+
+.detail-category {
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.detail-title {
+    font-size: 1.4rem;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.detail-price {
+    font-size: 1.5rem;
+    color: var(--text);
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.detail-section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    color: var(--text);
+}
+
+.detail-description {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Action Buttons (Sticky di bawah) */
+.action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--surface);
+    padding: 15px 20px;
+    display: flex;
+    gap: 15px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.btn-icon {
+    padding: 12px;
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    border-radius: 12px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text);
+    transition: var(--transition);
+}
+
+.btn-icon:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+.btn-cart {
+    flex: 1;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-cart:hover {
+    background-color: #4338ca;
+}
+
+/* Responsive Desktop */
+@media (min-width: 768px) {
+    .detail-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        max-width: 1000px;
+        margin: 40px auto;
+        background-color: var(--surface);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+        padding-bottom: 0;
+    }
+    .product-image-large { height: 100%; min-height: 400px; }
+    .product-info-detail { margin-top: 0; border-radius: 0; box-shadow: none; padding: 40px; }
+    .action-bar { position: relative; padding: 20px 0 0 0; box-shadow: none; }
+}

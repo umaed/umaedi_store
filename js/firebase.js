@@ -1,7 +1,7 @@
 // Firebase Realtime Database bridge for the static storefront.
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
-import { getDatabase, onValue, ref, runTransaction, set } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js';
-import { createUserWithEmailAndPassword, deleteUser, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
+import { getDatabase, onValue, ref, set } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js';
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC9pFBCY8Lkhn5egBCX1RDDUpUaTyiiHP4',
@@ -52,21 +52,15 @@ window.firebaseStore = {
       if (error.code === 'auth/email-already-in-use') throw new Error('USERNAME_TAKEN');
       throw error;
     }
-    const reservation = await runTransaction(ref(database, `usernames/${normalizedUsername}`), current => {
-      if (current !== null) return;
-      return { uid: credential.user.uid, username: normalizedUsername };
-    });
-
-    if (!reservation.committed) {
-      await deleteUser(credential.user);
-      throw new Error('USERNAME_TAKEN');
+    try {
+      await set(ref(database, `users/${credential.user.uid}`), {
+        uid: credential.user.uid,
+        username: normalizedUsername,
+        createdAt: Date.now()
+      });
+    } catch (error) {
+      console.warn('Profil realtime belum tersimpan:', error);
     }
-
-    await set(ref(database, `users/${credential.user.uid}`), {
-      uid: credential.user.uid,
-      username: normalizedUsername,
-      createdAt: Date.now()
-    });
     return { uid: credential.user.uid, username: normalizedUsername };
   },
 

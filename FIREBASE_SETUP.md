@@ -1,6 +1,7 @@
 # Firebase Realtime Database
 
-Integrasi realtime menyimpan order pada path `orders/{user-id}/{order-id}`.
+Integrasi realtime menyimpan profil pada `users/{user-id}` dan order pada `orders/{user-id}/{order-id}`.
+Keunikan username dijamin oleh Firebase Authentication melalui email internal `username@accounts.umadigi.store`.
 Status dapat diubah dari Firebase Console dan akan tampil otomatis di halaman `pages/riwayat.html`.
 
 ## Aktivasi
@@ -21,12 +22,6 @@ Status dapat diubah dari Firebase Console dan akan tampil otomatis di halaman `p
         }
       },
       ".indexOn": ["username"]
-    },
-    "usernames": {
-      "$username": {
-        ".read": "auth != null",
-        ".write": "auth != null && !data.exists()"
-      }
     },
     "users": {
       "$uid": {

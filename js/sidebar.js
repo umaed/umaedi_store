@@ -30,6 +30,19 @@ function getProfileInitial(name) {
   return (name || 'U').trim().charAt(0).toUpperCase();
 }
 
+function getFirebaseErrorMessage(error) {
+  const messages = {
+    'auth/operation-not-allowed': 'Login Email/Password belum diaktifkan di Firebase.',
+    'auth/invalid-api-key': 'API key Firebase tidak valid.',
+    'auth/network-request-failed': 'Koneksi internet bermasalah.',
+    'auth/weak-password': 'Kata sandi terlalu lemah.',
+    'auth/invalid-credential': 'Username atau kata sandi salah.',
+    'auth/user-not-found': 'Username atau kata sandi salah.',
+    'auth/wrong-password': 'Username atau kata sandi salah.'
+  };
+  return messages[error.code] || 'Periksa koneksi dan konfigurasi Firebase.';
+}
+
 window.getUmadigiUserName = function getUmadigiUserName() {
   return getUmadigiProfile()?.name || 'User';
 };
@@ -280,9 +293,9 @@ document.addEventListener('DOMContentLoaded', () => {
         : await firebaseStore.login(username, password);
       finishAccount({ name: profile.username, uid: profile.uid, isGuest: false });
     } catch (error) {
-      accountFeedback.textContent = error.message === 'USERNAME_TAKEN'
+      accountFeedback.textContent = error.message === 'USERNAME_TAKEN' || error.code === 'auth/email-already-in-use'
         ? 'Username telah digunakan.'
-        : accountMode === 'register' ? 'Akun gagal dibuat. Username mungkin sudah digunakan.' : 'Username atau kata sandi salah.';
+        : accountMode === 'register' ? `Akun gagal dibuat: ${getFirebaseErrorMessage(error)}` : getFirebaseErrorMessage(error);
     } finally {
       saveAccountButton.disabled = false;
     }

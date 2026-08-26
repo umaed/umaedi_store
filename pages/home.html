@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - UmaDigi Store V2</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Top Navbar -->
+    <header class="navbar">
+        <a href="home.html" class="nav-brand">UmaDigi Store</a>
+        <div class="nav-actions">
+            <button class="icon-btn" aria-label="Search">🔍</button>
+            <button class="icon-btn" aria-label="Notifications">🔔</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Upgrade Your Digital Life</h1>
+            <p>Temukan produk digital & solusi kreatif terbaik untuk kebutuhan Anda.</p>
+            <button class="btn-light">Belanja Sekarang</button>
+        </section>
+
+        <!-- Categories -->
+        <div class="categories-scroll">
+            <a href="#" class="category-chip active">Semua</a>
+            <a href="#" class="category-chip">Digital</a>
+            <a href="#" class="category-chip">Template</a>
+            <a href="#" class="category-chip">Preset</a>
+            <a href="#" class="category-chip">Design</a>
+            <a href="#" class="category-chip">Software</a>
+            <a href="#" class="category-chip">E-book</a>
+        </div>
+
+        <!-- Featured Products Section -->
+        <div class="section-header">
+            <h2 class="section-title">Produk Unggulan</h2>
+            <a href="#" style="font-size: 0.85rem; color: var(--primary); text-decoration: none;">Lihat Semua</a>
+        </div>
+        <div class="product-grid" id="featured-products">
+            <!-- Produk akan di-render di sini via JS nanti -->
+            <p style="color: var(--muted); grid-column: 1 / -1; text-align: center; padding: 20px;">Memuat produk...</p>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item active">
+            <span>🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span>🧭</span>
+            <span>Explore</span>
+        </a>
+        <a href="orders.html" class="nav-item">
+            <span>📦</span>
+            <span>Orders</span>
+        </a>
+        <a href="wishlist.html" class="nav-item">
+            <span>❤️</span>
+            <span>Wishlist</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <span>👤</span>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Memuat Script Global (Cek Auth) -->
+    <script type="module" src="../js/app.js"></script>
+    <!-- Script khusus untuk menangani produk -->
+    <script type="module" src="../js/products.js"></script>
+    <link rel="stylesheet" href="../css/cards.css">
+</body>
+</html>

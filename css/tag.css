@@ -1,0 +1,59 @@
+/* tag.css - UMAEDI STORE product tag styles */
+.product-tag {
+  display: inline-block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 0.3em 1.2em;
+  border-radius: 24px;
+  margin-bottom: 0.5em;
+  margin-right: 0.5em;
+  letter-spacing: 0.08em;
+  box-shadow: 0 2px 16px 0 #0002;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.tag-rare {
+  background: var(--luxury-red-gradient);
+  color: #fff;
+  box-shadow: 0 0 24px 0 #e5393555;
+  border: 2px solid #ff6f61;
+  animation: pulseRare 1.8s infinite;
+}
+
+.tag-rare .shimmer {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(120deg, transparent 0%, #fff4 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.2s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes pulseRare {
+  0%, 100% { box-shadow: 0 0 24px 0 #e5393555; }
+  50% { box-shadow: 0 0 48px 8px #e53935aa; }
+}
+
+.tag-limited {
+  background: var(--luxury-gold-gradient);
+  color: #181818;
+  box-shadow: 0 0 32px 0 #bfa14a55;
+  border: 2px solid #bfa14a;
+  animation: pulseLimited 2.2s infinite;
+}
+
+.tag-limited .shimmer {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(120deg, transparent 0%, #fffbe6 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes pulseLimited {
+  0%, 100% { box-shadow: 0 0 32px 0 #bfa14a55; }
+  50% { box-shadow: 0 0 64px 8px #bfa14a99; }
+}

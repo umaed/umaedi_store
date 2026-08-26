@@ -1,0 +1,188 @@
+/* animation.css - UMAEDI STORE global animations */
+
+/* Page Load Animations */
+.luxury-fade-in {
+  opacity: 0;
+  animation: fadeInLuxury 0.8s ease-out 0.2s forwards;
+}
+
+.luxury-slide-up {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: slideUpLuxury 0.6s ease-out 0.3s forwards;
+}
+
+/* Page Transition Animations */
+.page-exit {
+  animation: pageExitAnimation 0.6s ease-in forwards;
+}
+
+.page-enter {
+  animation: pageEnterAnimation 0.8s ease-out forwards;
+}
+
+/* Main Content Fade In */
+#main-content {
+  animation: fadeInContent 0.8s ease-out;
+}
+
+main {
+  animation: fadeInContent 0.8s ease-out;
+}
+
+/* Keyframe Animations */
+@keyframes fadeInLuxury {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpLuxury {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageExitAnimation {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100px) scale(0.95);
+  }
+}
+
+@keyframes pageEnterAnimation {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px) scale(0.95);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover Effects */
+.luxury-glow-hover {
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.luxury-glow-hover:hover {
+  box-shadow: 0 8px 24px rgba(191,161,74,0.2);
+  transform: translateY(-4px);
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+  0% { 
+    background-position: -200% 0; 
+  }
+  100% { 
+    background-position: 200% 0; 
+  }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  0%, 100% { 
+    box-shadow: 0 0 12px rgba(191,161,74,0.3); 
+  }
+  50% { 
+    box-shadow: 0 0 24px rgba(191,161,74,0.5); 
+  }
+}
+
+/* Glow Animation for Logo */
+@keyframes logoGlowPulse {
+  0%, 100% {
+    text-shadow: 
+      0 0 12px rgba(30, 144, 255, 0.7),
+      0 0 24px rgba(13, 110, 253, 0.5),
+      0 0 36px rgba(30, 144, 255, 0.3),
+      2px 2px 4px rgba(0, 0, 0, 0.1);
+    filter: drop-shadow(0 0 10px rgba(30, 144, 255, 0.6));
+  }
+  50% {
+    text-shadow: 
+      0 0 18px rgba(30, 144, 255, 0.9),
+      0 0 30px rgba(13, 110, 253, 0.7),
+      0 0 42px rgba(30, 144, 255, 0.4),
+      2px 2px 4px rgba(0, 0, 0, 0.1);
+    filter: drop-shadow(0 0 15px rgba(30, 144, 255, 0.8));
+  }
+}
+
+.navbar-logo {
+  animation: logoGlowPulse 3s ease-in-out infinite;
+}
+
+/* Cart Bounce Animation */
+@keyframes cartBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.cart-bounce {
+  animation: cartBounce 0.4s ease;
+}
+
+/* Mobile Responsive Animations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Mobile Fix: Ensure hero is visible */
+@media (max-width: 768px) {
+  .luxury-fade-in {
+    opacity: 1 !important;
+    animation: fadeInLuxury 0.5s ease-out 0s forwards;
+  }
+}
+
+@media (max-width: 480px) {
+  .luxury-fade-in {
+    opacity: 1 !important;
+    animation: fadeInLuxury 0.3s ease-out 0s forwards;
+  }
+}
+
+/* Scroll Reveal */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.scroll-reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.6s ease-out;
+}

@@ -7,7 +7,7 @@ Status dapat diubah dari Firebase Console dan akan tampil otomatis di halaman `p
 
 1. Buka Firebase Console untuk project `umadigi-store`.
 2. Aktifkan **Realtime Database**.
-3. Di **Authentication > Sign-in method**, aktifkan provider **Email/Password**. Pengguna tetap tidak memasukkan email; aplikasi memakai email internal berdasarkan username.
+3. Di **Authentication > Sign-in method**, aktifkan provider **Email/Password**. Pengguna tetap tidak memasukkan email; aplikasi memakai email internal berdasarkan username (`username@accounts.umadigi.store`).
 4. Di **Realtime Database > Rules**, gunakan rules berikut:
 
 ```json

@@ -2,19 +2,19 @@
  * UMADIGI STORE navigation system
  */
 
-import('./firebase.js').catch(error => console.warn('Modul akun tidak tersedia:', error));
+const firebaseReady = import('./firebase.js')
+  .then(() => window.firebaseStore)
+  .catch(error => {
+    console.warn('Modul akun tidak tersedia:', error);
+    return null;
+  });
 
 const UMADIGI_ACCOUNT_KEY = 'umadigi_account_profile';
-
-function createGuestProfile() {
-  const number = Math.floor(Math.random() * 90) + 10;
-  return { name: `User${number}`, isGuest: true };
-}
 
 function getUmadigiProfile() {
   try {
     const profile = JSON.parse(localStorage.getItem(UMADIGI_ACCOUNT_KEY) || 'null');
-    if (profile?.name) return profile;
+    if (profile?.name && profile?.uid && !profile?.isGuest) return profile;
   } catch (error) {
     // Invalid saved data will be replaced by a fresh guest profile.
   }
@@ -147,7 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <small id="accountFeedback" class="account-feedback" role="alert"></small>
         <div class="account-modal-actions">
           <button id="saveAccountButton" type="button">Masuk</button>
-          <button id="skipAccountButton" type="button">Nanti</button>
         </div>
       </div>
     </div>
@@ -192,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginModeButton = document.getElementById('loginModeButton');
   const registerModeButton = document.getElementById('registerModeButton');
   const saveAccountButton = document.getElementById('saveAccountButton');
-  const skipAccountButton = document.getElementById('skipAccountButton');
   const editAccountButton = document.getElementById('editAccountButton');
   const sidebarAccountName = document.getElementById('sidebarAccountName');
   const sidebarAccountAvatar = document.getElementById('sidebarAccountAvatar');
@@ -269,7 +267,8 @@ document.addEventListener('DOMContentLoaded', () => {
       accountFeedback.textContent = 'Kata sandi minimal 6 karakter.';
       return;
     }
-    if (!window.firebaseStore) {
+    const firebaseStore = window.firebaseStore || await firebaseReady;
+    if (!firebaseStore) {
       accountFeedback.textContent = 'Sistem akun sedang dimuat, coba lagi sebentar.';
       return;
     }
@@ -277,8 +276,8 @@ document.addEventListener('DOMContentLoaded', () => {
     accountFeedback.textContent = 'Memproses...';
     try {
       const profile = accountMode === 'register'
-        ? await window.firebaseStore.createAccount(username, password)
-        : await window.firebaseStore.login(username, password);
+        ? await firebaseStore.createAccount(username, password)
+        : await firebaseStore.login(username, password);
       finishAccount({ name: profile.username, uid: profile.uid, isGuest: false });
     } catch (error) {
       accountFeedback.textContent = error.message === 'USERNAME_TAKEN'
@@ -288,7 +287,6 @@ document.addEventListener('DOMContentLoaded', () => {
       saveAccountButton.disabled = false;
     }
   });
-  skipAccountButton?.addEventListener('click', () => finishAccount(createGuestProfile()));
   accountPasswordInput?.addEventListener('keydown', event => {
     if (event.key === 'Enter') saveAccountButton?.click();
   });

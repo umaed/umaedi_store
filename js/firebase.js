@@ -17,15 +17,13 @@ const firebaseConfig = {
 let database;
 let auth;
 let clientId = null;
-let identityReady = Promise.resolve(false);
 try {
   const app = initializeApp(firebaseConfig);
   database = getDatabase(app);
   auth = getAuth(app);
-  identityReady = new Promise(resolve => onAuthStateChanged(auth, user => {
+  onAuthStateChanged(auth, user => {
     clientId = user?.uid || null;
-    resolve(Boolean(user));
-  }));
+  });
 } catch (error) {
   console.warn('Firebase tidak dapat diinisialisasi:', error);
 }
@@ -47,7 +45,13 @@ window.firebaseStore = {
   async createAccount(username, password) {
     if (!auth || !database) throw new Error('Firebase belum siap.');
     const normalizedUsername = this.normalizeUsername(username);
-    const credential = await createUserWithEmailAndPassword(auth, `${normalizedUsername}@accounts.umadigi.local`, password);
+    let credential;
+    try {
+      credential = await createUserWithEmailAndPassword(auth, `${normalizedUsername}@accounts.umadigi.store`, password);
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') throw new Error('USERNAME_TAKEN');
+      throw error;
+    }
     const reservation = await runTransaction(ref(database, `usernames/${normalizedUsername}`), current => {
       if (current !== null) return;
       return { uid: credential.user.uid, username: normalizedUsername };
@@ -69,7 +73,7 @@ window.firebaseStore = {
   async login(username, password) {
     if (!auth) throw new Error('Firebase belum siap.');
     const normalizedUsername = this.normalizeUsername(username);
-    const credential = await signInWithEmailAndPassword(auth, `${normalizedUsername}@accounts.umadigi.local`, password);
+    const credential = await signInWithEmailAndPassword(auth, `${normalizedUsername}@accounts.umadigi.store`, password);
     return { uid: credential.user.uid, username: normalizedUsername };
   },
 
@@ -84,7 +88,8 @@ window.firebaseStore = {
   },
 
   async saveOrder(order) {
-    if (!database || !(await identityReady) || !clientId) return false;
+    if (!database || !auth?.currentUser) return false;
+    clientId = auth.currentUser.uid;
 
     try {
       await set(ref(database, `orders/${clientId}/${order.id}`), {
@@ -102,17 +107,22 @@ window.firebaseStore = {
   subscribeOrders(onOrdersChanged) {
     if (!database) return () => {};
 
-    let unsubscribe = () => {};
-    identityReady.then(ready => {
-      if (!ready || !clientId) return;
-      unsubscribe = onValue(ref(database, `orders/${clientId}`), snapshot => {
+    let unsubscribeData = () => {};
+    const unsubscribeAuth = onAuthStateChanged(auth, user => {
+      unsubscribeData();
+      clientId = user?.uid || null;
+      if (!clientId) return;
+      unsubscribeData = onValue(ref(database, `orders/${clientId}`), snapshot => {
         const orders = snapshot.val() || {};
         onOrdersChanged(Object.values(orders));
       }, error => {
         console.warn('Sinkronisasi order Firebase gagal:', error);
       });
     });
-    return () => unsubscribe();
+    return () => {
+      unsubscribeData();
+      unsubscribeAuth();
+    };
   }
 };
 

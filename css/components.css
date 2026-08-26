@@ -1,0 +1,88 @@
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, var(--primary), #818cf8);
+    color: white;
+    padding: 40px 20px;
+    border-radius: var(--border-radius);
+    margin: 20px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+}
+
+.hero h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+.btn-light {
+    background-color: var(--surface);
+    color: var(--primary);
+    padding: 10px 24px;
+    border: none;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-light:hover {
+    background-color: #f8fafc;
+    transform: translateY(-2px);
+}
+
+/* Categories Scroll */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px 20px 15px;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    color: var(--text);
+}
+
+.categories-scroll {
+    display: flex;
+    overflow-x: auto;
+    padding: 0 20px 10px;
+    gap: 10px;
+    scrollbar-width: none; /* Firefox */
+}
+
+.categories-scroll::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.category-chip {
+    padding: 8px 16px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.category-chip.active, .category-chip:hover {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* Product Grid Placeholder (Untuk Step 10) */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 0 20px;
+}

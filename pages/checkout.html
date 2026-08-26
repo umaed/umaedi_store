@@ -1,56 +1,95 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - UMADIGI STORE</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/sidebar.css">
-  <link rel="stylesheet" href="../css/theme.css">
-  <link rel="stylesheet" href="../css/animation.css">
-  <link rel="stylesheet" href="../css/checkout.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - UmaDigi Store V2</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/checkout.css">
 </head>
 <body>
-  <div id="loader" class="loader"></div>
-  <nav id="navbar"></nav>
+    <header class="navbar">
+        <div class="nav-actions">
+            <button class="icon-btn" onclick="window.history.back()">🔙</button>
+        </div>
+        <div class="nav-brand" style="font-size: 1.1rem;">Checkout Pesanan</div>
+        <div class="nav-actions"></div>
+    </header>
 
-  <main id="main-content" class="order-page">
-    <section class="order-hero checkout-hero">
-      <span>Checkout</span>
-      <h1>Finalisasi pesanan UMADIGI STORE.</h1>
-      <p>Isi data singkat, lanjut bayar QRIS, lalu kirim bukti pembayaran ke admin.</p>
-    </section>
+    <main class="checkout-container">
+        <!-- Tampilan Loading -->
+        <div id="checkout-loading" style="text-align: center; padding: 50px; color: var(--muted);">
+            Menyiapkan data checkout...
+        </div>
 
-    <section class="checkout-form-card">
-      <label>
-        Nama pemesan
-        <input id="buyer-name" type="text" placeholder="Contoh: Umaedi">
-      </label>
-      <label>
-        Nomor WhatsApp
-        <input id="buyer-phone" type="tel" placeholder="Contoh: 08xxxxxxxxxx">
-      </label>
-      <label>
-        Catatan order
-        <textarea id="buyer-note" rows="3" placeholder="Contoh: kirim detail setelah pembayaran ya admin"></textarea>
-      </label>
-    </section>
+        <form id="checkout-form" class="checkout-grid" style="display: none;">
+            <!-- Kolom Kiri: Form Informasi -->
+            <div class="checkout-left">
+                <div class="checkout-section">
+                    <h2 class="checkout-title">Informasi Pembeli</h2>
+                    <div class="form-group">
+                        <label>Nama Lengkap</label>
+                        <input type="text" id="co-name" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="co-email" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nomor WhatsApp (Opsional)</label>
+                        <input type="tel" id="co-phone" placeholder="Contoh: 08123456789">
+                    </div>
+                </div>
 
-    <section id="checkout-summary" class="checkout-summary"></section>
+                <div class="checkout-section">
+                    <h2 class="checkout-title">Metode Pembayaran</h2>
+                    <div class="form-group">
+                        <select id="co-payment" required>
+                            <option value="">Pilih Metode Pembayaran</option>
+                            <option value="Transfer Bank BCA">Transfer Bank BCA</option>
+                            <option value="Transfer Bank Mandiri">Transfer Bank Mandiri</option>
+                            <option value="E-Wallet DANA">E-Wallet DANA</option>
+                            <option value="E-Wallet GoPay">E-Wallet GoPay</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Catatan Pesanan (Opsional)</label>
+                        <textarea id="co-notes" rows="3" placeholder="Contoh: Tolong kirimkan link akses ke email saya segera."></textarea>
+                    </div>
+                </div>
+            </div>
 
-    <div class="sticky-order-bar">
-      <button id="go-payment" class="checkout-main-btn">Bayar</button>
-    </div>
-  </main>
+            <!-- Kolom Kanan: Ringkasan Pesanan -->
+            <div class="checkout-right">
+                <div class="checkout-section">
+                    <h2 class="checkout-title">Ringkasan Pesanan</h2>
+                    <div id="co-items-list">
+                        <!-- Daftar produk dirender via JS -->
+                    </div>
+                    
+                    <div class="summary-total-row" style="margin-top: 20px;">
+                        <span>Subtotal</span>
+                        <span id="co-subtotal">Rp 0</span>
+                    </div>
+                    <div class="summary-total-row">
+                        <span>Biaya Admin</span>
+                        <span style="color: var(--success);">Gratis</span>
+                    </div>
+                    <div class="summary-grand-total">
+                        <span>Total Bayar</span>
+                        <span id="co-total">Rp 0</span>
+                    </div>
 
-  <footer id="footer"></footer>
+                    <button type="submit" id="btn-process-order" class="btn-primary" style="width: 100%; margin-top: 20px; padding: 15px; font-size: 1.1rem;">
+                        Buat Pesanan
+                    </button>
+                </div>
+            </div>
+        </form>
+    </main>
 
-  <script defer src="../js/sidebar.js"></script>
-  <script defer src="../js/footer.js"></script>
-  <script defer src="../js/animation.js"></script>
-  <script defer src="../js/theme.js"></script>
-  <script defer src="../js/page-transition.js"></script>
-  <script defer src="../js/cart.js"></script>
-  <script defer src="../js/checkout-payment.js"></script>
+    <script type="module" src="../js/app.js"></script>
+    <script type="module" src="../js/checkout.js"></script>
 </body>
 </html>

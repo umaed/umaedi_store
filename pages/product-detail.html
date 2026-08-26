@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detail Produk - UMADIGI STORE</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/sidebar.css">
-  <link rel="stylesheet" href="../css/theme.css">
-  <link rel="stylesheet" href="../css/animation.css">
-  <link rel="stylesheet" href="../css/product.css">
-  <link rel="stylesheet" href="../css/product-detail.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Produk - UmaDigi Store V2</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/product-detail.css">
 </head>
 <body>
-  <div id="loader" class="loader"></div>
-  <nav id="navbar"></nav>
+    <!-- Top Navbar khusus Detail -->
+    <header class="navbar">
+        <div class="nav-actions">
+            <!-- Tombol Kembali -->
+            <button class="icon-btn" onclick="window.history.back()" aria-label="Back">🔙</button>
+        </div>
+        <div class="nav-brand" style="font-size: 1rem;">Detail Produk</div>
+        <div class="nav-actions">
+            <button class="icon-btn" aria-label="Cart">🛒</button>
+        </div>
+    </header>
 
-  <main id="main-content" class="detail-page">
-    <section id="product-detail-root"></section>
-  </main>
+    <!-- Kontainer Detail Produk (Akan diisi oleh JS) -->
+    <main class="detail-container" id="product-detail-container">
+        <div style="padding: 40px; text-align: center; color: var(--muted); width: 100%;">
+            <p>Memuat informasi produk...</p>
+        </div>
+    </main>
 
-  <footer id="footer"></footer>
-
-  <script defer src="../js/sidebar.js"></script>
-  <script defer src="../js/footer.js"></script>
-  <script defer src="../js/animation.js"></script>
-  <script defer src="../js/theme.js"></script>
-  <script defer src="../js/toast.js"></script>
-  <script defer src="../js/product.js"></script>
-  <script defer src="../js/product-detail.js"></script>
-  <script defer src="../js/page-transition.js"></script>
+    <!-- Script Global -->
+    <script type="module" src="../js/app.js"></script>
+    <!-- Script Produk -->
+    <script type="module" src="../js/products.js"></script>
 </body>
 </html>

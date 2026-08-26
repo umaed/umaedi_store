@@ -1,0 +1,44 @@
+/* CSS Variables & Global Design Tokens */
+:root {
+    --primary: #4F46E5;      /* Modern Indigo */
+    --secondary: #10B981;    /* Emerald Green */
+    --background: #F3F4F6;   /* Light Gray Background */
+    --surface: #FFFFFF;      /* White Card Surface */
+    --text: #1F2937;         /* Dark Gray Text */
+    --muted: #6B7280;        /* Muted Gray Text */
+    --border: #E5E7EB;       /* Light Border */
+    --danger: #EF4444;       /* Error/Danger Red */
+    --success: #10B981;      /* Success Green */
+    
+    --font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --border-radius: 12px;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --transition: all 0.3s ease;
+}
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--background);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Base Loading State Utility */
+.loading-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 1.1rem;
+}

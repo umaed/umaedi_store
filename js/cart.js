@@ -1,200 +1,112 @@
-// cart.js - UMADIGI STORE cart and checkout rendering
+import { auth, db } from "./firebase-config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { collection, onSnapshot, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-function formatRupiah(value) {
-  return `Rp${value.toLocaleString('id-ID')}`;
-}
+const cartItemsContainer = document.getElementById("cart-items");
+const summaryBox = document.getElementById("cart-summary-box");
+const summarySubtotal = document.getElementById("summary-subtotal");
+const summaryTotal = document.getElementById("summary-total");
+let currentUserUid = null;
 
-function resolveImagePath(src) {
-  if (!src) return '../assets/img/product-jkt48.png';
-  if (src.startsWith('http') || src.startsWith('../') || src.startsWith('/')) return src;
-  if (src.startsWith('assets/')) return `../${src}`;
-  return src;
-}
-
-function fallbackImageForItem(item) {
-  if (item.type === 'PM Member JKT48' || item.adminFee === 3000) {
-    return '../assets/img/product-jkt48.png';
-  }
-  if (item.category === 'preset') {
-    return '../assets/img/product-preset-warm.png';
-  }
-  if (item.category === 'fashion') {
-    return '../assets/img/product-jacket.png';
-  }
-  return '../assets/img/product-creator-bundle.png';
-}
-
-function getCartItems() {
-  return JSON.parse(localStorage.getItem('umaedi_cart') || '[]');
-}
-
-function groupCartItems(cart) {
-  const grouped = {};
-
-  cart.forEach(item => {
-    const isPmMember = item.type === 'PM Member JKT48' || item.adminFee === 3000 || String(item.id || '').startsWith('pm-');
-    const quantity = Number(item.quantity || 1);
-    if (!grouped[item.id]) {
-      grouped[item.id] = { ...item, quantity: 0 };
+// Memantau status login
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        currentUserUid = user.uid;
+        loadCartRealtime(user.uid);
+    } else {
+        window.location.href = "login.html";
     }
-    grouped[item.id].quantity = isPmMember ? 1 : grouped[item.id].quantity + quantity;
-  });
-
-  return Object.values(grouped);
-}
-
-function getOrderTotals(cart) {
-  const grouped = groupCartItems(cart);
-  const subtotal = grouped.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const itemCount = grouped.reduce((sum, item) => sum + item.quantity, 0);
-  const hasPmMember = grouped.some(item => item.adminFee === 3000 || item.type === 'PM Member JKT48');
-  // Treat follower packages as exempt from regular admin fee
-  const hasRegularProduct = grouped.some(item => {
-    if (String(item.id || '').startsWith('digital-instagram-followers')) return false;
-    return !(item.adminFee === 3000 || item.type === 'PM Member JKT48');
-  });
-  const pmSubtotal = grouped
-    .filter(item => item.adminFee === 3000 || item.type === 'PM Member JKT48')
-    .reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const productSubtotal = subtotal - pmSubtotal;
-  const adminFee = (hasPmMember ? 3000 : 0) + (hasRegularProduct ? 10000 : 0);
-  const discount = 0;
-  const total = subtotal + adminFee - discount;
-
-  return { grouped, subtotal, pmSubtotal, productSubtotal, itemCount, adminFee, discount, total };
-}
-
-function renderCart() {
-  const cart = getCartItems();
-  const cartSection = document.getElementById('cart-items');
-  const summary = document.getElementById('cart-summary');
-  if (!cartSection) return;
-
-  cartSection.innerHTML = '';
-
-  if (cart.length === 0) {
-    cartSection.innerHTML = `
-      <div class="empty-order">
-        <strong>Keranjang masih kosong.</strong>
-        <span>Pilih PM member atau produk UMADIGI STORE terlebih dahulu.</span>
-        <a href="/index.html">Mulai Belanja</a>
-      </div>
-    `;
-    if (summary) summary.innerHTML = '';
-    return;
-  }
-
-  const totals = getOrderTotals(cart);
-
-  totals.grouped.forEach(item => {
-    const itemTotal = item.price * item.quantity;
-    const card = document.createElement('article');
-    card.className = 'cart-item';
-    const baseDesc = item.memberName ? `${item.generation} - ${item.memberName}` : item.type || item.category || 'Produk UMADIGI STORE';
-    const serviceDesc = item.service ? ` • ${item.service === 'refill' ? 'Refill' : 'Non-Refill'}` : '';
-    const description = item.targetAccount ? `Target: @${item.targetAccount}${serviceDesc}` : (baseDesc + serviceDesc);
-    card.innerHTML = `
-      <img src="${resolveImagePath(item.img)}" alt="${item.name}" class="cart-item-img" onerror="this.src='${fallbackImageForItem(item)}'">
-      <div class="cart-item-body">
-        <div class="cart-item-top">
-          <h3>${item.name}</h3>
-          <span>${item.quantity}x</span>
-        </div>
-        <p>${description}</p>
-        <div class="cart-price-row">
-          <strong>${formatRupiah(item.price)}</strong>
-          <span>Subtotal ${formatRupiah(itemTotal)}</span>
-        </div>
-        <button class="remove-btn" data-id="${item.id}">Hapus item</button>
-      </div>
-    `;
-    cartSection.appendChild(card);
-  });
-
-  if (summary) {
-    summary.innerHTML = createSummaryMarkup(totals, 'Ringkasan Keranjang');
-  }
-
-  cartSection.querySelectorAll('.remove-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const itemId = btn.getAttribute('data-id');
-      const newCart = cart.filter(item => item.id !== itemId);
-      localStorage.setItem('umaedi_cart', JSON.stringify(newCart));
-      renderCart();
-      window.dispatchEvent(new Event('cartUpdated'));
-    });
-  });
-}
-
-function createSummaryMarkup(totals, title) {
-  return `
-    <div class="summary-title">${title}</div>
-    <div class="summary-row">
-      <span>Total item</span>
-      <strong>${totals.itemCount} item</strong>
-    </div>
-    <div class="summary-row">
-      <span>Subtotal produk</span>
-      <strong>${formatRupiah(totals.subtotal)}</strong>
-    </div>
-    <div class="summary-row">
-      <span>Biaya admin</span>
-      <strong>${formatRupiah(totals.adminFee)}</strong>
-    </div>
-    <div class="summary-row muted">
-      <span>Diskon</span>
-      <strong>${formatRupiah(totals.discount)}</strong>
-    </div>
-    <div class="summary-total">
-      <span>Total pembayaran</span>
-      <strong>${formatRupiah(totals.total)}</strong>
-    </div>
-    <div class="summary-note">
-      Total ini akan dibayar lewat QRIS sebelum detail pesanan dikirim ke WhatsApp admin.
-    </div>
-  `;
-}
-
-function renderCheckout() {
-  const cart = getCartItems();
-  const summary = document.getElementById('checkout-summary');
-  if (!summary) return;
-
-  if (cart.length === 0) {
-    summary.innerHTML = `
-      <div class="empty-order">
-        <strong>Tidak ada item untuk checkout.</strong>
-        <span>Tambahkan produk ke keranjang terlebih dahulu.</span>
-        <a href="/index.html">Kembali Belanja</a>
-      </div>
-    `;
-    return;
-  }
-
-  const totals = getOrderTotals(cart);
-  const itemRows = totals.grouped.map((item, index) => {
-    const extra = item.followers ? `<small>Target: @${item.targetAccount} — ${item.followers} follower${item.service ? ` • ${item.service === 'refill' ? 'Refill' : 'Non-Refill'}` : ''}</small>` : (item.generation ? `<small>${item.generation}</small>` : '');
-    const priceLabel = item.followers ? `${formatRupiah(item.price)}` : `${item.quantity}x ${formatRupiah(item.price)}`;
-    return `
-      <div class="checkout-item-row">
-        <span>${index + 1}. ${item.name}${extra}</span>
-        <strong>${priceLabel}</strong>
-      </div>
-    `;
-  }).join('');
-
-  summary.innerHTML = `
-    <div class="summary-title">Detail Pesanan</div>
-    <div class="checkout-items">${itemRows}</div>
-    ${createSummaryMarkup(totals, 'Total Akhir')}
-  `;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('cart-items')) {
-    renderCart();
-  }
-  if (document.getElementById('checkout-summary')) {
-    renderCheckout();
-  }
 });
+
+// Load Keranjang dari Firestore (Realtime)
+function loadCartRealtime(uid) {
+    const cartRef = collection(db, "cart", uid, "items");
+
+    onSnapshot(cartRef, (snapshot) => {
+        if (snapshot.empty) {
+            cartItemsContainer.innerHTML = `
+                <div style="text-align: center; padding: 40px 0;">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">🛒</div>
+                    <h3 style="color: var(--text); margin-bottom: 10px;">Keranjang kamu masih kosong</h3>
+                    <p style="color: var(--muted); margin-bottom: 20px;">Yuk, temukan produk digital menarik!</p>
+                    <a href="home.html" style="padding: 10px 20px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px;">Mulai Belanja</a>
+                </div>`;
+            summaryBox.style.display = "none";
+            return;
+        }
+
+        cartItemsContainer.innerHTML = "";
+        let totalBelanja = 0;
+
+        snapshot.forEach((docSnap) => {
+            const item = docSnap.data();
+            const itemId = docSnap.id;
+            const subtotalItem = item.price * item.quantity;
+            totalBelanja += subtotalItem;
+
+            const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(item.price);
+
+            const cartHTML = `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">${formattedPrice}</div>
+                        <div class="qty-control">
+                            <button class="btn-qty btn-minus" data-id="${itemId}" data-qty="${item.quantity}">-</button>
+                            <span class="qty-number">${item.quantity}</span>
+                            <button class="btn-qty btn-plus" data-id="${itemId}" data-qty="${item.quantity}">+</button>
+                            <div style="flex:1;"></div>
+                            <button class="btn-delete" data-id="${itemId}">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            cartItemsContainer.insertAdjacentHTML('beforeend', cartHTML);
+        });
+
+        // Update Total UI
+        summaryBox.style.display = "block";
+        const formattedTotal = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalBelanja);
+        summarySubtotal.textContent = formattedTotal;
+        summaryTotal.textContent = formattedTotal;
+    });
+}
+
+// Menangani Klik tombol Plus, Minus, dan Delete (Event Delegation)
+cartItemsContainer.addEventListener("click", async (e) => {
+    if (!currentUserUid) return;
+
+    const target = e.target;
+    const itemId = target.getAttribute("data-id");
+    
+    if (target.classList.contains("btn-plus")) {
+        const currentQty = parseInt(target.getAttribute("data-qty"));
+        await updateDoc(doc(db, "cart", currentUserUid, "items", itemId), { quantity: currentQty + 1 });
+    } 
+    else if (target.classList.contains("btn-minus")) {
+        const currentQty = parseInt(target.getAttribute("data-qty"));
+        if (currentQty > 1) {
+            await updateDoc(doc(db, "cart", currentUserUid, "items", itemId), { quantity: currentQty - 1 });
+        } else {
+            // Jika quantity 1 dan dikurangi, konfirmasi hapus
+            if(confirm("Hapus produk ini dari keranjang?")) {
+                await deleteDoc(doc(db, "cart", currentUserUid, "items", itemId));
+            }
+        }
+    } 
+    else if (target.classList.contains("btn-delete") || target.closest(".btn-delete")) {
+        const delId = target.getAttribute("data-id") || target.closest(".btn-delete").getAttribute("data-id");
+        if(confirm("Yakin ingin menghapus produk ini?")) {
+            await deleteDoc(doc(db, "cart", currentUserUid, "items", delId));
+        }
+    }
+});
+
+// Navigasi ke Halaman Checkout
+const btnCheckout = document.getElementById("btn-checkout");
+if (btnCheckout) {
+    btnCheckout.addEventListener("click", () => {
+        window.location.href = "checkout.html";
+    });
+}

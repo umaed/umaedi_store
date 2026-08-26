@@ -1,212 +1,132 @@
-/* Product detail page */
-
-.detail-page {
-  padding-bottom: 90px;
+/* Layout Detail Produk */
+.detail-container {
+    padding: 0;
+    padding-bottom: 80px; /* Ruang untuk bottom nav & action buttons */
+    background-color: var(--background);
 }
 
-.product-detail {
-  overflow: hidden;
-  margin: 12px 0 16px;
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12);
-  backdrop-filter: blur(12px);
+.product-image-large {
+    width: 100%;
+    height: 350px;
+    background-color: #e5e7eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
-.detail-media {
-  position: relative;
-  min-height: 300px;
-  background: #f1f5f9;
+.product-image-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.detail-media img {
-  width: 100%;
-  height: 100%;
-  min-height: 300px;
-  object-fit: cover;
-  display: block;
-}
-
-.detail-floating-badge {
-  position: absolute;
-  left: 14px;
-  top: 14px;
-  padding: 7px 10px;
-  border-radius: 999px;
-  color: #fff;
-  background: rgba(17, 24, 39, 0.78);
-  backdrop-filter: blur(8px);
-  font-size: 0.76rem;
-  font-weight: 900;
-}
-
-.detail-content {
-  padding: 16px;
+.product-info-detail {
+    background-color: var(--surface);
+    padding: 20px;
+    border-radius: 20px 20px 0 0;
+    margin-top: -20px;
+    position: relative;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
 }
 
 .detail-category {
-  width: fit-content;
-  padding: 6px 10px;
-  border-radius: 999px;
-  color: #0f766e;
-  background: #ccfbf1;
-  font-size: 0.76rem;
-  font-weight: 900;
-  text-transform: uppercase;
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
 }
 
 .detail-title {
-  margin: 12px 0 0;
-  color: #111827;
-  font-size: clamp(1.6rem, 8vw, 2.4rem);
-  line-height: 1.05;
-}
-
-.detail-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 12px 0;
-  color: #64748b;
-  font-size: 0.88rem;
-  font-weight: 800;
-}
-
-.detail-price-box {
-  margin: 14px 0;
-  padding: 14px;
-  border-radius: 16px;
-  background: #eef2ff;
+    font-size: 1.4rem;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.3;
 }
 
 .detail-price {
-  display: block;
-  color: #4f46e5;
-  font-size: 1.8rem;
-  font-weight: 900;
+    font-size: 1.5rem;
+    color: var(--text);
+    font-weight: 700;
+    margin-bottom: 20px;
 }
 
-.detail-original {
-  color: #94a3b8;
-  text-decoration: line-through;
-  font-weight: 800;
+.detail-section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    color: var(--text);
 }
 
 .detail-description {
-  margin: 0;
-  color: #475569;
-  line-height: 1.7;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
-.detail-alert {
-  margin-top: 12px;
-  padding: 12px;
-  border: 1px solid #c7d2fe;
-  border-radius: 14px;
-  color: #3730a3;
-  background: #eef2ff;
-  font-size: 0.9rem;
-  font-weight: 850;
-  line-height: 1.5;
+/* Action Buttons (Sticky di bawah) */
+.action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--surface);
+    padding: 15px 20px;
+    display: flex;
+    gap: 15px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
 }
 
-.detail-benefits {
-  display: grid;
-  gap: 8px;
-  margin: 16px 0 0;
+.btn-icon {
+    padding: 12px;
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    border-radius: 12px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text);
+    transition: var(--transition);
 }
 
-.detail-benefit {
-  display: flex;
-  gap: 10px;
-  align-items: start;
-  padding: 11px;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  background: #fff;
-  color: #334155;
-  line-height: 1.45;
-  font-weight: 700;
+.btn-icon:hover {
+    border-color: var(--danger);
+    color: var(--danger);
 }
 
-.detail-benefit span {
-  flex: 0 0 auto;
-  color: #4f46e5;
-  font-weight: 900;
+.btn-cart {
+    flex: 1;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
-.detail-actions {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 80;
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 10px;
-  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
-  border-top: 1px solid #e5e7eb;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(14px);
+.btn-cart:hover {
+    background-color: #4338ca;
 }
 
-.detail-action-btn {
-  min-height: 50px;
-  border: 0;
-  border-radius: 14px;
-  cursor: pointer;
-  font-weight: 900;
-}
-
-.detail-action-btn.secondary {
-  color: #4f46e5;
-  background: #eef2ff;
-  border: 1px solid #c7d2fe;
-}
-
-.detail-action-btn.primary {
-  color: #fff;
-  background: #6366f1;
-  box-shadow: 0 14px 26px rgba(99, 102, 241, 0.25);
-}
-
-.detail-action-btn:disabled {
-  color: #fff;
-  background: #94a3b8;
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-.detail-empty {
-  margin: 18px 0;
-  padding: 28px 18px;
-  border: 1px dashed #cbd5e1;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.9);
-  text-align: center;
-}
-
-.detail-empty a {
-  color: #4f46e5;
-  font-weight: 900;
-}
-
-@media (min-width: 820px) {
-  .detail-page {
-    max-width: 900px;
-  }
-
-  .product-detail {
-    display: grid;
-    grid-template-columns: 0.95fr 1.05fr;
-  }
-
-  .detail-actions {
-    width: min(900px, calc(100% - 28px));
-    left: 50%;
-    transform: translateX(-50%);
-    border: 1px solid #e5e7eb;
-    border-radius: 18px 18px 0 0;
-  }
+/* Responsive Desktop */
+@media (min-width: 768px) {
+    .detail-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        max-width: 1000px;
+        margin: 40px auto;
+        background-color: var(--surface);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+        padding-bottom: 0;
+    }
+    .product-image-large { height: 100%; min-height: 400px; }
+    .product-info-detail { margin-top: 0; border-radius: 0; box-shadow: none; padding: 40px; }
+    .action-bar { position: relative; padding: 20px 0 0 0; box-shadow: none; }
 }

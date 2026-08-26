@@ -1,13 +1,13 @@
 # Firebase Realtime Database
 
-Integrasi realtime menyimpan order pada path `orders/{anonymous-user-id}/{order-id}`.
+Integrasi realtime menyimpan order pada path `orders/{user-id}/{order-id}`.
 Status dapat diubah dari Firebase Console dan akan tampil otomatis di halaman `pages/riwayat.html`.
 
 ## Aktivasi
 
 1. Buka Firebase Console untuk project `umadigi-store`.
 2. Aktifkan **Realtime Database**.
-3. Di **Authentication > Sign-in method**, aktifkan provider **Anonymous**.
+3. Di **Authentication > Sign-in method**, aktifkan provider **Email/Password**. Pengguna tetap tidak memasukkan email; aplikasi memakai email internal berdasarkan username.
 4. Di **Realtime Database > Rules**, gunakan rules berikut:
 
 ```json
@@ -19,6 +19,19 @@ Status dapat diubah dari Firebase Console dan akan tampil otomatis di halaman `p
         "$orderId": {
           ".write": "auth != null && auth.uid === $uid"
         }
+      },
+      ".indexOn": ["username"]
+    },
+    "usernames": {
+      "$username": {
+        ".read": "auth != null",
+        ".write": "auth != null && !data.exists()"
+      }
+    },
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid"
       }
     }
   }

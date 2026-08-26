@@ -317,9 +317,6 @@ function addMemberToCart(memberId, button) {
   if (window.toast) {
     window.toast.success(`PM ${member.name} masuk keranjang`, 1800);
   }
-  if (window.showLiveActivity) {
-    window.showLiveActivity(`${window.getUmadigiUserName?.() || 'User'} telah memesan PM ${member.name}`, { priority: true });
-  }
 
   lockMemberButton(button);
 

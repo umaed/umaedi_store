@@ -1238,9 +1238,6 @@ function runGacha() {
     } else if (window.toast) {
       window.toast.info(`Kamu mendapatkan ${item.rank}: ${item.name}`, 1800);
     }
-    if (window.showLiveActivity) {
-      window.showLiveActivity(`${window.getUmadigiUserName?.() || 'User'} mendapatkan kartu ${item.name} ${item.rank}`, { priority: true });
-    }
 
     saveEventState(nextState);
     playCardSlideSound();

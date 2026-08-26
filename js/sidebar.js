@@ -2,6 +2,8 @@
  * UMADIGI STORE navigation system
  */
 
+import('./firebase.js').catch(error => console.warn('Modul akun tidak tersedia:', error));
+
 const UMADIGI_ACCOUNT_KEY = 'umadigi_account_profile';
 
 function createGuestProfile() {
@@ -31,97 +33,6 @@ function getProfileInitial(name) {
 window.getUmadigiUserName = function getUmadigiUserName() {
   return getUmadigiProfile()?.name || 'User';
 };
-
-const LIVE_ACTIVITY_NAMES = [
-  'User23',
-  'User1',
-  'User4',
-  'User5',
-  'Andri',
-  'Meldan Kece',
-  'Anggi Kiut',
-  'Rehan Punya Lily',
-  'Rakha',
-  'Rikynya Oline',
-  'Farhan',
-  'Kamunanya',
-  'Ikynya Delyn',
-  'Rehanmanuel',
-  'Devi Gablie',
-  'Gk Tau',
-  'Umaedi',
-  'Melisa',
-  'User34',
-  'Naufal',
-  'Raka'
-];
-
-const LIVE_ACTIVITY_PRODUCTS = [
-  'PM Oline Manuel',
-  'PM Catherina Vallencia',
-  'PM Lily',
-  'Creator Starter Bundle',
-  'UMADIGI Signature Hoodie',
-  'Lightroom Preset Warm Pro',
-  'Cinematic Mobile Filter Set',
-  'Techwear Daily Jacket'
-];
-
-const liveActivityQueue = [];
-let liveActivityBusy = false;
-let liveActivityTimer = null;
-
-function getLiveActivityName(index = Math.floor(Math.random() * LIVE_ACTIVITY_NAMES.length)) {
-  return LIVE_ACTIVITY_NAMES[index % LIVE_ACTIVITY_NAMES.length];
-}
-
-function getRandomLiveActivityMessage() {
-  const name = getLiveActivityName();
-  const product = LIVE_ACTIVITY_PRODUCTS[Math.floor(Math.random() * LIVE_ACTIVITY_PRODUCTS.length)];
-  const messages = [
-    `${name} telah membeli ${product}`,
-    `${name} telah menambahkan ${product} ke cart`,
-    `${name} sedang checkout ${product}`,
-    `${name} memasukkan ${product} ke keranjang`,
-    `${name} mendapatkan voucher diskon`
-  ];
-  return messages[Math.floor(Math.random() * messages.length)];
-}
-
-function playLiveActivityQueue() {
-  if (liveActivityBusy || !liveActivityQueue.length) return;
-  const holder = document.getElementById('liveActivityFloat');
-  if (!holder) return;
-
-  liveActivityBusy = true;
-  holder.innerHTML = `<span>${liveActivityQueue.shift()}</span>`;
-  holder.classList.remove('is-visible');
-  window.requestAnimationFrame(() => holder.classList.add('is-visible'));
-
-  window.setTimeout(() => {
-    holder.classList.remove('is-visible');
-    liveActivityBusy = false;
-    window.setTimeout(playLiveActivityQueue, 700);
-  }, 4800);
-}
-
-window.showLiveActivity = function showLiveActivity(message, options = {}) {
-  if (!message) return;
-  if (options.priority) {
-    liveActivityQueue.unshift(message);
-  } else {
-    liveActivityQueue.push(message);
-  }
-  playLiveActivityQueue();
-};
-
-function scheduleFakeLiveActivity() {
-  window.clearTimeout(liveActivityTimer);
-  liveActivityTimer = window.setTimeout(() => {
-    window.showLiveActivity(getRandomLiveActivityMessage());
-    scheduleFakeLiveActivity();
-  }, Math.floor(Math.random() * 8000) + 9000);
-}
 
 document.addEventListener('DOMContentLoaded', () => {
   const navbar = document.getElementById('navbar');
@@ -213,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>Akun Kamu</span>
           <strong id="sidebarAccountName">${savedProfile?.name || 'Belum masuk'}</strong>
         </div>
-        <button id="editAccountButton" type="button">Ubah</button>
+        <button id="editAccountButton" type="button">Masuk</button>
       </div>
       <div class="sidebar-promo">
         <strong>UMADIGI Care</strong>
@@ -225,12 +136,18 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="account-modal" id="accountModal" hidden>
       <div class="account-modal-card">
         <span class="account-modal-badge">UMADIGI ACCOUNT</span>
-        <h2>Masuk Pakai Nama</h2>
-        <p>Isi nama supaya aktivitas toko dan menu terasa lebih personal. Email tidak dibutuhkan.</p>
-        <input id="accountNameInput" type="text" maxlength="28" placeholder="Contoh: Umaedi" autocomplete="name">
+        <h2 id="accountModalTitle">Masuk ke akun</h2>
+        <p id="accountModalDescription">Gunakan username dan kata sandi kamu. Email tidak diperlukan.</p>
+        <div class="account-mode-switch" role="tablist" aria-label="Mode akun">
+          <button id="loginModeButton" type="button" class="is-active">Masuk</button>
+          <button id="registerModeButton" type="button">Buat akun</button>
+        </div>
+        <input id="accountNameInput" type="text" maxlength="20" placeholder="Username" autocomplete="username">
+        <input id="accountPasswordInput" type="password" minlength="6" placeholder="Kata sandi (minimal 6 karakter)" autocomplete="current-password">
+        <small id="accountFeedback" class="account-feedback" role="alert"></small>
         <div class="account-modal-actions">
           <button id="saveAccountButton" type="button">Masuk</button>
-          <button id="skipAccountButton" type="button">Lewati</button>
+          <button id="skipAccountButton" type="button">Nanti</button>
         </div>
       </div>
     </div>
@@ -268,11 +185,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('headerSearchInput');
   const accountModal = document.getElementById('accountModal');
   const accountNameInput = document.getElementById('accountNameInput');
+  const accountPasswordInput = document.getElementById('accountPasswordInput');
+  const accountFeedback = document.getElementById('accountFeedback');
+  const accountModalTitle = document.getElementById('accountModalTitle');
+  const accountModalDescription = document.getElementById('accountModalDescription');
+  const loginModeButton = document.getElementById('loginModeButton');
+  const registerModeButton = document.getElementById('registerModeButton');
   const saveAccountButton = document.getElementById('saveAccountButton');
   const skipAccountButton = document.getElementById('skipAccountButton');
   const editAccountButton = document.getElementById('editAccountButton');
   const sidebarAccountName = document.getElementById('sidebarAccountName');
   const sidebarAccountAvatar = document.getElementById('sidebarAccountAvatar');
+  let accountMode = 'login';
 
   const updateAccountUI = profile => {
     if (sidebarAccountName) sidebarAccountName.textContent = profile?.name || 'User';
@@ -283,9 +207,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!accountModal) return;
     const profile = getUmadigiProfile();
     accountNameInput.value = profile?.isGuest ? '' : profile?.name || '';
+    accountPasswordInput.value = '';
+    accountFeedback.textContent = '';
     accountModal.hidden = false;
     document.body.classList.add('account-modal-open');
     setTimeout(() => accountNameInput?.focus(), 80);
+  };
+
+  const setAccountMode = mode => {
+    accountMode = mode;
+    const registering = mode === 'register';
+    accountModalTitle.textContent = registering ? 'Buat akun baru' : 'Masuk ke akun';
+    accountModalDescription.textContent = registering ? 'Buat username unik dan kata sandi. Email tidak diperlukan.' : 'Gunakan username dan kata sandi kamu. Email tidak diperlukan.';
+    accountPasswordInput.placeholder = registering ? 'Buat kata sandi (minimal 6 karakter)' : 'Kata sandi';
+    saveAccountButton.textContent = registering ? 'Daftar' : 'Masuk';
+    loginModeButton.classList.toggle('is-active', !registering);
+    registerModeButton.classList.toggle('is-active', registering);
+    accountFeedback.textContent = '';
   };
 
   const closeAccountModal = () => {
@@ -318,12 +256,40 @@ document.addEventListener('DOMContentLoaded', () => {
   sidebarClose.addEventListener('click', closeSidebar);
   sidebarOverlay.addEventListener('click', closeSidebar);
   editAccountButton?.addEventListener('click', openAccountModal);
-  saveAccountButton?.addEventListener('click', () => {
-    const name = accountNameInput.value.trim().replace(/\s+/g, ' ');
-    finishAccount(name ? { name, isGuest: false } : createGuestProfile());
+  loginModeButton?.addEventListener('click', () => setAccountMode('login'));
+  registerModeButton?.addEventListener('click', () => setAccountMode('register'));
+  saveAccountButton?.addEventListener('click', async () => {
+    const username = accountNameInput.value.trim();
+    const password = accountPasswordInput.value;
+    if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+      accountFeedback.textContent = 'Username 3-20 karakter: huruf, angka, atau garis bawah.';
+      return;
+    }
+    if (password.length < 6) {
+      accountFeedback.textContent = 'Kata sandi minimal 6 karakter.';
+      return;
+    }
+    if (!window.firebaseStore) {
+      accountFeedback.textContent = 'Sistem akun sedang dimuat, coba lagi sebentar.';
+      return;
+    }
+    saveAccountButton.disabled = true;
+    accountFeedback.textContent = 'Memproses...';
+    try {
+      const profile = accountMode === 'register'
+        ? await window.firebaseStore.createAccount(username, password)
+        : await window.firebaseStore.login(username, password);
+      finishAccount({ name: profile.username, uid: profile.uid, isGuest: false });
+    } catch (error) {
+      accountFeedback.textContent = error.message === 'USERNAME_TAKEN'
+        ? 'Username telah digunakan.'
+        : accountMode === 'register' ? 'Akun gagal dibuat. Username mungkin sudah digunakan.' : 'Username atau kata sandi salah.';
+    } finally {
+      saveAccountButton.disabled = false;
+    }
   });
   skipAccountButton?.addEventListener('click', () => finishAccount(createGuestProfile()));
-  accountNameInput?.addEventListener('keydown', event => {
+  accountPasswordInput?.addEventListener('keydown', event => {
     if (event.key === 'Enter') saveAccountButton?.click();
   });
 
@@ -358,12 +324,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   updateCartCount();
+  setAccountMode(savedProfile?.isGuest ? 'register' : 'login');
   if (!savedProfile) {
     openAccountModal();
   } else {
     updateAccountUI(savedProfile);
   }
-  scheduleFakeLiveActivity();
 });
 
 window.playUmadigiSound = function playUmadigiSound() {

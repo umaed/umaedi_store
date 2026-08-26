@@ -178,9 +178,6 @@ function addToCart(product, btn) {
   if (window.toast) {
     window.toast.success(`${product.name} masuk keranjang`, 1800);
   }
-  if (window.showLiveActivity) {
-    window.showLiveActivity(`${window.getUmadigiUserName?.() || 'User'} telah menambahkan ${product.name} ke cart`, { priority: true });
-  }
 
   btn.textContent = 'Ditambahkan';
   btn.classList.add('is-added');

@@ -497,6 +497,45 @@
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
 }
 
+.account-mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 14px 0 10px;
+  padding: 4px;
+  border-radius: 12px;
+  background: #f1f5f9;
+}
+
+.account-mode-switch button {
+  min-height: 36px;
+  border: 0;
+  border-radius: 9px;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.account-mode-switch button.is-active {
+  color: var(--ink);
+  background: #fff;
+  box-shadow: 0 2px 7px rgba(15, 23, 42, 0.1);
+}
+
+#accountPasswordInput {
+  margin-top: 10px;
+}
+
+.account-feedback {
+  display: block;
+  min-height: 20px;
+  margin-top: 8px;
+  color: #b42318;
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+
 .account-modal-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -1,46 +1,57 @@
 import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-import { 
-    collection, doc, getDoc, getDocs, addDoc, writeBatch, serverTimestamp 
-} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import { collection, doc, getDoc, getDocs, addDoc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 const checkoutForm = document.getElementById("checkout-form");
 const loadingIndicator = document.getElementById("checkout-loading");
 const itemsListContainer = document.getElementById("co-items-list");
+const paymentSelect = document.getElementById("co-payment");
+const instructionBox = document.getElementById("payment-instruction");
+const proofInput = document.getElementById("co-proof");
+const btnSubmit = document.getElementById("btn-process-order");
 
 let currentUser = null;
 let cartItemsData = [];
 let orderTotal = 0;
+let proofBase64 = ""; // Variabel untuk menyimpan gambar bukti transfer
 
-// Format Rupiah
 const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+
+// Nomor Rekening Tujuan (Atas Nama UMAEDI)
+const rekeningInfo = {
+    "DANA": "0812-XXXX-XXXX",
+    "GoPay": "0812-XXXX-XXXX",
+    "OVO": "0812-XXXX-XXXX",
+    "SeaBank": "9012-XXXX-XXXX",
+    "Krom": "8888-XXXX-XXXX",
+    "Bank Jago": "1011-XXXX-XXXX"
+};
 
 // 1. Cek Login & Ambil Data
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         currentUser = user;
         await prepareCheckoutData(user.uid);
+        updatePaymentInstruction(); // Panggil instruksi default (QRIS)
     } else {
-        window.location.href = "login.html";
+        window.location.replace("login.html");
     }
 });
 
 async function prepareCheckoutData(uid) {
     try {
-        // Ambil Data Profil User
         const userSnap = await getDoc(doc(db, "users", uid));
         if (userSnap.exists()) {
             document.getElementById("co-name").value = userSnap.data().name;
             document.getElementById("co-email").value = userSnap.data().email;
         }
 
-        // Ambil Data Keranjang
         const cartRef = collection(db, "cart", uid, "items");
         const cartSnapshot = await getDocs(cartRef);
         
         if (cartSnapshot.empty) {
-            alert("Keranjang belanja kosong. Silakan belanja terlebih dahulu.");
-            window.location.href = "home.html";
+            alert("Keranjang belanja kosong.");
+            window.location.replace("home.html");
             return;
         }
 
@@ -49,9 +60,8 @@ async function prepareCheckoutData(uid) {
 
         cartSnapshot.forEach((docSnap) => {
             const item = docSnap.data();
-            item.cartDocId = docSnap.id; // Simpan ID dokumen untuk dihapus nanti
+            item.cartDocId = docSnap.id;
             cartItemsData.push(item);
-            
             const subtotalItem = item.price * item.quantity;
             orderTotal += subtotalItem;
 
@@ -68,72 +78,104 @@ async function prepareCheckoutData(uid) {
 
         document.getElementById("co-subtotal").textContent = formatRp(orderTotal);
         document.getElementById("co-total").textContent = formatRp(orderTotal);
-
-        // Tampilkan Form
         loadingIndicator.style.display = "none";
         checkoutForm.style.display = "grid";
 
     } catch (error) {
         console.error("Error mempersiapkan checkout:", error);
-        loadingIndicator.textContent = "Terjadi kesalahan saat memuat data.";
     }
 }
 
-// 2. Proses Buat Pesanan
+// 2. Controller UI Metode Pembayaran Dinamis
+// 2. Controller UI Metode Pembayaran Dinamis
+function updatePaymentInstruction() {
+    const method = paymentSelect.value;
+    if (method === "QRIS") {
+        // Path gambar sudah diperbarui ke folder assets/img/qris.png
+        instructionBox.innerHTML = `
+            <h4 style="margin-bottom: 10px;">Scan QRIS di bawah ini</h4>
+            <img src="../assets/img/qris.png" alt="QRIS Umaedi" style="max-width: 250px; border-radius: 8px; margin: 10px 0;" onerror="this.src='https://via.placeholder.com/200?text=Gambar+QRIS'">
+            <p>Pastikan nominal transfer tepat sebesar <strong>${formatRp(orderTotal)}</strong></p>
+            <p style="font-size: 0.85rem; color: var(--muted);">a/n UMAEDI</p>
+        `;
+    } else if (rekeningInfo[method]) {
+        instructionBox.innerHTML = `
+            <h4 style="margin-bottom: 10px;">Transfer melalui ${method}</h4>
+            <p>Silakan transfer tepat sebesar <strong>${formatRp(orderTotal)}</strong> ke:</p>
+            <div class="rek-details">
+                ${rekeningInfo[method]}<br>
+                <span style="font-size: 0.9rem; font-weight: normal; color: var(--text);">a/n UMAEDI</span>
+            </div>
+        `;
+    } else {
+        instructionBox.innerHTML = `<p>Pilih metode pembayaran terlebih dahulu.</p>`;
+    }
+}
+
+// 3. Konversi Gambar ke Base64 & Ubah Status Tombol
+proofInput.addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            proofBase64 = e.target.result; // Simpan data gambar
+            btnSubmit.textContent = "Bukti Terlampir - Buat Pesanan";
+            btnSubmit.style.backgroundColor = "var(--primary)";
+        };
+        reader.readAsDataURL(file);
+    } else {
+        proofBase64 = "";
+        btnSubmit.textContent = "Menunggu Bukti Transfer";
+    }
+});
+
+// 4. Proses Submit Pesanan
 checkoutForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    
-    const btnSubmit = document.getElementById("btn-process-order");
-    btnSubmit.disabled = true;
-    btnSubmit.textContent = "Memproses Pesanan...";
+    if (!proofBase64) {
+        alert("Harap upload bukti pembayaran terlebih dahulu!");
+        return;
+    }
 
-    const paymentMethod = document.getElementById("co-payment").value;
-    const notes = document.getElementById("co-notes").value;
-    const phone = document.getElementById("co-phone").value;
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = "Mengunggah & Memproses...";
 
     try {
-        // A. Buat Dokumen Pesanan di koleksi 'orders'
         const orderData = {
             userId: currentUser.uid,
             customerName: document.getElementById("co-name").value,
             customerEmail: document.getElementById("co-email").value,
-            customerPhone: phone,
+            customerPhone: document.getElementById("co-phone").value,
             items: cartItemsData.map(item => ({
                 productId: item.productId,
                 name: item.name,
                 price: item.price,
-                quantity: item.quantity,
-                image: item.image
+                quantity: item.quantity
             })),
-            subtotal: orderTotal,
-            discount: 0,
             total: orderTotal,
-            paymentMethod: paymentMethod,
-            paymentStatus: "pending", // Status pembayaran awal
-            orderStatus: "pending", // Status pesanan awal
-            notes: notes,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
+            paymentMethod: paymentSelect.value,
+            paymentProof: proofBase64, // Kirim gambar ke database
+            orderStatus: "pending", 
+            notes: document.getElementById("co-notes").value,
+            createdAt: serverTimestamp()
         };
 
-        const newOrderRef = await addDoc(collection(db, "orders"), orderData);
+        await addDoc(collection(db, "orders"), orderData);
         
-        // B. Kosongkan Keranjang menggunakan Batch (Lebih aman & cepat)
+        // Kosongkan keranjang
         const batch = writeBatch(db);
         cartItemsData.forEach(item => {
-            const cartDocRef = doc(db, "cart", currentUser.uid, "items", item.cartDocId);
-            batch.delete(cartDocRef);
+            batch.delete(doc(db, "cart", currentUser.uid, "items", item.cartDocId));
         });
         await batch.commit();
 
-        // C. Sukses, Arahkan ke halaman Orders
-        alert("Pesanan berhasil dibuat!");
-        window.location.replace("orders.html"); // Nanti kita buat di Step 15
+        alert("Pesanan berhasil dikirim dan sedang diverifikasi!");
+        window.location.replace("orders.html");
 
     } catch (error) {
         console.error("Error membuat pesanan:", error);
-        alert("Gagal membuat pesanan. Silakan coba lagi.");
+        alert("Gagal memproses pesanan.");
         btnSubmit.disabled = false;
-        btnSubmit.textContent = "Buat Pesanan";
+        btnSubmit.textContent = "Bukti Terlampir - Buat Pesanan";
     }
 });

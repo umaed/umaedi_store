@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencarian - UmaDigi Store V2</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/cards.css">
+    <style>
+        .search-bar-container { padding: 15px 20px; background: var(--surface); display: flex; gap: 10px; align-items: center; box-shadow: var(--shadow-sm); position: sticky; top: 0; z-index: 100; }
+        .search-input { flex: 1; padding: 10px 15px; border: 1px solid var(--border); border-radius: 20px; font-family: inherit; font-size: 0.95rem; outline: none; }
+        .search-input:focus { border-color: var(--primary); }
+    </style>
+</head>
+<body>
+    <div class="search-bar-container">
+        <button class="icon-btn" onclick="window.history.back()">🔙</button>
+        <input type="text" id="search-input" class="search-input" placeholder="Cari nama produk digital..." autofocus>
+    </div>
+
+    <main style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+        <div class="product-grid" id="search-results-grid">
+            <p style="grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 40px;">Ketik kata kunci untuk mulai mencari produk.</p>
+        </div>
+    </main>
+
+    <script type="module" src="../js/app.js"></script>
+    <script type="module">
+        import { db } from "../js/firebase-config.js";
+        import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+        const input = document.getElementById("search-input");
+        const grid = document.getElementById("search-results-grid");
+        let cachedProducts = [];
+
+        // Ambil data produk sekali untuk pencarian cepat di sisi client
+        async function loadCache() {
+            const snap = await getDocs(query(collection(db, "products"), where("isActive", "==", true)));
+            cachedProducts = [];
+            snap.forEach(d => cachedProducts.push({ id: d.id, ...d.data() }));
+        }
+        loadCache();
+
+        input.addEventListener("input", (e) => {
+            const keyword = e.target.value.toLowerCase().trim();
+            if (!keyword) {
+                grid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 40px;">Ketik kata kunci untuk mulai mencari produk.</p>`;
+                return;
+            }
+
+            const results = cachedProducts.filter(p => p.name.toLowerCase().includes(keyword) || (p.categoryName && p.categoryName.toLowerCase().includes(keyword)));
+
+            if (results.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 40px;">Produk "${keyword}" tidak ditemukan.</p>`;
+                return;
+            }
+
+            grid.innerHTML = "";
+            results.forEach(data => {
+                const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(data.price);
+                grid.insertAdjacentHTML('beforeend', `
+                    <a href="product-detail.html?id=${data.id}" class="product-card">
+                        <div class="product-image-container">
+                            <img src="${data.image || 'https://via.placeholder.com/300'}" alt="${data.name}" class="product-image" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">${data.categoryName || 'Digital'}</span>
+                            <h3 class="product-title">${data.name}</h3>
+                            <span class="product-price">${formattedPrice}</span>
+                        </div>
+                    </a>
+                `);
+            });
+        });
+    </script>
+</body>
+</html>

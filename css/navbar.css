@@ -76,3 +76,20 @@
         padding-bottom: 70px; /* Ruang agar konten tidak tertutup bottom nav */
     }
 }
+
+/* Branding Navbar dengan Logo */
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.nav-logo {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 6px;
+}

@@ -4,19 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - UmaDigi Store V2</title>
+    <!-- Favicon / Ikon Tab Browser -->
+    <link rel="icon" type="image/png" href="../img/logo.png">
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/components.css">
 </head>
 <body>
     <!-- Top Navbar -->
-    <header class="navbar">
-        <a href="home.html" class="nav-brand">UmaDigi Store</a>
-        <div class="nav-actions">
-            <button class="icon-btn" aria-label="Search">🔍</button>
-            <button class="icon-btn" aria-label="Notifications">🔔</button>
-        </div>
-    </header>
+   <header class="navbar">
+    <a href="home.html" class="nav-brand">
+        <!-- Logo Gambar -->
+        <img src="/assets/img/brand.png" alt="UmaDigi Logo" class="nav-logo">
+        <span>UmaDigi Store</span>
+    </a>
+    <div class="nav-actions">
+        <button class="icon-btn" onclick="window.location.href='search.html'" aria-label="Search">🔍</button>
+        <button class="icon-btn" onclick="window.location.href='notifications.html'" aria-label="Notifications">🔔</button>
+    </div>
+</header>
 
     <!-- Main Content -->
     <main>
@@ -55,7 +64,7 @@
             <span>🏠</span>
             <span>Home</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="explore.html" class="nav-item">
             <span>🧭</span>
             <span>Explore</span>
         </a>

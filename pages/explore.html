@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore - UmaDigi Store V2</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/cards.css">
+</head>
+<body>
+    <header class="navbar">
+        <a href="home.html" class="nav-brand">Eksplorasi Produk</a>
+        <div class="nav-actions">
+            <button class="icon-btn" onclick="window.location.href='search.html'" aria-label="Search">🔍</button>
+        </div>
+    </header>
+
+    <main style="padding: 20px; padding-bottom: 100px; max-width: 1200px; margin: 0 auto;">
+        <!-- Kategori Filter -->
+        <div class="categories-scroll" style="margin-bottom: 20px; padding: 0;">
+            <button class="category-chip active" onclick="filterCategory('Semua', this)">Semua</button>
+            <button class="category-chip" onclick="filterCategory('Digital', this)">Digital</button>
+            <button class="category-chip" onclick="filterCategory('Template', this)">Template</button>
+            <button class="category-chip" onclick="filterCategory('Preset', this)">Preset</button>
+            <button class="category-chip" onclick="filterCategory('Design', this)">Design</button>
+        </div>
+
+        <!-- Grid Produk Explore -->
+        <div class="product-grid" id="explore-products-grid">
+            <p style="grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 40px;">Memuat katalog...</p>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item"><span>🏠</span><span>Home</span></a>
+        <a href="explore.html" class="nav-item active"><span>🧭</span><span>Explore</span></a>
+        <a href="orders.html" class="nav-item"><span>📦</span><span>Orders</span></a>
+        <a href="wishlist.html" class="nav-item"><span>❤️</span><span>Wishlist</span></a>
+        <a href="profile.html" class="nav-item"><span>👤</span><span>Profile</span></a>
+    </nav>
+
+    <script type="module" src="../js/app.js"></script>
+    <script type="module">
+        import { db } from "../js/firebase-config.js";
+        import { collection, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+        const grid = document.getElementById("explore-products-grid");
+        let allProducts = [];
+
+        // Ambil semua produk aktif
+        onSnapshot(query(collection(db, "products"), where("isActive", "==", true)), (snapshot) => {
+            allProducts = [];
+            snapshot.forEach(docSnap => {
+                allProducts.push({ id: docSnap.id, ...docSnap.data() });
+            });
+            renderProducts(allProducts);
+        });
+
+        window.filterCategory = (category, element) => {
+            document.querySelectorAll('.category-chip').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            if (category === 'Semua') {
+                renderProducts(allProducts);
+            } else {
+                const filtered = allProducts.filter(p => p.categoryName && p.categoryName.toLowerCase() === category.toLowerCase());
+                renderProducts(filtered);
+            }
+        };
+
+        function renderProducts(products) {
+            if (products.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 40px;">Tidak ada produk dalam kategori ini.</p>`;
+                return;
+            }
+            grid.innerHTML = "";
+            products.forEach(data => {
+                const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(data.price);
+                grid.insertAdjacentHTML('beforeend', `
+                    <a href="product-detail.html?id=${data.id}" class="product-card">
+                        <div class="product-image-container">
+                            <img src="${data.image || 'https://via.placeholder.com/300'}" alt="${data.name}" class="product-image" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">${data.categoryName || 'Digital'}</span>
+                            <h3 class="product-title">${data.name}</h3>
+                            <span class="product-price">${formattedPrice}</span>
+                        </div>
+                    </a>
+                `);
+            });
+        }
+    </script>
+</body>
+</html>

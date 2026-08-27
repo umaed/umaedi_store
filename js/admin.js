@@ -7,13 +7,16 @@ import {
 const guardLoading = document.getElementById("admin-guard-loading");
 const adminDashboard = document.getElementById("admin-dashboard-content");
 
-// 1. Verifikasi Keamanan Role Admin dari Firestore
+// Variabel untuk menyimpan data lokal agar bisa di-search
+let productsData = [];
+let ordersData = [];
+
+// 1. Verifikasi Keamanan Role Admin
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         try {
             const userDoc = await getDoc(doc(db, "users", user.uid));
             if (userDoc.exists() && userDoc.data().role === "admin") {
-                // LOLOS: Tampilkan Dashboard Admin
                 guardLoading.style.display = "none";
                 adminDashboard.style.display = "block";
                 initAdminDashboard();
@@ -30,86 +33,147 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
+const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+
 function initAdminDashboard() {
-    const totalProductsEl = document.getElementById("stat-total-products");
-    const totalOrdersEl = document.getElementById("stat-total-orders");
-    const productsTable = document.getElementById("admin-products-table");
-    const ordersTable = document.getElementById("admin-orders-table");
-
-    // A. Realtime Listener Produk
+    // --- REALTIME LISTENER PRODUK ---
     onSnapshot(collection(db, "products"), (snapshot) => {
-        totalProductsEl.textContent = snapshot.size;
-        productsTable.innerHTML = "";
-
-        if (snapshot.empty) {
-            productsTable.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--muted);">Belum ada produk.</td></tr>`;
-            return;
-        }
-
-        snapshot.forEach((docSnap) => {
-            const p = docSnap.data();
-            const formatRp = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p.price);
-
-            productsTable.innerHTML += `
-                <tr>
-                    <td><strong>${p.name}</strong></td>
-                    <td>${p.categoryName || '-'}</td>
-                    <td>${formatRp}</td>
-                    <td><span style="color: ${p.isActive ? 'var(--success)' : 'var(--danger)'}; font-weight:bold;">${p.isActive ? 'Aktif' : 'Nonaktif'}</span></td>
-                    <td>
-                        <button class="btn-toggle-status" data-id="${docSnap.id}" data-active="${p.isActive}" style="padding: 5px 10px; cursor:pointer; background:var(--border); border:none; border-radius:4px;">Toggle</button>
-                        <button class="btn-delete-product" data-id="${docSnap.id}" style="padding: 5px 10px; cursor:pointer; background:#fee2e2; color:var(--danger); border:none; border-radius:4px; margin-left:5px;">Hapus</button>
-                    </td>
-                </tr>
-            `;
-        });
+        productsData = [];
+        snapshot.forEach(doc => productsData.push({ id: doc.id, ...doc.data() }));
+        document.getElementById("stat-total-products").textContent = snapshot.size;
+        renderProducts(productsData);
     });
 
-    // B. Realtime Listener Orders
+    // --- REALTIME LISTENER ORDERS ---
     onSnapshot(collection(db, "orders"), (snapshot) => {
-        totalOrdersEl.textContent = snapshot.size;
-        ordersTable.innerHTML = "";
+        ordersData = [];
+        let totalRevenue = 0;
+        let pendingCount = 0;
 
-        if (snapshot.empty) {
-            ordersTable.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--muted);">Belum ada pesanan masuk.</td></tr>`;
-            return;
-        }
-
-        snapshot.forEach((docSnap) => {
-            const o = docSnap.data();
-            const formatRp = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(o.total);
-
-            ordersTable.innerHTML += `
-                <tr>
-                    <td>#${docSnap.id.substring(0, 6).toUpperCase()}</td>
-                    <td>${o.customerName}</td>
-                    <td>${formatRp}</td>
-                    <td><strong>${o.orderStatus}</strong></td>
-                    <td>
-                        <select class="select-order-status" data-id="${docSnap.id}" style="padding: 5px; border-radius: 4px; border:1px solid var(--border);">
-                            <option value="pending" ${o.orderStatus === 'pending' ? 'selected' : ''}>Pending</option>
-                            <option value="processing" ${o.orderStatus === 'processing' ? 'selected' : ''}>Processing</option>
-                            <option value="completed" ${o.orderStatus === 'completed' ? 'selected' : ''}>Completed</option>
-                            <option value="cancelled" ${o.orderStatus === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-                        </select>
-                    </td>
-                </tr>
-            `;
+        snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            ordersData.push({ id: docSnap.id, ...data });
+            
+            if (data.orderStatus === 'completed') totalRevenue += data.total;
+            if (data.orderStatus === 'pending') pendingCount++;
         });
+
+        document.getElementById("stat-total-orders").textContent = snapshot.size;
+        document.getElementById("stat-pending-orders").textContent = pendingCount;
+        document.getElementById("stat-total-revenue").textContent = formatRp(totalRevenue);
+        renderOrders(ordersData);
     });
 
-    // C. Modal Controller untuk Tambah Produk
-    const modal = document.getElementById("modal-product");
-    document.getElementById("btn-open-add-product").addEventListener("click", () => modal.style.display = "flex");
-    document.getElementById("btn-close-modal").addEventListener("click", () => modal.style.display = "none");
+    setupModals();
+    setupSearch();
+}
 
-    // Submit Tambah Produk
+// Render Tabel Produk
+function renderProducts(data) {
+    const table = document.getElementById("admin-products-table");
+    table.innerHTML = "";
+    if (data.length === 0) {
+        table.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Belum ada produk atau tidak ditemukan.</td></tr>`;
+        return;
+    }
+
+    data.forEach(p => {
+        const statusBadge = p.isActive ? `<span class="badge badge-success">Aktif</span>` : `<span class="badge badge-danger">Nonaktif</span>`;
+        table.innerHTML += `
+            <tr>
+                <td>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <img src="${p.image}" alt="Img" style="width:40px; height:40px; border-radius:5px; object-fit:cover;">
+                        <strong>${p.name}</strong>
+                    </div>
+                </td>
+                <td>${p.categoryName || '-'}</td>
+                <td>${formatRp(p.price)}</td>
+                <td>${statusBadge}</td>
+                <td class="text-center action-buttons">
+                    <button class="btn-sm btn-outline btn-toggle" data-id="${p.id}" data-active="${p.isActive}">Ubah Status</button>
+                    <button class="btn-sm btn-edit" data-id="${p.id}">Edit</button>
+                    <button class="btn-sm btn-delete" data-id="${p.id}">Hapus</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+// Render Tabel Pesanan (Sudah Ditambah Kolom Bukti)
+function renderOrders(data) {
+    const table = document.getElementById("admin-orders-table");
+    table.innerHTML = "";
+    if (data.length === 0) {
+        table.innerHTML = `<tr><td colspan="6" class="text-center text-muted">Belum ada pesanan masuk.</td></tr>`;
+        return;
+    }
+
+    data.forEach(o => {
+        const shortId = o.id.substring(0, 6).toUpperCase();
+        let statusColor = "var(--text)";
+        if(o.orderStatus === 'completed') statusColor = "var(--success)";
+        if(o.orderStatus === 'cancelled') statusColor = "var(--danger)";
+        if(o.orderStatus === 'pending') statusColor = "#f59e0b";
+
+        // Cek apakah ada bukti TF di database
+        const proofBtn = o.paymentProof 
+            ? `<button class="btn-sm btn-edit btn-view-proof" data-id="${o.id}">Lihat Bukti</button>` 
+            : `<span class="text-muted" style="font-size:0.8rem;">Tidak ada</span>`;
+
+        table.innerHTML += `
+            <tr>
+                <td><strong>#${shortId}</strong></td>
+                <td>${o.customerName}</td>
+                <td>${formatRp(o.total)}</td>
+                <td class="text-center">${proofBtn}</td>
+                <td><strong style="color:${statusColor}; text-transform:capitalize;">${o.orderStatus}</strong></td>
+                <td class="text-center">
+                    <select class="select-order-status" data-id="${o.id}">
+                        <option value="pending" ${o.orderStatus === 'pending' ? 'selected' : ''}>Pending</option>
+                        <option value="processing" ${o.orderStatus === 'processing' ? 'selected' : ''}>Processing</option>
+                        <option value="completed" ${o.orderStatus === 'completed' ? 'selected' : ''}>Completed</option>
+                        <option value="cancelled" ${o.orderStatus === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                    </select>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+// Pencarian
+function setupSearch() {
+    document.getElementById("search-product").addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase();
+        const filtered = productsData.filter(p => p.name.toLowerCase().includes(query) || p.categoryName.toLowerCase().includes(query));
+        renderProducts(filtered);
+    });
+
+    document.getElementById("search-order").addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase();
+        const filtered = ordersData.filter(o => o.id.toLowerCase().includes(query) || o.customerName.toLowerCase().includes(query));
+        renderOrders(filtered);
+    });
+}
+
+// Setup Modal & Formulir
+function setupModals() {
+    const modalAdd = document.getElementById("modal-product");
+    const modalEdit = document.getElementById("modal-edit-product");
+    const modalProof = document.getElementById("modal-proof"); 
+
+    // Open & Close Add Modal
+    document.getElementById("btn-open-add-product").addEventListener("click", () => modalAdd.style.display = "flex");
+    document.getElementById("btn-close-modal").addEventListener("click", () => {
+        modalAdd.style.display = "none";
+        document.getElementById("form-add-product").reset();
+    });
+
+    // Submit Add Product
     document.getElementById("form-add-product").addEventListener("submit", async (e) => {
         e.preventDefault();
-        const btnSave = document.getElementById("btn-save-product");
-        btnSave.disabled = true;
-        btnSave.textContent = "Menyimpan...";
-
+        const btn = document.getElementById("btn-save-product");
+        btn.disabled = true; btn.textContent = "Menyimpan...";
         try {
             await addDoc(collection(db, "products"), {
                 name: document.getElementById("add-name").value,
@@ -120,47 +184,95 @@ function initAdminDashboard() {
                 isActive: true,
                 createdAt: serverTimestamp()
             });
-
-            modal.style.display = "none";
+            modalAdd.style.display = "none";
             e.target.reset();
-            alert("Produk berhasil ditambahkan!");
-        } catch (error) {
-            console.error("Gagal tambah produk:", error);
-            alert("Terjadi kesalahan.");
-        } finally {
-            btnSave.disabled = false;
-            btnSave.textContent = "Simpan Produk";
-        }
+        } catch (error) { alert("Terjadi kesalahan sistem."); } 
+        finally { btn.disabled = false; btn.textContent = "Simpan Produk"; }
     });
 
-    // D. Aksi Toggle Status & Hapus Produk
-} // <--- PERHATIKAN: Tutup kurung kurawal ini sebelumnya keliru menjorok ke luar fungsi!
+    // Close Edit Modal
+    document.getElementById("btn-close-edit").addEventListener("click", () => modalEdit.style.display = "none");
 
-// Pindahkan event listener ke luar fungsi initAdminDashboard agar terpanggil dengan benar
+    // Tutup Modal Bukti TF (Fitur Baru)
+    const btnCloseProof = document.getElementById("btn-close-proof");
+    if (btnCloseProof) {
+        btnCloseProof.addEventListener("click", () => {
+            if(modalProof) modalProof.style.display = "none";
+            document.getElementById("proof-image-display").src = "";
+        });
+    }
+
+    // Submit Edit Product
+    document.getElementById("form-edit-product").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const id = document.getElementById("edit-id").value;
+        const btn = document.getElementById("btn-update-product");
+        btn.disabled = true; btn.textContent = "Mengupdate...";
+        try {
+            await updateDoc(doc(db, "products", id), {
+                name: document.getElementById("edit-name").value,
+                categoryName: document.getElementById("edit-category").value,
+                price: Number(document.getElementById("edit-price").value),
+                image: document.getElementById("edit-image").value,
+                description: document.getElementById("edit-desc").value,
+            });
+            modalEdit.style.display = "none";
+        } catch (error) { alert("Gagal update produk."); } 
+        finally { btn.disabled = false; btn.textContent = "Update Produk"; }
+    });
+}
+
+// Aksi Klik Global (Delegation)
 document.addEventListener("click", async (e) => {
-    if (e.target.classList.contains("btn-toggle-status")) {
+    // Toggle Status
+    if (e.target.classList.contains("btn-toggle")) {
         const id = e.target.getAttribute("data-id");
         const currentActive = e.target.getAttribute("data-active") === "true";
         await updateDoc(doc(db, "products", id), { isActive: !currentActive });
     }
-    if (e.target.classList.contains("btn-delete-product")) {
+    // Delete
+    if (e.target.classList.contains("btn-delete")) {
         const id = e.target.getAttribute("data-id");
-        if (confirm("Yakin ingin menghapus produk ini dari database?")) {
+        if (confirm("Yakin ingin menghapus permanen produk ini?")) {
             await deleteDoc(doc(db, "products", id));
+        }
+    }
+    // Buka Modal Edit Produk
+    if (e.target.classList.contains("btn-edit") && !e.target.classList.contains("btn-view-proof")) {
+        const id = e.target.getAttribute("data-id");
+        const product = productsData.find(p => p.id === id);
+        if (product) {
+            document.getElementById("edit-id").value = id;
+            document.getElementById("edit-name").value = product.name;
+            document.getElementById("edit-category").value = product.categoryName || '';
+            document.getElementById("edit-price").value = product.price;
+            document.getElementById("edit-image").value = product.image;
+            document.getElementById("edit-desc").value = product.description || '';
+            document.getElementById("modal-edit-product").style.display = "flex";
+        }
+    }
+    // Buka Modal Bukti TF (Fitur Baru)
+    if (e.target.classList.contains("btn-view-proof")) {
+        const id = e.target.getAttribute("data-id");
+        const order = ordersData.find(o => o.id === id);
+        
+        if (order && order.paymentProof) {
+            document.getElementById("proof-image-display").src = order.paymentProof;
+            document.getElementById("modal-proof").style.display = "flex";
+        } else {
+            alert("Bukti pembayaran gagal dimuat atau tidak tersedia.");
         }
     }
 });
 
-// E. Aksi Ubah Status Pesanan oleh Admin
+// Aksi Update Order Status
 document.addEventListener("change", async (e) => {
     if (e.target.classList.contains("select-order-status")) {
         const id = e.target.getAttribute("data-id");
         const newStatus = e.target.value;
         try {
             await updateDoc(doc(db, "orders", id), { orderStatus: newStatus, updatedAt: serverTimestamp() });
-            alert("Status pesanan berhasil diperbarui!");
         } catch (error) {
-            console.error("Gagal update status order:", error);
             alert("Gagal memperbarui status.");
         }
     }

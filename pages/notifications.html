@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifikasi - UmaDigi Store V2</title>
+    
+    <!-- Favicon / Logo Tab -->
+    <link rel="icon" type="image/png" href="../img/logo.png">
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <style>
+        .notif-container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto 80px auto;
+        }
+
+        .notif-card {
+            background: var(--surface);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .notif-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .notif-message {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .notif-time {
+            font-size: 0.75rem;
+            color: var(--muted);
+            align-self: flex-end;
+        }
+
+        .empty-notif {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+        }
+
+        .empty-notif .icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navbar -->
+    <header class="navbar">
+        <button class="icon-btn" onclick="window.history.back()" aria-label="Kembali">🔙</button>
+        <a href="home.html" class="nav-brand" style="margin-left: 10px;">
+            <img src="/assets/img/brand.png" alt="UmaDigi Logo" class="nav-logo">
+            <span>Notifikasi</span>
+        </a>
+        <div style="width: 32px;"></div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="notif-container">
+        <div id="notifications-list">
+            <p style="text-align: center; color: var(--muted); padding: 40px;">Memuat notifikasi...</p>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item"><span>🏠</span><span>Home</span></a>
+        <a href="explore.html" class="nav-item"><span>🧭</span><span>Explore</span></a>
+        <a href="orders.html" class="nav-item"><span>📦</span><span>Orders</span></a>
+        <a href="wishlist.html" class="nav-item"><span>❤️</span><span>Wishlist</span></a>
+        <a href="profile.html" class="nav-item"><span>👤</span><span>Profile</span></a>
+    </nav>
+
+    <script type="module" src="../js/app.js"></script>
+    <script type="module">
+        import { auth, db } from "../js/firebase-config.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+        import { collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+        const container = document.getElementById("notifications-list");
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Ambil notifikasi pengguna berdasarkan userId
+                const q = query(
+                    collection(db, "notifications"), 
+                    where("userId", "==", user.uid)
+                );
+
+                onSnapshot(q, (snapshot) => {
+                    if (snapshot.empty) {
+                        container.innerHTML = `
+                            <div class="empty-notif">
+                                <div class="icon">🔔</div>
+                                <h3 style="color: var(--text); margin-bottom: 8px;">Belum Ada Notifikasi</h3>
+                                <p style="margin: 0;">Informasi pesanan dan update promo akan muncul di sini.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    container.innerHTML = "";
+                    
+                    const docs = [];
+                    snapshot.forEach(docSnap => docs.push({ id: docSnap.id, ...docSnap.data() }));
+                    // Urutkan dari notifikasi terbaru
+                    docs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+                    docs.forEach(n => {
+                        const dateStr = n.createdAt ? new Date(n.createdAt.seconds * 1000).toLocaleString('id-ID', {
+                            day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+                        }) : 'Baru saja';
+
+                        container.insertAdjacentHTML('beforeend', `
+                            <div class="notif-card">
+                                <h4 class="notif-title">${n.title || 'Pemberitahuan'}</h4>
+                                <p class="notif-message">${n.message || ''}</p>
+                                <span class="notif-time">${dateStr}</span>
+                            </div>
+                        `);
+                    });
+                }, (error) => {
+                    console.error("Gagal mengambil notifikasi:", error);
+                    container.innerHTML = `<p style="text-align: center; color: var(--danger);">Gagal memuat notifikasi.</p>`;
+                });
+            } else {
+                window.location.replace("login.html");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -19,12 +19,12 @@ const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', 
 
 // Nomor Rekening Tujuan (Atas Nama UMAEDI)
 const rekeningInfo = {
-    "DANA": "0812-XXXX-XXXX",
-    "GoPay": "0812-XXXX-XXXX",
-    "OVO": "0812-XXXX-XXXX",
-    "SeaBank": "9012-XXXX-XXXX",
-    "Krom": "8888-XXXX-XXXX",
-    "Bank Jago": "1011-XXXX-XXXX"
+    "DANA": "0838-1811-5136",
+    "GoPay": "0838-1811-5136",
+    "OVO": "0838-1811-5136",
+    "SeaBank": "9015-6721-6652",
+    "Krom": "7700-0670-2008",
+    "Bank Jago": "4889-5030-3404-7218"
 };
 
 // 1. Cek Login & Ambil Data
@@ -87,7 +87,6 @@ async function prepareCheckoutData(uid) {
 }
 
 // 2. Controller UI Metode Pembayaran Dinamis
-// 2. Controller UI Metode Pembayaran Dinamis
 function updatePaymentInstruction() {
     const method = paymentSelect.value;
     if (method === "QRIS") {
@@ -111,6 +110,7 @@ function updatePaymentInstruction() {
         instructionBox.innerHTML = `<p>Pilih metode pembayaran terlebih dahulu.</p>`;
     }
 }
+paymentSelect.addEventListener("change", updatePaymentInstruction);
 
 // 3. Konversi Gambar ke Base64 & Ubah Status Tombol
 proofInput.addEventListener("change", function(event) {

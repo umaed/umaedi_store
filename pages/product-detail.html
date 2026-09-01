@@ -3,34 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Produk - UmaDigi Store V2</title>
+    <title>Detail Produk - UmaDigi Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/product-detail.css">
 </head>
 <body>
-    <!-- Top Navbar khusus Detail -->
     <header class="navbar">
         <div class="nav-actions">
-            <!-- Tombol Kembali -->
-            <button class="icon-btn" onclick="window.history.back()" aria-label="Back">🔙</button>
+            <button class="icon-btn" onclick="window.history.back()">🔙</button>
         </div>
         <div class="nav-brand" style="font-size: 1rem;">Detail Produk</div>
         <div class="nav-actions">
-            <button class="icon-btn" aria-label="Cart">🛒</button>
+            <a href="cart.html" class="icon-btn" style="position: relative; text-decoration: none; color: inherit;">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <span class="cart-badge-count">0</span>
+            </a>
         </div>
     </header>
 
-    <!-- Kontainer Detail Produk (Akan diisi oleh JS) -->
     <main class="detail-container" id="product-detail-container">
-        <div style="padding: 40px; text-align: center; color: var(--muted); width: 100%;">
-            <p>Memuat informasi produk...</p>
-        </div>
+        <div style="padding: 40px; text-align: center; color: var(--muted);">Memuat informasi produk...</div>
     </main>
 
-    <!-- Script Global -->
+    <!-- VARIANT OVERLAY MODAL -->
+    <div class="variant-overlay" id="variant-overlay">
+        <div class="variant-modal">
+            <div class="variant-header">
+                <div class="variant-product-info">
+                    <img id="v-modal-img" src="" alt="Produk">
+                    <div>
+                        <div id="v-modal-price" class="variant-price">Rp 0</div>
+                        <div id="v-modal-stock" class="variant-stock">Pilih opsi varian</div>
+                    </div>
+                </div>
+                <button class="variant-close" id="btn-close-variant">✕</button>
+            </div>
+            
+            <div id="variant-selectors-container"></div>
+
+            <button class="variant-confirm-btn" id="btn-confirm-variant">Lanjutkan</button>
+        </div>
+    </div>
+
     <script type="module" src="../js/app.js"></script>
-    <!-- Script Produk -->
     <script type="module" src="../js/products.js"></script>
 </body>
 </html>

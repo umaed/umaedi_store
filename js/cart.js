@@ -8,7 +8,6 @@ const summarySubtotal = document.getElementById("summary-subtotal");
 const summaryTotal = document.getElementById("summary-total");
 let currentUserUid = null;
 
-// Memantau status login
 onAuthStateChanged(auth, (user) => {
     if (user) {
         currentUserUid = user.uid;
@@ -18,20 +17,19 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// Load Keranjang dari Firestore (Realtime)
 function loadCartRealtime(uid) {
     const cartRef = collection(db, "cart", uid, "items");
 
     onSnapshot(cartRef, (snapshot) => {
         if (snapshot.empty) {
             cartItemsContainer.innerHTML = `
-                <div style="text-align: center; padding: 40px 0;">
-                    <div style="font-size: 3rem; margin-bottom: 15px;">🛒</div>
-                    <h3 style="color: var(--text); margin-bottom: 10px;">Keranjang kamu masih kosong</h3>
-                    <p style="color: var(--muted); margin-bottom: 20px;">Yuk, temukan produk digital menarik!</p>
-                    <a href="home.html" style="padding: 10px 20px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px;">Mulai Belanja</a>
+                <div style="text-align: center; padding: 60px 20px;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">🛒</div>
+                    <h3 style="color: var(--text); margin-bottom: 10px;">Keranjang kosong</h3>
+                    <p style="color: var(--muted); margin-bottom: 30px;">Yuk, temukan produk menarik!</p>
+                    <a href="home.html" class="btn-primary" style="text-decoration: none;">Belanja Sekarang</a>
                 </div>`;
-            summaryBox.style.display = "none";
+            if (summaryBox) summaryBox.style.display = "none";
             return;
         }
 
@@ -46,18 +44,30 @@ function loadCartRealtime(uid) {
 
             const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(item.price);
 
+            let variantHTML = "";
+            if (item.selectedVariants && Object.keys(item.selectedVariants).length > 0) {
+                const variantString = Object.entries(item.selectedVariants)
+                                      .map(([key, val]) => `${key}: <strong style="color:var(--text);">${val}</strong>`)
+                                      .join(" | ");
+                variantHTML = `<div class="cart-item-variant">${variantString}</div>`;
+            }
+
             const cartHTML = `
-                <div class="cart-item">
-                    <img src="${item.image}" alt="${item.name}" class="cart-item-img">
-                    <div class="cart-item-details">
+                <div class="cart-item-card">
+                    <img src="${item.image || 'https://via.placeholder.com/100'}" alt="${item.name}" class="cart-item-img">
+                    
+                    <div class="cart-item-body">
                         <div class="cart-item-title">${item.name}</div>
+                        ${variantHTML}
                         <div class="cart-item-price">${formattedPrice}</div>
-                        <div class="qty-control">
-                            <button class="btn-qty btn-minus" data-id="${itemId}" data-qty="${item.quantity}">-</button>
+                    </div>
+
+                    <div class="cart-item-actions">
+                        <button class="btn-delete-item" data-id="${itemId}">🗑️</button>
+                        <div class="cart-qty-controls">
+                            <button class="btn-minus" data-id="${itemId}" data-qty="${item.quantity}">-</button>
                             <span class="qty-number">${item.quantity}</span>
-                            <button class="btn-qty btn-plus" data-id="${itemId}" data-qty="${item.quantity}">+</button>
-                            <div style="flex:1;"></div>
-                            <button class="btn-delete" data-id="${itemId}">🗑️</button>
+                            <button class="btn-plus" data-id="${itemId}" data-qty="${item.quantity}">+</button>
                         </div>
                     </div>
                 </div>
@@ -65,15 +75,15 @@ function loadCartRealtime(uid) {
             cartItemsContainer.insertAdjacentHTML('beforeend', cartHTML);
         });
 
-        // Update Total UI
-        summaryBox.style.display = "block";
-        const formattedTotal = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalBelanja);
-        summarySubtotal.textContent = formattedTotal;
-        summaryTotal.textContent = formattedTotal;
+        if (summaryBox) {
+            summaryBox.style.display = "block";
+            const formattedTotal = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalBelanja);
+            if (summarySubtotal) summarySubtotal.textContent = formattedTotal;
+            if (summaryTotal) summaryTotal.textContent = formattedTotal;
+        }
     });
 }
 
-// Menangani Klik tombol Plus, Minus, dan Delete (Event Delegation)
 cartItemsContainer.addEventListener("click", async (e) => {
     if (!currentUserUid) return;
 
@@ -89,21 +99,18 @@ cartItemsContainer.addEventListener("click", async (e) => {
         if (currentQty > 1) {
             await updateDoc(doc(db, "cart", currentUserUid, "items", itemId), { quantity: currentQty - 1 });
         } else {
-            // Jika quantity 1 dan dikurangi, konfirmasi hapus
             if(confirm("Hapus produk ini dari keranjang?")) {
                 await deleteDoc(doc(db, "cart", currentUserUid, "items", itemId));
             }
         }
     } 
-    else if (target.classList.contains("btn-delete") || target.closest(".btn-delete")) {
-        const delId = target.getAttribute("data-id") || target.closest(".btn-delete").getAttribute("data-id");
+    else if (target.classList.contains("btn-delete-item")) {
         if(confirm("Yakin ingin menghapus produk ini?")) {
-            await deleteDoc(doc(db, "cart", currentUserUid, "items", delId));
+            await deleteDoc(doc(db, "cart", currentUserUid, "items", itemId));
         }
     }
 });
 
-// Navigasi ke Halaman Checkout
 const btnCheckout = document.getElementById("btn-checkout");
 if (btnCheckout) {
     btnCheckout.addEventListener("click", () => {

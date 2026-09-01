@@ -1,132 +1,382 @@
-/* Layout Detail Produk */
+/* =========================================
+   LAYOUT UTAMA DETAIL PRODUK (Mobile-First)
+   ========================================= */
 .detail-container {
+    max-width: 100%;
+    margin: 0 auto 80px auto; /* bottom padding untuk action bar */
     padding: 0;
-    padding-bottom: 80px; /* Ruang untuk bottom nav & action buttons */
-    background-color: var(--background);
+    background: #fff;
 }
 
-.product-image-large {
+.product-detail-layout {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+}
+
+@media (min-width: 768px) {
+    .product-detail-layout {
+        flex-direction: row;
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 30px;
+        gap: 40px;
+        border-radius: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+}
+
+/* =========================================
+   BAGIAN GAMBAR
+   ========================================= */
+.detail-image-gallery {
     width: 100%;
-    height: 350px;
-    background-color: #e5e7eb;
+    background: #f8fafc;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.product-image-large img {
+@media (min-width: 768px) {
+    .detail-image-gallery {
+        width: 45%;
+        border-bottom: none;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #f8fafc;
+    }
+}
+
+.detail-image-gallery img {
     width: 100%;
-    height: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
     object-fit: cover;
 }
 
-.product-info-detail {
-    background-color: var(--surface);
-    padding: 20px;
-    border-radius: 20px 20px 0 0;
-    margin-top: -20px;
-    position: relative;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+/* Thumbnail row (opsional) */
+.thumbnail-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 10px;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.detail-category {
-    color: var(--primary);
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    display: block;
+.thumbnail-row img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 1px solid #ddd;
 }
 
-.detail-title {
-    font-size: 1.4rem;
-    color: var(--text);
+.thumbnail-row img.active {
+    border: 2px solid #ee4d2d;
+}
+
+/* =========================================
+   BAGIAN INFORMASI
+   ========================================= */
+.detail-info-box {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: #fff;
+}
+
+@media (min-width: 768px) {
+    .detail-info-box {
+        padding: 0;
+        width: 55%;
+    }
+}
+
+/* Harga & terjual */
+.price-terjual-row {
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
     margin-bottom: 10px;
-    line-height: 1.3;
 }
 
-.detail-price {
-    font-size: 1.5rem;
-    color: var(--text);
-    font-weight: 700;
+.detail-price-lg {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #ee4d2d; /* warna merah/oranye Shopee */
+}
+
+.sold-count {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Judul */
+.detail-title-lg {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* Rating */
+.rating-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 15px;
+}
+
+.rating-row .star {
+    color: #faca51;
+}
+
+/* Section headers */
+.detail-section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+}
+
+/* Deskripsi */
+.description-text {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
     margin-bottom: 20px;
 }
 
-.detail-section-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    margin-top: 25px;
-    color: var(--text);
+/* Jaminan */
+.guarantee-text {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 20px;
 }
 
-.detail-description {
-    color: var(--muted);
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
-
-/* Action Buttons (Sticky di bawah) */
-.action-bar {
+/* =========================================
+   BOTTOM ACTION BAR (FIXED)
+   ========================================= */
+.bottom-action-bar {
     position: fixed;
     bottom: 0;
     left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid #e5e5e5;
+    padding: 10px 15px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+
+.bottom-action-bar button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.2s;
+}
+
+.bottom-action-bar .chat-btn {
+    background-color: #00bfa5;
+    color: white;
+    flex: 0 0 120px; /* chat button width */
+}
+
+.bottom-action-bar .cart-btn {
+    background-color: #fbcb30; /* kuning Shopee */
+    color: #ee4d2d;
+    flex: 1;
+}
+
+.bottom-action-bar .buy-btn {
+    background-color: #ee4d2d;
+    color: white;
+    flex: 1.2;
+}
+
+.bottom-action-bar button:hover {
+    opacity: 0.9;
+}
+
+/* Responsive small */
+@media (max-width: 380px) {
+    .bottom-action-bar {
+        padding: 8px 10px;
+    }
+    .bottom-action-bar button {
+        padding: 10px 5px;
+        font-size: 0.8rem;
+    }
+    .bottom-action-bar .chat-btn {
+        flex: 0 0 100px;
+    }
+}
+
+/* Padding bottom untuk konten agar tidak tertutup action bar */
+.detail-container {
+    padding-bottom: 70px;
+}
+
+@media (min-width: 768px) {
+    .bottom-action-bar {
+        position: static;
+        margin-top: 20px;
+        background: none;
+        border-top: none;
+        box-shadow: none;
+        padding: 0;
+        justify-content: flex-start;
+    }
+    .bottom-action-bar .chat-btn,
+    .bottom-action-bar .cart-btn,
+    .bottom-action-bar .buy-btn {
+        max-width: 200px;
+    }
+}
+
+/* =========================================
+   MODAL VARIAN (OVERLAY)
+   ========================================= */
+.variant-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    background-color: var(--surface);
-    padding: 15px 20px;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.variant-overlay.show {
+    display: flex;
+    opacity: 1;
+}
+
+.variant-modal {
+    background: #fff;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 16px 16px 0 0;
+    padding: 20px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.variant-overlay.show .variant-modal {
+    transform: translateY(0);
+}
+
+.variant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.variant-product-info {
     display: flex;
     gap: 15px;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-    z-index: 1000;
+    align-items: center;
 }
 
-.btn-icon {
-    padding: 12px;
-    border: 1px solid var(--border);
-    background-color: var(--surface);
-    border-radius: 12px;
+.variant-product-info img {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.variant-price {
+    color: #ee4d2d;
+    font-weight: 800;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.variant-stock {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.variant-close {
+    background: none;
+    border: none;
     font-size: 1.2rem;
     cursor: pointer;
-    color: var(--text);
-    transition: var(--transition);
+    color: #555;
 }
 
-.btn-icon:hover {
-    border-color: var(--danger);
-    color: var(--danger);
+.variant-group-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
 }
 
-.btn-cart {
-    flex: 1;
-    background-color: var(--primary);
+.variant-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.variant-chip {
+    padding: 8px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.variant-chip.selected {
+    border-color: #ee4d2d;
+    color: #ee4d2d;
+    background: #fff5f3;
+}
+
+.variant-confirm-btn {
+    width: 100%;
+    background-color: #ee4d2d;
     color: white;
     border: none;
-    border-radius: 12px;
-    font-weight: 600;
+    border-radius: 8px;
+    padding: 14px;
     font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: var(--transition);
+    margin-top: 10px;
 }
 
-.btn-cart:hover {
-    background-color: #4338ca;
-}
-
-/* Responsive Desktop */
-@media (min-width: 768px) {
-    .detail-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        max-width: 1000px;
-        margin: 40px auto;
-        background-color: var(--surface);
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: var(--shadow-md);
-        padding-bottom: 0;
-    }
-    .product-image-large { height: 100%; min-height: 400px; }
-    .product-info-detail { margin-top: 0; border-radius: 0; box-shadow: none; padding: 40px; }
-    .action-bar { position: relative; padding: 20px 0 0 0; box-shadow: none; }
+.variant-confirm-btn:hover {
+    opacity: 0.9;
 }

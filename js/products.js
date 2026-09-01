@@ -1,10 +1,10 @@
 import { auth, db } from "./firebase-config.js";
 import { 
-    collection, query, where, onSnapshot, doc, getDoc, setDoc, deleteDoc, serverTimestamp
+    collection, query, where, onSnapshot, doc, getDoc, setDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 // ==========================================
-// 1. LOGIKA UNTUK HOME PAGE (Daftar Produk)
+// 1. DAFTAR PRODUK (HOME PAGE)
 // ==========================================
 const productsContainer = document.getElementById("featured-products");
 
@@ -13,7 +13,7 @@ if (productsContainer) {
 
     onSnapshot(q, (snapshot) => {
         if (snapshot.empty) {
-            productsContainer.innerHTML = `<p style="color: var(--muted); grid-column: 1 / -1; text-align: center; padding: 40px 20px;">Belum ada produk yang tersedia.</p>`;
+            productsContainer.innerHTML = `<p style="text-align:center; color:var(--muted); padding:40px; grid-column: 1/-1;">Belum ada produk yang tersedia.</p>`;
             return;
         }
 
@@ -21,19 +21,27 @@ if (productsContainer) {
 
         snapshot.forEach((docSnap) => {
             const data = docSnap.data();
-            const formattedPrice = new Intl.NumberFormat('id-ID', {
-                style: 'currency', currency: 'IDR', minimumFractionDigits: 0
-            }).format(data.price);
+            const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(data.price);
+            
+            const seed = docSnap.id.charCodeAt(0) || 5;
+            const rating = (4.5 + (seed % 5) * 0.1).toFixed(1);
+            const soldCount = (seed * 17) % 250 + 12;
 
             const productCard = `
                 <a href="product-detail.html?id=${docSnap.id}" class="product-card">
                     <div class="product-image-container">
-                        <img src="${data.image || 'https://via.placeholder.com/300?text=No+Image'}" alt="${data.name}" class="product-image" loading="lazy">
+                        <img src="${data.image || 'https://via.placeholder.com/300'}" alt="${data.name}" class="product-image" loading="lazy">
+                        <span class="category-badge">${data.categoryName || 'Digital'}</span>
                     </div>
                     <div class="product-info">
-                        <span class="product-category">${data.categoryName || 'Digital'}</span>
-                        <h3 class="product-title">${data.name}</h3>
-                        <span class="product-price">${formattedPrice}</span>
+                        <div>
+                            <h3 class="product-title">${data.name}</h3>
+                            <div class="product-price">${formattedPrice}</div>
+                        </div>
+                        <div class="product-stats">
+                            <span class="rating">⭐ ${rating}</span>
+                            <span class="sold">Terjual ${soldCount}+</span>
+                        </div>
                     </div>
                 </a>
             `;
@@ -43,111 +51,75 @@ if (productsContainer) {
 }
 
 // ==========================================
-// 2. LOGIKA UNTUK PRODUCT DETAIL PAGE
+// 2. DETAIL PRODUK (PRODUCT DETAIL PAGE)
 // ==========================================
 const detailContainer = document.getElementById("product-detail-container");
+const variantOverlay = document.getElementById("variant-overlay");
+const btnCloseVariant = document.getElementById("btn-close-variant");
+const btnConfirmVariant = document.getElementById("btn-confirm-variant");
+
+let currentProductData = null;
+let currentProductId = null;
+let selectedVariantsState = {}; 
+let intendedAction = ""; 
 
 if (detailContainer) {
     const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
+    currentProductId = urlParams.get('id');
 
-    if (!productId) {
-        detailContainer.innerHTML = `<p style="padding: 40px; text-align: center; color: var(--danger);">Produk tidak ditemukan. (ID tidak valid)</p>`;
-    } else {
+    if (currentProductId) {
         const fetchProductDetail = async () => {
             try {
-                const docRef = doc(db, "products", productId);
+                const docRef = doc(db, "products", currentProductId);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    
-                    const formattedPrice = new Intl.NumberFormat('id-ID', {
-                        style: 'currency', currency: 'IDR', minimumFractionDigits: 0
-                    }).format(data.price);
+                    currentProductData = docSnap.data();
+                    const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(currentProductData.price);
 
+                    // Hitung rating & sold dummy
+                    const seed = currentProductId.charCodeAt(0) || 5;
+                    const rating = (4.5 + (seed % 5) * 0.1).toFixed(1);
+                    const reviewCount = (seed * 37) % 500 + 20;
+                    const soldCount = (seed * 17) % 250 + 12;
+
+                    // Render HTML sesuai tampilan Shopee (tanpa varian di halaman)
                     detailContainer.innerHTML = `
-                        <div class="product-image-large">
-                            <img src="${data.image || 'https://via.placeholder.com/600?text=No+Image'}" alt="${data.name}">
-                        </div>
-                        <div class="product-info-detail">
-                            <span class="detail-category">${data.categoryName || 'Kategori'}</span>
-                            <h1 class="detail-title">${data.name}</h1>
-                            <div class="detail-price">${formattedPrice}</div>
-                            
-                            <h3 class="detail-section-title">Deskripsi Produk</h3>
-                            <p class="detail-description">${data.description || 'Belum ada deskripsi untuk produk ini.'}</p>
-                            
-                            <div class="action-bar">
-                                <button class="btn-icon" aria-label="Add to Wishlist" id="btn-wishlist">🤍</button>
-                                <button class="btn-cart" id="btn-add-cart">Tambah ke Keranjang</button>
+                        <div class="product-detail-layout">
+                            <div class="detail-image-gallery">
+                                <img src="${currentProductData.image || 'https://via.placeholder.com/600'}" alt="${currentProductData.name}">
                             </div>
+                            <div class="detail-info-box">
+                                <div class="price-terjual-row">
+                                    <div class="detail-price-lg">${formattedPrice}</div>
+                                    <span class="sold-count">${soldCount}+ Terjual</span>
+                                </div>
+                                <h1 class="detail-title-lg">${currentProductData.name}</h1>
+                                <div class="rating-row">
+                                    <span class="star">⭐</span> ${rating} | ${reviewCount} Penilaian
+                                </div>
+                                
+                                <div class="detail-section-title">Deskripsi</div>
+                                <div class="description-text">${currentProductData.description || 'Belum ada deskripsi.'}</div>
+                                
+                                <div class="detail-section-title">Jaminan</div>
+                                <div class="guarantee-text">Garansi resmi dari toko.</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Bottom Action Bar -->
+                        <div class="bottom-action-bar">
+                            <button class="chat-btn" id="btn-chat">Chat Sekarang</button>
+                            <button class="cart-btn" id="btn-cart-trigger">Masukkan Keranjang</button>
+                            <button class="buy-btn" id="btn-buy-trigger">Beli Sekarang</button>
                         </div>
                     `;
 
-                    // Pengecekan Status Wishlist Saat Ini
-                    auth.onAuthStateChanged(async (user) => {
-                        if (user) {
-                            const wishlistRef = doc(db, "wishlist", user.uid, "items", productId);
-                            const wishlistSnap = await getDoc(wishlistRef);
-                            const btnWishlist = document.getElementById("btn-wishlist");
-                            
-                            if (wishlistSnap.exists()) {
-                                btnWishlist.textContent = "❤️"; // Sudah di wishlist
-                            }
-
-                            // Logika Tombol Wishlist
-                            btnWishlist.addEventListener("click", async () => {
-                                try {
-                                    const currentSnap = await getDoc(wishlistRef);
-                                    if (currentSnap.exists()) {
-                                        // Hapus jika sudah ada
-                                        await deleteDoc(wishlistRef);
-                                        btnWishlist.textContent = "🤍";
-                                        alert("Dihapus dari wishlist.");
-                                    } else {
-                                        // Tambah jika belum ada
-                                        await setDoc(wishlistRef, {
-                                            productId: productId,
-                                            name: data.name,
-                                            price: data.price,
-                                            image: data.image || '',
-                                            addedAt: serverTimestamp()
-                                        });
-                                        btnWishlist.textContent = "❤️";
-                                        alert("Ditambahkan ke wishlist!");
-                                    }
-                                } catch (error) {
-                                    console.error("Error wishlist:", error);
-                                }
-                            });
-                        }
-                    });
-
-                    // Logika Tambah ke Keranjang (TETAP SAMA SEPERTI STEP 12)
-                    document.getElementById("btn-add-cart").addEventListener("click", async () => {
-                        const user = auth.currentUser;
-                        if (!user) { alert("Anda harus login."); return; }
-                        
-                        const btnCart = document.getElementById("btn-add-cart");
-                        btnCart.textContent = "Menambahkan...";
-                        btnCart.disabled = true;
-
-                        try {
-                            const cartRef = doc(db, "cart", user.uid, "items", productId);
-                            const cartSnap = await getDoc(cartRef);
-
-                            if (cartSnap.exists()) {
-                                await setDoc(cartRef, { quantity: cartSnap.data().quantity + 1, updatedAt: serverTimestamp() }, { merge: true });
-                            } else {
-                                await setDoc(cartRef, { productId: productId, name: data.name, price: data.price, image: data.image || '', quantity: 1, updatedAt: serverTimestamp() });
-                            }
-                            window.location.href = "cart.html";
-                        } catch (error) {
-                            console.error("Gagal:", error);
-                            btnCart.textContent = "Tambah ke Keranjang";
-                            btnCart.disabled = false;
-                        }
+                    // Event listener tombol aksi
+                    document.getElementById("btn-buy-trigger").addEventListener("click", () => handleActionTrigger("buy"));
+                    document.getElementById("btn-cart-trigger").addEventListener("click", () => handleActionTrigger("cart"));
+                    document.getElementById("btn-chat").addEventListener("click", () => {
+                        alert("Fitur chat segera hadir!");
                     });
 
                 } else {
@@ -159,5 +131,140 @@ if (detailContainer) {
         };
 
         fetchProductDetail();
+    }
+}
+
+// ==========================================
+// 3. LOGIKA PEMILIHAN VARIAN (MODAL)
+// ==========================================
+function handleActionTrigger(action) {
+    intendedAction = action;
+    const hasVariants = currentProductData.variants && currentProductData.variants.length > 0;
+
+    if (!hasVariants) {
+        executeCartAction(); 
+    } else {
+        openVariantModal(); 
+    }
+}
+
+function openVariantModal() {
+    if (!variantOverlay) return;
+    
+    document.getElementById("v-modal-img").src = currentProductData.image;
+    document.getElementById("v-modal-price").textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(currentProductData.price);
+    
+    const container = document.getElementById("variant-selectors-container");
+    container.innerHTML = "";
+    selectedVariantsState = {}; 
+
+    currentProductData.variants.forEach(variantGroup => {
+        let optionsHtml = variantGroup.options.map(opt => `<button class="variant-chip" data-group="${variantGroup.name}" data-value="${opt}">${opt}</button>`).join("");
+        
+        container.innerHTML += `
+            <div style="margin-bottom: 20px;">
+                <div class="variant-group-title">${variantGroup.name}</div>
+                <div class="variant-options">${optionsHtml}</div>
+            </div>
+        `;
+    });
+
+    variantOverlay.style.display = "flex";
+    setTimeout(() => variantOverlay.classList.add("show"), 10);
+}
+
+// Event delegation untuk chip varian
+document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("variant-chip")) {
+        const groupName = e.target.getAttribute("data-group");
+        const value = e.target.getAttribute("data-value");
+        
+        document.querySelectorAll(`.variant-chip[data-group="${groupName}"]`).forEach(el => el.classList.remove("selected"));
+        e.target.classList.add("selected");
+        selectedVariantsState[groupName] = value;
+    }
+});
+
+// Tombol konfirmasi varian
+btnConfirmVariant?.addEventListener("click", () => {
+    const requiredGroups = currentProductData.variants.map(v => v.name);
+    for (let group of requiredGroups) {
+        if (!selectedVariantsState[group]) {
+            alert(`Silakan pilih ${group} terlebih dahulu.`);
+            return;
+        }
+    }
+    executeCartAction();
+});
+
+// Tombol tutup modal
+btnCloseVariant?.addEventListener("click", () => closeVariantModal());
+variantOverlay?.addEventListener("click", (e) => { 
+    if (e.target === variantOverlay) closeVariantModal(); 
+});
+
+function closeVariantModal() {
+    if (variantOverlay) {
+        variantOverlay.classList.remove("show");
+        setTimeout(() => variantOverlay.style.display = "none", 300);
+    }
+}
+
+async function executeCartAction() {
+    const user = auth.currentUser;
+    if (!user) { 
+        alert("Silakan login untuk berbelanja."); 
+        window.location.href = "login.html"; 
+        return; 
+    }
+
+    // Ambil tombol yang memicu aksi (jika varian, tombol confirm yang aktif)
+    const btn = document.getElementById("btn-confirm-variant") || document.getElementById("btn-buy-trigger") || document.getElementById("btn-cart-trigger");
+    const originalText = btn.textContent;
+    btn.textContent = "Memproses...";
+    btn.disabled = true;
+
+    try {
+        // Buat custom ID untuk item keranjang berdasarkan varian
+        let customCartId = currentProductId;
+        if (Object.keys(selectedVariantsState).length > 0) {
+            const sortedKeys = Object.keys(selectedVariantsState).sort();
+            let varString = sortedKeys.map(k => `${k}:${selectedVariantsState[k]}`).join("_");
+            customCartId = currentProductId + "_" + btoa(varString).replace(/=/g, '');
+        }
+
+        const cartRef = doc(db, "cart", user.uid, "items", customCartId);
+        const cartSnap = await getDoc(cartRef);
+
+        if (cartSnap.exists()) {
+            await setDoc(cartRef, { quantity: cartSnap.data().quantity + 1, updatedAt: serverTimestamp() }, { merge: true });
+        } else {
+            const cartData = {
+                productId: currentProductId,
+                name: currentProductData.name,
+                price: currentProductData.price,
+                image: currentProductData.image || '',
+                quantity: 1,
+                selectedVariants: selectedVariantsState,
+                updatedAt: serverTimestamp()
+            };
+            await setDoc(cartRef, cartData);
+        }
+
+        closeVariantModal();
+        
+        if (intendedAction === "buy") {
+            window.location.href = "checkout.html";
+        } else {
+            alert("Produk berhasil ditambahkan ke keranjang.");
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
+
+    } catch (error) {
+        console.error("Gagal menambahkan ke keranjang:", error);
+        alert("Terjadi kesalahan sistem.");
+        btn.textContent = originalText;
+        btn.disabled = false;
     }
 }

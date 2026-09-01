@@ -15,7 +15,7 @@ const formatDate = (timestamp) => {
 // Pengaturan Badge Status
 const getStatusBadge = (status) => {
     const badges = {
-        'pending': '<span class="badge badge-pending">Menunggu Pembayaran</span>',
+        'pending': '<span class="badge badge-pending">Pending</span>',
         'paid': '<span class="badge badge-paid">Telah Dibayar</span>',
         'processing': '<span class="badge badge-processing">Diproses</span>',
         'completed': '<span class="badge badge-completed">Selesai</span>',

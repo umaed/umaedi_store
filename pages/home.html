@@ -3,89 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - UmaDigi Store V2</title>
-    <!-- Favicon / Ikon Tab Browser -->
-    <link rel="icon" type="image/png" href="../img/logo.png">
-
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../css/navbar.css">
+    <title>UmaDigi Store V2</title>
+    <link rel="icon" type="image/png" href="../assets/img/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/cards.css">
 </head>
 <body>
-    <!-- Top Navbar -->
-   <header class="navbar">
-    <a href="home.html" class="nav-brand">
-        <!-- Logo Gambar -->
-        <img src="/assets/img/brand.png" alt="UmaDigi Logo" class="nav-logo">
-        <span>UmaDigi Store</span>
-    </a>
-    <div class="nav-actions">
-        <button class="icon-btn" onclick="window.location.href='search.html'" aria-label="Search">🔍</button>
-        <button class="icon-btn" onclick="window.location.href='notifications.html'" aria-label="Notifications">🔔</button>
-    </div>
-</header>
+    <header class="navbar">
+        <a href="home.html" class="nav-brand">
+            <img src="../assets/img/logo.png" alt="UmaDigi Logo" class="nav-logo">
+            <span>UmaDigi Store</span>
+        </a>
+        <div class="nav-actions">
+            <button class="icon-btn" onclick="window.location.href='search.html'"><span class="material-symbols-outlined">search</span></button>
+            <button class="icon-btn" onclick="window.location.href='notifications.html'"><span class="material-symbols-outlined">notifications</span></button>
+            <button class="admin-access-btn" id="admin-access-btn" data-admin-access style="display:none;" onclick="window.location.href='admin.html'">Admin</button>
+        </div>
+    </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1>Upgrade Your Digital Life</h1>
-            <p>Temukan produk digital & solusi kreatif terbaik untuk kebutuhan Anda.</p>
-            <button class="btn-light">Belanja Sekarang</button>
-        </section>
-
-        <!-- Categories -->
-        <div class="categories-scroll">
-            <a href="#" class="category-chip active">Semua</a>
-            <a href="#" class="category-chip">Digital</a>
-            <a href="#" class="category-chip">Template</a>
-            <a href="#" class="category-chip">Preset</a>
-            <a href="#" class="category-chip">Design</a>
-            <a href="#" class="category-chip">Software</a>
-            <a href="#" class="category-chip">E-book</a>
+    <main style="padding: 20px; max-width: 1200px; margin: 0 auto; padding-bottom: 100px;">
+        <!-- Banner Dinamis (Tetap di atas) -->
+        <div class="banner-wrapper" id="banner-wrapper" style="display: none;">
+            <div class="banner-slides" id="banner-slides"></div>
+            <div class="banner-dots" id="banner-dots"></div>
         </div>
 
-        <!-- Featured Products Section -->
-        <div class="section-header">
-            <h2 class="section-title">Produk Unggulan</h2>
-            <a href="#" style="font-size: 0.85rem; color: var(--primary); text-decoration: none;">Lihat Semua</a>
+        <!-- Kategori (Kartu) -->
+        <div class="category-cards">
+            <div class="category-card" onclick="window.location.href='explore.html'">
+                <span class="material-symbols-outlined">apps</span>
+                <span>Semua</span>
+            </div>
+            <div class="category-card" onclick="window.location.href='explore.html'">
+                <span class="material-symbols-outlined">insert_chart</span>
+                <span>Digital</span>
+            </div>
+            <div class="category-card" onclick="window.location.href='explore.html'">
+                <span class="material-symbols-outlined">web</span>
+                <span>Template</span>
+            </div>
+            <div class="category-card" onclick="window.location.href='explore.html'">
+                <span class="material-symbols-outlined">photo_camera</span>
+                <span>Preset</span>
+            </div>
         </div>
+
+        <h2 class="section-title" style="margin-top: 20px; margin-bottom: 15px;">Produk Terbaru</h2>
         <div class="product-grid" id="featured-products">
-            <!-- Produk akan di-render di sini via JS nanti -->
-            <p style="color: var(--muted); grid-column: 1 / -1; text-align: center; padding: 20px;">Memuat produk...</p>
+            <p style="text-align: center; color: var(--muted); padding: 40px; grid-column: 1/-1;">Memuat produk...</p>
+        </div>
+
+        <!-- Keunggulan Layanan -->
+        <div class="features-section">
+            <div class="feature-item">
+                <span class="material-symbols-outlined">local_shipping</span>
+                <h4>Pengiriman Cepat</h4>
+                <p>File dikirim langsung setelah pembayaran.</p>
+            </div>
+            <div class="feature-item">
+                <span class="material-symbols-outlined">verified_user</span>
+                <h4>100% Original</h4>
+                <p>Produk digital asli dan berkualitas.</p>
+            </div>
+            <div class="feature-item">
+                <span class="material-symbols-outlined">support_agent</span>
+                <h4>Dukungan 24/7</h4>
+                <p>Tim support siap membantu Anda.</p>
+            </div>
+            <div class="feature-item">
+                <span class="material-symbols-outlined">autorenew</span>
+                <h4>Update Gratis</h4>
+                <p>Dapatkan update untuk produk yang dibeli.</p>
+            </div>
+        </div>
+
+        <!-- Testimoni -->
+        <div class="testimonials-section">
+            <h2>Apa Kata Mereka?</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"Produknya sangat membantu, kualitas luar biasa!"</p>
+                    <div class="testimonial-author">- Budi</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"Pengiriman cepat, file lengkap. Recommended!"</p>
+                    <div class="testimonial-author">- Siti</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★☆</div>
+                    <p>"Banyak pilihan dan harga terjangkau. Mantap."</p>
+                    <div class="testimonial-author">- Andi</div>
+                </div>
+            </div>
         </div>
     </main>
 
-    <!-- Bottom Navigation (Mobile) -->
+    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <a href="home.html" class="nav-item active">
-            <span>🏠</span>
-            <span>Home</span>
+        <a href="home.html" class="nav-item">
+            <span class="material-symbols-outlined">home</span><span>Home</span>
         </a>
         <a href="explore.html" class="nav-item">
-            <span>🧭</span>
-            <span>Explore</span>
+            <span class="material-symbols-outlined">explore</span><span>Explore</span>
         </a>
         <a href="orders.html" class="nav-item">
-            <span>📦</span>
-            <span>Orders</span>
+            <span class="material-symbols-outlined">local_shipping</span><span>Orders</span>
         </a>
-        <a href="wishlist.html" class="nav-item">
-            <span>❤️</span>
-            <span>Wishlist</span>
+        <a href="cart.html" class="nav-item">
+            <div style="position: relative;">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <span class="cart-badge-count">0</span>
+            </div>
+            <span>Keranjang</span>
         </a>
         <a href="profile.html" class="nav-item">
-            <span>👤</span>
-            <span>Profile</span>
+            <span class="material-symbols-outlined">person</span><span>Profile</span>
         </a>
     </nav>
 
-    <!-- Memuat Script Global (Cek Auth) -->
     <script type="module" src="../js/app.js"></script>
-    <!-- Script khusus untuk menangani produk -->
     <script type="module" src="../js/products.js"></script>
-    <link rel="stylesheet" href="../css/cards.css">
+    <script type="module">
+        import { db } from "../js/firebase-config.js";
+        import { collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+        const bannerSlides = document.getElementById("banner-slides");
+        const bannerDots = document.getElementById("banner-dots");
+        const bannerWrapper = document.getElementById("banner-wrapper");
+
+        let currentSlide = 0;
+        let bannerCount = 0;
+        let slideInterval;
+
+        onSnapshot(query(collection(db, "banners"), orderBy("createdAt", "desc")), (snapshot) => {
+            bannerSlides.innerHTML = ""; bannerDots.innerHTML = "";
+            bannerCount = snapshot.size;
+            if (bannerCount === 0) { bannerWrapper.style.display = 'none'; return; }
+            
+            bannerWrapper.style.display = 'block';
+            let index = 0;
+            snapshot.forEach(docSnap => {
+                const b = docSnap.data();
+                bannerSlides.innerHTML += `
+                    <div class="banner-slide">
+                        <img src="${b.imageUrl}" alt="${b.title}">
+                        <div class="banner-overlay">
+                            <div class="banner-title">${b.title}</div>
+                        </div>
+                    </div>`;
+                bannerDots.innerHTML += `<div class="dot ${index === 0 ? 'active' : ''}" data-idx="${index}"></div>`;
+                index++;
+            });
+            startAutoSlide();
+        });
+
+        function goToSlide(index) {
+            if (index >= bannerCount) currentSlide = 0;
+            else if (index < 0) currentSlide = bannerCount - 1;
+            else currentSlide = index;
+
+            bannerSlides.style.transform = `translateX(-${currentSlide * 100}%)`;
+            document.querySelectorAll(".dot").forEach((dot, i) => {
+                dot.classList.toggle("active", i === currentSlide);
+            });
+        }
+
+        function startAutoSlide() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(() => goToSlide(currentSlide + 1), 4000);
+        }
+
+        let startX = 0;
+        bannerWrapper.addEventListener('touchstart', e => {
+            startX = e.changedTouches[0].screenX;
+            clearInterval(slideInterval);
+        }, {passive: true});
+        bannerWrapper.addEventListener('touchend', e => {
+            let endX = e.changedTouches[0].screenX;
+            if (startX - endX > 50) goToSlide(currentSlide + 1);
+            if (endX - startX > 50) goToSlide(currentSlide - 1);
+            startAutoSlide();
+        }, {passive: true});
+    </script>
 </body>
 </html>

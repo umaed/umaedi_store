@@ -13,18 +13,18 @@ const btnSubmit = document.getElementById("btn-process-order");
 let currentUser = null;
 let cartItemsData = [];
 let orderTotal = 0;
-let proofBase64 = ""; // Variabel untuk menyimpan gambar bukti transfer
+let proofBase64 = ""; 
 
 const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
 
 // Nomor Rekening Tujuan (Atas Nama UMAEDI)
 const rekeningInfo = {
-    "DANA": "0838-1811-5136",
-    "GoPay": "0838-1811-5136",
-    "OVO": "0838-1811-5136",
-    "SeaBank": "9015-6721-6652",
-    "Krom": "7700-0670-2008",
-    "Bank Jago": "4889-5030-3404-7218"
+    "DANA": "0812-XXXX-XXXX",
+    "GoPay": "0812-XXXX-XXXX",
+    "OVO": "0812-XXXX-XXXX",
+    "SeaBank": "9012-XXXX-XXXX",
+    "Krom": "8888-XXXX-XXXX",
+    "Bank Jago": "1011-XXXX-XXXX"
 };
 
 // 1. Cek Login & Ambil Data
@@ -32,7 +32,7 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         currentUser = user;
         await prepareCheckoutData(user.uid);
-        updatePaymentInstruction(); // Panggil instruksi default (QRIS)
+        updatePaymentInstruction(); 
     } else {
         window.location.replace("login.html");
     }
@@ -51,7 +51,7 @@ async function prepareCheckoutData(uid) {
         
         if (cartSnapshot.empty) {
             alert("Keranjang belanja kosong.");
-            window.location.replace("home.html");
+            window.location.replace("cart.html");
             return;
         }
 
@@ -64,14 +64,22 @@ async function prepareCheckoutData(uid) {
             cartItemsData.push(item);
             const subtotalItem = item.price * item.quantity;
             orderTotal += subtotalItem;
+            
+            // Format tampilan varian di ringkasan checkout
+            let variantHTML = "";
+            if (item.selectedVariants && Object.keys(item.selectedVariants).length > 0) {
+                const variantString = Object.entries(item.selectedVariants).map(([k,v]) => `${k}: ${v}`).join(", ");
+                variantHTML = `<div style="font-size: 0.75rem; color: var(--muted); margin-top: 2px;">${variantString}</div>`;
+            }
 
             itemsListContainer.insertAdjacentHTML('beforeend', `
-                <div class="summary-item">
+                <div class="summary-item" style="display:flex; justify-content:space-between; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
                     <div class="summary-item-info">
-                        <div class="summary-item-title">${item.name}</div>
-                        <div class="summary-item-qty">${item.quantity} x ${formatRp(item.price)}</div>
+                        <div class="summary-item-title" style="font-weight:600;">${item.name}</div>
+                        ${variantHTML}
+                        <div class="summary-item-qty" style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">${item.quantity} x ${formatRp(item.price)}</div>
                     </div>
-                    <div class="summary-item-price">${formatRp(subtotalItem)}</div>
+                    <div class="summary-item-price" style="font-weight:bold;">${formatRp(subtotalItem)}</div>
                 </div>
             `);
         });
@@ -86,11 +94,10 @@ async function prepareCheckoutData(uid) {
     }
 }
 
-// 2. Controller UI Metode Pembayaran Dinamis
+// 2. Controller UI Metode Pembayaran
 function updatePaymentInstruction() {
     const method = paymentSelect.value;
     if (method === "QRIS") {
-        // Path gambar sudah diperbarui ke folder assets/img/qris.png
         instructionBox.innerHTML = `
             <h4 style="margin-bottom: 10px;">Scan QRIS di bawah ini</h4>
             <img src="../assets/img/qris.png" alt="QRIS Umaedi" style="max-width: 250px; border-radius: 8px; margin: 10px 0;" onerror="this.src='https://via.placeholder.com/200?text=Gambar+QRIS'">
@@ -110,15 +117,22 @@ function updatePaymentInstruction() {
         instructionBox.innerHTML = `<p>Pilih metode pembayaran terlebih dahulu.</p>`;
     }
 }
+
 paymentSelect.addEventListener("change", updatePaymentInstruction);
 
-// 3. Konversi Gambar ke Base64 & Ubah Status Tombol
+// 3. Konversi Gambar Bukti ke Base64
 proofInput.addEventListener("change", function(event) {
     const file = event.target.files[0];
     if (file) {
+        if (file.size > 700 * 1024) {
+            alert("Ukuran gambar maksimal 700KB.");
+            this.value = "";
+            proofBase64 = "";
+            return;
+        }
         const reader = new FileReader();
         reader.onload = function(e) {
-            proofBase64 = e.target.result; // Simpan data gambar
+            proofBase64 = e.target.result; 
             btnSubmit.textContent = "Bukti Terlampir - Buat Pesanan";
             btnSubmit.style.backgroundColor = "var(--primary)";
         };
@@ -126,6 +140,7 @@ proofInput.addEventListener("change", function(event) {
     } else {
         proofBase64 = "";
         btnSubmit.textContent = "Menunggu Bukti Transfer";
+        btnSubmit.style.backgroundColor = "";
     }
 });
 
@@ -146,15 +161,17 @@ checkoutForm.addEventListener("submit", async (e) => {
             customerName: document.getElementById("co-name").value,
             customerEmail: document.getElementById("co-email").value,
             customerPhone: document.getElementById("co-phone").value,
+            // MENGIRIM DATA ITEM BESERTA VARIANNYA KE ADMIN
             items: cartItemsData.map(item => ({
                 productId: item.productId,
                 name: item.name,
                 price: item.price,
-                quantity: item.quantity
+                quantity: item.quantity,
+                selectedVariants: item.selectedVariants || null 
             })),
             total: orderTotal,
             paymentMethod: paymentSelect.value,
-            paymentProof: proofBase64, // Kirim gambar ke database
+            paymentProof: proofBase64,
             orderStatus: "pending", 
             notes: document.getElementById("co-notes").value,
             createdAt: serverTimestamp()
@@ -162,7 +179,7 @@ checkoutForm.addEventListener("submit", async (e) => {
 
         await addDoc(collection(db, "orders"), orderData);
         
-        // Kosongkan keranjang
+        // Kosongkan keranjang (Batch Delete)
         const batch = writeBatch(db);
         cartItemsData.forEach(item => {
             batch.delete(doc(db, "cart", currentUser.uid, "items", item.cartDocId));

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - UmaDigi Store V2</title>
+    <link rel="icon" type="image/png" href="../assets/img/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/forms.css">
@@ -12,28 +14,23 @@
 <body>
     <header class="navbar">
         <a href="home.html" class="nav-brand">
-            <img src="/assets/img/brand.png" alt="UmaDigi Logo" class="nav-logo">
+            <img src="../assets/img/logo.png" alt="UmaDigi Logo" class="nav-logo">
             <span>UmaDigi [ADMIN]</span>
         </a>
         <div class="nav-actions">
-            <button class="icon-btn" onclick="window.location.href='home.html'" title="Keluar ke Toko">🏠</button>
+            <button class="icon-btn" onclick="window.location.href='home.html'" title="Keluar ke Toko"><span class="material-symbols-outlined">storefront</span></button>
         </div>
     </header>
 
     <main class="admin-container">
-        <!-- Status Proteksi / Loading -->
-        <div id="admin-guard-loading" class="loading-state">
-            Memverifikasi hak akses admin...
-        </div>
+        <div id="admin-guard-loading" class="loading-state">Memuat dashboard admin...</div>
 
-        <!-- Dashboard Utama -->
         <div id="admin-dashboard-content" style="display: none;">
             <div class="admin-header">
                 <div>
                     <h1 class="admin-title">Dashboard Pengelola</h1>
                     <p class="admin-subtitle">Ringkasan performa dan manajemen toko UmaDigi</p>
                 </div>
-                <button class="btn-primary" id="btn-open-add-product">+ Tambah Produk</button>
             </div>
 
             <!-- Statistik Lengkap -->
@@ -56,11 +53,34 @@
                 </div>
             </div>
 
+            <!-- Manajemen Banner -->
+            <div class="admin-section">
+                <div class="section-header-flex">
+                    <h3>Kelola Banner Promo</h3>
+                    <button class="btn-primary btn-sm" id="btn-open-add-banner">+ Tambah Banner</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Gambar Promo</th>
+                                <th>Teks Spesial</th>
+                                <th class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-banners-table"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Manajemen Produk -->
             <div class="admin-section">
                 <div class="section-header-flex">
                     <h3>Daftar Produk</h3>
-                    <input type="text" id="search-product" class="admin-search" placeholder="Cari nama produk...">
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="search-product" class="admin-search" placeholder="Cari nama produk...">
+                        <button class="btn-primary btn-sm" id="btn-open-add-product">+ Tambah Produk</button>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table class="admin-table">
@@ -73,9 +93,7 @@
                                 <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="admin-products-table">
-                            <!-- Diisi via JS -->
-                        </tbody>
+                        <tbody id="admin-products-table"></tbody>
                     </table>
                 </div>
             </div>
@@ -93,47 +111,62 @@
                                 <th>ID Order</th>
                                 <th>Pembeli</th>
                                 <th>Total</th>
-                                <th>Bukti</th> <!-- Tambahan Kolom Baru -->
+                                <th>Bukti</th>
                                 <th>Status</th>
                                 <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="admin-orders-table">
-                            <!-- Diisi via JS -->
-                        </tbody>
+                        <tbody id="admin-orders-table"></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- Modal Tambah Banner -->
+    <div class="admin-modal" id="modal-banner">
+        <div class="admin-modal-content">
+            <h3 style="margin-bottom: 20px;">Tambah Banner Promo</h3>
+            <form id="form-add-banner">
+                <div class="form-group">
+                    <label>Teks Promo (Contoh: Diskon 50% Preset!)</label>
+                    <input type="text" id="banner-title" required>
+                </div>
+                <div class="form-group">
+                    <label>Upload Gambar Banner (Rasio memanjang 21:9)</label>
+                    <!-- Mengubah tipe input menjadi 'file' -->
+                    <input type="file" id="banner-image-file" accept="image/*" required style="background: var(--background); padding: 10px; width: 100%; border: 1px solid var(--border); border-radius: 8px;">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="btn-close-banner">Batal</button>
+                    <button type="submit" class="btn-primary" id="btn-save-banner">Simpan Banner</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Modal Tambah Produk -->
     <div class="admin-modal" id="modal-product">
-        <div class="admin-modal-content">
+        <div class="admin-modal-content" style="max-width: 600px;">
             <h3 style="margin-bottom: 20px;">Tambah Produk Baru</h3>
             <form id="form-add-product">
-                <div class="form-group">
-                    <label>Nama Produk</label>
-                    <input type="text" id="add-name" required placeholder="Contoh: Preset Lightroom Cinematic">
-                </div>
+                <div class="form-group"><label>Nama Produk</label><input type="text" id="add-name" required></div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Kategori</label>
-                        <input type="text" id="add-category" required placeholder="Contoh: Preset">
+                    <div class="form-group"><label>Kategori</label><input type="text" id="add-category" required></div>
+                    <div class="form-group"><label>Harga (Rp)</label><input type="number" id="add-price" required></div>
+                </div>
+                <div class="form-group"><label>URL Gambar</label><input type="url" id="add-image" required></div>
+                <div class="form-group"><label>Deskripsi</label><textarea id="add-desc" rows="3"></textarea></div>
+                
+                <!-- VARIANT BUILDER ADD -->
+                <div class="form-group" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <label style="margin: 0; font-weight: bold;">Varian Produk (Opsional)</label>
+                        <button type="button" class="btn-sm btn-outline" id="btn-add-variant-group">+ Tambah Jenis Varian</button>
                     </div>
-                    <div class="form-group">
-                        <label>Harga (Rp)</label>
-                        <input type="number" id="add-price" required placeholder="50000">
-                    </div>
+                    <div id="add-variant-container"></div>
                 </div>
-                <div class="form-group">
-                    <label>URL Gambar</label>
-                    <input type="url" id="add-image" required placeholder="https://...">
-                </div>
-                <div class="form-group">
-                    <label>Deskripsi</label>
-                    <textarea id="add-desc" rows="3" placeholder="Deskripsi produk..."></textarea>
-                </div>
+
                 <div class="modal-actions">
                     <button type="button" class="btn-secondary" id="btn-close-modal">Batal</button>
                     <button type="submit" class="btn-primary" id="btn-save-product">Simpan Produk</button>
@@ -144,32 +177,27 @@
 
     <!-- Modal Edit Produk -->
     <div class="admin-modal" id="modal-edit-product">
-        <div class="admin-modal-content">
+        <div class="admin-modal-content" style="max-width: 600px;">
             <h3 style="margin-bottom: 20px;">Edit Produk</h3>
             <form id="form-edit-product">
                 <input type="hidden" id="edit-id">
-                <div class="form-group">
-                    <label>Nama Produk</label>
-                    <input type="text" id="edit-name" required>
-                </div>
+                <div class="form-group"><label>Nama Produk</label><input type="text" id="edit-name" required></div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Kategori</label>
-                        <input type="text" id="edit-category" required>
+                    <div class="form-group"><label>Kategori</label><input type="text" id="edit-category" required></div>
+                    <div class="form-group"><label>Harga (Rp)</label><input type="number" id="edit-price" required></div>
+                </div>
+                <div class="form-group"><label>URL Gambar</label><input type="url" id="edit-image" required></div>
+                <div class="form-group"><label>Deskripsi</label><textarea id="edit-desc" rows="3"></textarea></div>
+                
+                <!-- VARIANT BUILDER EDIT -->
+                <div class="form-group" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <label style="margin: 0; font-weight: bold;">Varian Produk</label>
+                        <button type="button" class="btn-sm btn-outline" id="btn-edit-add-variant-group">+ Tambah Jenis Varian</button>
                     </div>
-                    <div class="form-group">
-                        <label>Harga (Rp)</label>
-                        <input type="number" id="edit-price" required>
-                    </div>
+                    <div id="edit-variant-container"></div>
                 </div>
-                <div class="form-group">
-                    <label>URL Gambar</label>
-                    <input type="url" id="edit-image" required>
-                </div>
-                <div class="form-group">
-                    <label>Deskripsi</label>
-                    <textarea id="edit-desc" rows="3"></textarea>
-                </div>
+
                 <div class="modal-actions">
                     <button type="button" class="btn-secondary" id="btn-close-edit">Batal</button>
                     <button type="submit" class="btn-primary" id="btn-update-product">Update Produk</button>
@@ -177,7 +205,8 @@
             </form>
         </div>
     </div>
-<!-- Modal Bukti Transfer -->
+
+    <!-- Modal Bukti Transfer -->
     <div class="admin-modal" id="modal-proof">
         <div class="admin-modal-content" style="max-width: 400px; text-align: center;">
             <h3 style="margin-bottom: 15px;">Bukti Pembayaran</h3>
@@ -189,6 +218,7 @@
             </div>
         </div>
     </div>
+
     <script type="module" src="../js/admin.js"></script>
 </body>
 </html>

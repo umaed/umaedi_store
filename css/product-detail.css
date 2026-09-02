@@ -22,7 +22,7 @@
         padding: 30px;
         gap: 40px;
         border-radius: 20px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 10px rgba(79,70,229,0.1);
     }
 }
 
@@ -56,29 +56,6 @@
     object-fit: cover;
 }
 
-/* Thumbnail row (opsional) */
-.thumbnail-row {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding: 10px;
-    background: #fff;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.thumbnail-row img {
-    width: 60px;
-    height: 60px;
-    border-radius: 8px;
-    object-fit: cover;
-    cursor: pointer;
-    border: 1px solid #ddd;
-}
-
-.thumbnail-row img.active {
-    border: 2px solid #ee4d2d;
-}
-
 /* =========================================
    BAGIAN INFORMASI
    ========================================= */
@@ -108,7 +85,7 @@
 .detail-price-lg {
     font-size: 1.8rem;
     font-weight: 800;
-    color: #ee4d2d; /* warna merah/oranye Shopee */
+    color: #4F46E5; /* Biru */
 }
 
 .sold-count {
@@ -120,7 +97,7 @@
 .detail-title-lg {
     font-size: 1.2rem;
     font-weight: 600;
-    color: #333;
+    color: #1F2937;
     margin-bottom: 8px;
     line-height: 1.4;
 }
@@ -131,21 +108,21 @@
     align-items: center;
     gap: 5px;
     font-size: 0.9rem;
-    color: #999;
+    color: #6B7280;
     margin-bottom: 15px;
 }
 
 .rating-row .star {
-    color: #faca51;
+    color: #f59e0b;
 }
 
 /* Section headers */
 .detail-section-title {
     font-size: 1rem;
     font-weight: 600;
-    color: #333;
+    color: #1F2937;
     margin-bottom: 10px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #E5E7EB;
     padding-bottom: 8px;
 }
 
@@ -160,7 +137,7 @@
 /* Jaminan */
 .guarantee-text {
     font-size: 0.9rem;
-    color: #777;
+    color: #6B7280;
     margin-bottom: 20px;
 }
 
@@ -173,7 +150,7 @@
     left: 0;
     right: 0;
     background: #fff;
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #E5E7EB;
     padding: 10px 15px;
     display: flex;
     gap: 10px;
@@ -185,7 +162,7 @@
     flex: 1;
     padding: 12px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
@@ -197,25 +174,21 @@
 }
 
 .bottom-action-bar .chat-btn {
-    background-color: #00bfa5;
+    background-color: #10B981;
     color: white;
-    flex: 0 0 120px; /* chat button width */
+    flex: 0 0 120px;
 }
 
 .bottom-action-bar .cart-btn {
-    background-color: #fbcb30; /* kuning Shopee */
-    color: #ee4d2d;
+    background-color: #E5E7EB;
+    color: #1F2937;
     flex: 1;
 }
 
 .bottom-action-bar .buy-btn {
-    background-color: #ee4d2d;
+    background-color: #4F46E5;
     color: white;
     flex: 1.2;
-}
-
-.bottom-action-bar button:hover {
-    opacity: 0.9;
 }
 
 /* Responsive small */
@@ -315,7 +288,7 @@
 }
 
 .variant-price {
-    color: #ee4d2d;
+    color: #4F46E5;
     font-weight: 800;
     font-size: 1.2rem;
     margin-bottom: 5px;
@@ -323,7 +296,7 @@
 
 .variant-stock {
     font-size: 0.85rem;
-    color: #888;
+    color: #6B7280;
 }
 
 .variant-close {
@@ -331,13 +304,13 @@
     border: none;
     font-size: 1.2rem;
     cursor: pointer;
-    color: #555;
+    color: #6B7280;
 }
 
 .variant-group-title {
     font-size: 0.95rem;
     font-weight: 500;
-    color: #333;
+    color: #1F2937;
     margin-bottom: 8px;
 }
 
@@ -350,8 +323,8 @@
 
 .variant-chip {
     padding: 8px 14px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
     background: #fff;
     font-size: 0.85rem;
     cursor: pointer;
@@ -359,14 +332,14 @@
 }
 
 .variant-chip.selected {
-    border-color: #ee4d2d;
-    color: #ee4d2d;
-    background: #fff5f3;
+    border-color: #4F46E5;
+    color: #4F46E5;
+    background: #EEF2FF;
 }
 
 .variant-confirm-btn {
     width: 100%;
-    background-color: #ee4d2d;
+    background-color: #4F46E5;
     color: white;
     border: none;
     border-radius: 8px;
@@ -378,5 +351,10 @@
 }
 
 .variant-confirm-btn:hover {
-    opacity: 0.9;
+    background-color: #4338CA;
+}
+
+/* Custom Form Inputs di Modal */
+.custom-form-input {
+    margin-bottom: 10px;
 }

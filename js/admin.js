@@ -10,7 +10,6 @@ const adminDashboard = document.getElementById("admin-dashboard-content");
 let productsData = [];
 let ordersData = [];
 
-// 1. Verifikasi Keamanan Role Admin (Mencegah Stuck Loading)
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         try {
@@ -137,23 +136,12 @@ function renderOrders(data) {
             ? `<button class="btn-sm btn-edit btn-view-proof" data-id="${o.id}">Lihat Bukti</button>` 
             : `<span class="text-muted" style="font-size:0.8rem;">Tidak ada</span>`;
 
-        // Membaca item order beserta variannya secara aman
-        let orderDetails = `<ul style="margin:5px 0 0 0; padding-left:15px; font-size:0.85rem; color:var(--muted);">`;
-        if (o.items && Array.isArray(o.items)) {
-            o.items.forEach(item => {
-                let varText = "";
-                if (item.selectedVariants && Object.keys(item.selectedVariants).length > 0) {
-                    varText = " (" + Object.entries(item.selectedVariants).map(([k,v]) => `${k}: ${v}`).join(", ") + ")";
-                }
-                orderDetails += `<li>${item.quantity}x ${item.productName || item.name}${varText}</li>`;
-            });
-        }
-        orderDetails += `</ul>`;
+        const detailBtn = `<button class="btn-sm btn-outline btn-view-order" data-id="${o.id}">Lihat Detail</button>`;
 
         table.innerHTML += `
             <tr>
                 <td><strong>#${shortId}</strong></td>
-                <td>${o.customerName}<br>${orderDetails}</td>
+                <td>${o.customerName}<br>${detailBtn}</td>
                 <td>${formatRp(o.total)}</td>
                 <td class="text-center">${proofBtn}</td>
                 <td><strong style="color:${statusColor}; text-transform:capitalize;">${o.orderStatus}</strong></td>
@@ -188,7 +176,7 @@ function setupSearch() {
 }
 
 // =====================================
-// SISTEM VARIANT BUILDER & MODALS
+// VARIANT BUILDER dengan HARGA
 // =====================================
 function createVariantGroup(container, data = { name: '', options: [] }) {
     const groupId = 'vg_' + Date.now() + Math.floor(Math.random() * 100);
@@ -198,11 +186,12 @@ function createVariantGroup(container, data = { name: '', options: [] }) {
                 <strong>Jenis Varian</strong>
                 <button type="button" class="btn-sm btn-delete" onclick="document.getElementById('${groupId}').remove()">Hapus</button>
             </div>
-            <input type="text" class="var-name" value="${data.name}" placeholder="Contoh: Ukuran, Warna, Bahan" required style="width:100%;">
+            <input type="text" class="var-name" value="${data.name}" placeholder="Contoh: Ukuran, Warna, Bahan" required style="width:100%; margin-bottom:10px;">
             <div class="builder-options-list" id="opts_${groupId}"></div>
             <div style="display:flex; gap:5px; margin-top:5px;">
-                <input type="text" id="in_${groupId}" placeholder="Contoh: XL, Hitam" style="margin:0; flex:1;">
-                <button type="button" class="btn-sm btn-outline btn-add-opt" data-target="${groupId}">+ Tambah Pilihan</button>
+                <input type="text" id="in_${groupId}" placeholder="Nama opsi (Contoh: Hitam)" style="margin:0; flex:1;">
+                <input type="number" id="price_${groupId}" placeholder="Harga tambahan (Rp)" style="margin:0; width:120px;" min="0">
+                <button type="button" class="btn-sm btn-outline btn-add-opt" data-target="${groupId}">+ Tambah Opsi</button>
             </div>
         </div>
     `;
@@ -212,11 +201,13 @@ function createVariantGroup(container, data = { name: '', options: [] }) {
 }
 
 function addOptionBadge(container, value) {
-    if (!value.trim()) return;
+    if (typeof value === 'string') value = { label: value, price: 0 };
+    if (!value.label) return;
     const span = document.createElement("div");
     span.className = "builder-opt-chip";
-    span.innerHTML = `${value} <span onclick="this.parentElement.remove()">✕</span>`;
-    span.dataset.value = value;
+    span.innerHTML = `${value.label} (${formatRp(value.price)}) <span onclick="this.parentElement.remove()">✕</span>`;
+    span.dataset.label = value.label;
+    span.dataset.price = value.price;
     container.appendChild(span);
 }
 
@@ -225,7 +216,10 @@ function extractVariants(containerId) {
     const boxes = document.getElementById(containerId).querySelectorAll('.builder-box');
     boxes.forEach(box => {
         const name = box.querySelector('.var-name').value.trim();
-        const options = Array.from(box.querySelectorAll('.builder-opt-chip')).map(chip => chip.dataset.value);
+        const options = Array.from(box.querySelectorAll('.builder-opt-chip')).map(chip => ({
+            label: chip.dataset.label,
+            price: Number(chip.dataset.price) || 0
+        }));
         if (name && options.length > 0) {
             variants.push({ name, options });
         }
@@ -233,8 +227,50 @@ function extractVariants(containerId) {
     return variants;
 }
 
+// =====================================
+// CUSTOM FORM BUILDER
+// =====================================
+function createFormField(container, data = { label: '', type: 'text', required: false, placeholder: '' }) {
+    const fieldId = 'ff_' + Date.now() + Math.floor(Math.random() * 100);
+    const html = `
+        <div class="builder-box" id="${fieldId}">
+            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                <strong>Field Form</strong>
+                <button type="button" class="btn-sm btn-delete" onclick="document.getElementById('${fieldId}').remove()">Hapus</button>
+            </div>
+            <input type="text" class="form-label" value="${data.label}" placeholder="Label (contoh: Username Instagram)" required style="width:100%; margin-bottom:10px;">
+            <div style="display:flex; gap:5px; margin-bottom:5px;">
+                <select class="form-type" style="flex:1;">
+                    <option value="text" ${data.type==='text'?'selected':''}>Teks</option>
+                    <option value="number" ${data.type==='number'?'selected':''}>Angka</option>
+                    <option value="email" ${data.type==='email'?'selected':''}>Email</option>
+                </select>
+                <label style="display:flex; align-items:center; gap:5px; white-space:nowrap;">
+                    <input type="checkbox" class="form-required" ${data.required?'checked':''}> Wajib
+                </label>
+            </div>
+            <input type="text" class="form-placeholder" value="${data.placeholder}" placeholder="Placeholder (opsional)" style="width:100%;">
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+}
+
+function extractForms(containerId) {
+    const forms = [];
+    const boxes = document.getElementById(containerId).querySelectorAll('.builder-box');
+    boxes.forEach(box => {
+        const label = box.querySelector('.form-label').value.trim();
+        const type = box.querySelector('.form-type').value;
+        const required = box.querySelector('.form-required').checked;
+        const placeholder = box.querySelector('.form-placeholder').value.trim();
+        if (label) {
+            forms.push({ label, type, required, placeholder });
+        }
+    });
+    return forms;
+}
+
 function setupModals() {
-    // Tombol Tambah Varian (Diamankan di dalam fungsi)
     const btnAddVariant = document.getElementById("btn-add-variant-group");
     if (btnAddVariant) {
         btnAddVariant.addEventListener("click", () => createVariantGroup(document.getElementById("add-variant-container")));
@@ -244,7 +280,15 @@ function setupModals() {
         btnEditVariant.addEventListener("click", () => createVariantGroup(document.getElementById("edit-variant-container")));
     }
 
-    // Modal Tambah Produk
+    const btnAddForm = document.getElementById("btn-add-form-group");
+    if (btnAddForm) {
+        btnAddForm.addEventListener("click", () => createFormField(document.getElementById("add-form-container")));
+    }
+    const btnEditForm = document.getElementById("btn-edit-add-form-group");
+    if (btnEditForm) {
+        btnEditForm.addEventListener("click", () => createFormField(document.getElementById("edit-form-container")));
+    }
+
     const modalAdd = document.getElementById("modal-product");
     const formAddProduct = document.getElementById("form-add-product");
     
@@ -253,6 +297,7 @@ function setupModals() {
         modalAdd.style.display = "none"; 
         formAddProduct.reset(); 
         document.getElementById("add-variant-container").innerHTML = "";
+        document.getElementById("add-form-container").innerHTML = "";
     });
     
     formAddProduct?.addEventListener("submit", async (e) => {
@@ -266,13 +311,15 @@ function setupModals() {
                 price: Number(document.getElementById("add-price").value), 
                 image: document.getElementById("add-image").value,
                 description: document.getElementById("add-desc").value, 
-                variants: extractVariants("add-variant-container"), 
+                variants: extractVariants("add-variant-container"),
+                customForms: extractForms("add-form-container"),
                 isActive: true, 
                 createdAt: serverTimestamp()
             });
             modalAdd.style.display = "none"; 
             e.target.reset();
             document.getElementById("add-variant-container").innerHTML = "";
+            document.getElementById("add-form-container").innerHTML = "";
             alert("Produk berhasil ditambahkan!");
         } catch (error) { 
             console.error(error); alert("Terjadi kesalahan."); 
@@ -281,13 +328,13 @@ function setupModals() {
         }
     });
 
-    // Modal Edit Produk
     const modalEdit = document.getElementById("modal-edit-product");
     const formEditProduct = document.getElementById("form-edit-product");
     
     document.getElementById("btn-close-edit")?.addEventListener("click", () => {
         modalEdit.style.display = "none";
         document.getElementById("edit-variant-container").innerHTML = "";
+        document.getElementById("edit-form-container").innerHTML = "";
     });
     
     formEditProduct?.addEventListener("submit", async (e) => {
@@ -302,7 +349,8 @@ function setupModals() {
                 price: Number(document.getElementById("edit-price").value), 
                 image: document.getElementById("edit-image").value,
                 description: document.getElementById("edit-desc").value,
-                variants: extractVariants("edit-variant-container") // Update Varian
+                variants: extractVariants("edit-variant-container"),
+                customForms: extractForms("edit-form-container")
             });
             modalEdit.style.display = "none";
             alert("Produk berhasil diupdate!");
@@ -313,7 +361,6 @@ function setupModals() {
         }
     });
 
-    // Modal Banner Promo
     const modalBanner = document.getElementById("modal-banner");
     document.getElementById("btn-open-add-banner")?.addEventListener("click", () => modalBanner.style.display = "flex");
     
@@ -364,22 +411,28 @@ function setupModals() {
         }
     });
 
-    // Tutup Modal Bukti TF
     document.getElementById("btn-close-proof")?.addEventListener("click", () => {
         document.getElementById("modal-proof").style.display = "none";
         document.getElementById("proof-image-display").src = "";
     });
+
+    // Tutup modal detail pesanan
+    document.getElementById("btn-close-order-detail")?.addEventListener("click", () => {
+        document.getElementById("modal-order-detail").style.display = "none";
+    });
 }
 
-// Aksi Klik Global (Delegation)
+// Aksi Klik Global (Delegation) - untuk berbagai tombol
 document.addEventListener("click", async (e) => {
     // Aksi Tambah Pilihan Varian (Chip)
     if (e.target.classList.contains("btn-add-opt")) {
         const groupId = e.target.getAttribute("data-target");
-        const input = document.getElementById(`in_${groupId}`);
-        if (input && input.value.trim() !== "") {
-            addOptionBadge(document.getElementById(`opts_${groupId}`), input.value.trim());
-            input.value = "";
+        const inputLabel = document.getElementById(`in_${groupId}`);
+        const inputPrice = document.getElementById(`price_${groupId}`);
+        if (inputLabel && inputLabel.value.trim() !== "") {
+            addOptionBadge(document.getElementById(`opts_${groupId}`), { label: inputLabel.value.trim(), price: Number(inputPrice.value) || 0 });
+            inputLabel.value = "";
+            inputPrice.value = "";
         }
     }
 
@@ -408,11 +461,16 @@ document.addEventListener("click", async (e) => {
             document.getElementById("edit-image").value = product.image; 
             document.getElementById("edit-desc").value = product.description || '';
             
-            // Muat varian ke dalam Modal Edit
             const editVarContainer = document.getElementById("edit-variant-container");
             editVarContainer.innerHTML = "";
             if (product.variants && product.variants.length > 0) {
                 product.variants.forEach(v => createVariantGroup(editVarContainer, v));
+            }
+
+            const editFormContainer = document.getElementById("edit-form-container");
+            editFormContainer.innerHTML = "";
+            if (product.customForms && product.customForms.length > 0) {
+                product.customForms.forEach(f => createFormField(editFormContainer, f));
             }
 
             document.getElementById("modal-edit-product").style.display = "flex";
@@ -426,6 +484,56 @@ document.addEventListener("click", async (e) => {
             document.getElementById("proof-image-display").src = order.paymentProof;
             document.getElementById("modal-proof").style.display = "flex";
         } else { alert("Bukti pembayaran gagal dimuat."); }
+    }
+
+    // Aksi Lihat Detail Pesanan
+    if (e.target.classList.contains("btn-view-order")) {
+        const order = ordersData.find(o => o.id === e.target.getAttribute("data-id"));
+        if (order) {
+            let detailHtml = `
+                <div style="margin-bottom: 10px;">
+                    <strong>Nama Pembeli:</strong> ${order.customerName || '-'}
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <strong>Email:</strong> ${order.customerEmail || '-'}
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <strong>WhatsApp:</strong> ${order.customerPhone || '-'}
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Metode Pembayaran:</strong> ${order.paymentMethod || '-'}
+                </div>
+                <div style="border-top: 1px solid var(--border); padding-top: 15px;">
+                    <strong>Item yang dibeli:</strong>
+                    <ul style="margin: 5px 0 0 0; padding-left: 15px;">
+            `;
+            
+            order.items.forEach(item => {
+                detailHtml += `<li style="margin-bottom: 5px;">`;
+                detailHtml += `${item.quantity}x ${item.productName || item.name}`;
+                
+                if (item.selectedVariants && Object.keys(item.selectedVariants).length > 0) {
+                    detailHtml += `<br><em>Varian: ` + Object.entries(item.selectedVariants).map(([k,v]) => `${k}: ${v.label || v}`).join(", ") + `</em>`;
+                }
+                
+                if (item.customForms && Object.keys(item.customForms).length > 0) {
+                    detailHtml += `<br><em>Form: ` + Object.entries(item.customForms).map(([k,v]) => `${k}: ${v}`).join(", ") + `</em>`;
+                }
+                
+                detailHtml += `</li>`;
+            });
+            
+            detailHtml += `
+                    </ul>
+                </div>
+                <div style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 10px;">
+                    <strong>Total:</strong> ${formatRp(order.total)}
+                </div>
+            `;
+            
+            document.getElementById("order-detail-content").innerHTML = detailHtml;
+            document.getElementById("modal-order-detail").style.display = "flex";
+        }
     }
 });
 

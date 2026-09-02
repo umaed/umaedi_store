@@ -134,7 +134,6 @@
                 </div>
                 <div class="form-group">
                     <label>Upload Gambar Banner (Rasio memanjang 21:9)</label>
-                    <!-- Mengubah tipe input menjadi 'file' -->
                     <input type="file" id="banner-image-file" accept="image/*" required style="background: var(--background); padding: 10px; width: 100%; border: 1px solid var(--border); border-radius: 8px;">
                 </div>
                 <div class="modal-actions">
@@ -147,13 +146,13 @@
 
     <!-- Modal Tambah Produk -->
     <div class="admin-modal" id="modal-product">
-        <div class="admin-modal-content" style="max-width: 600px;">
+        <div class="admin-modal-content" style="max-width: 700px;">
             <h3 style="margin-bottom: 20px;">Tambah Produk Baru</h3>
             <form id="form-add-product">
                 <div class="form-group"><label>Nama Produk</label><input type="text" id="add-name" required></div>
                 <div class="form-row">
                     <div class="form-group"><label>Kategori</label><input type="text" id="add-category" required></div>
-                    <div class="form-group"><label>Harga (Rp)</label><input type="number" id="add-price" required></div>
+                    <div class="form-group"><label>Harga Dasar (Rp)</label><input type="number" id="add-price" required></div>
                 </div>
                 <div class="form-group"><label>URL Gambar</label><input type="url" id="add-image" required></div>
                 <div class="form-group"><label>Deskripsi</label><textarea id="add-desc" rows="3"></textarea></div>
@@ -167,6 +166,15 @@
                     <div id="add-variant-container"></div>
                 </div>
 
+                <!-- CUSTOM FORM BUILDER ADD -->
+                <div class="form-group" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <label style="margin: 0; font-weight: bold;">Form Tambahan (Opsional)</label>
+                        <button type="button" class="btn-sm btn-outline" id="btn-add-form-group">+ Tambah Field Form</button>
+                    </div>
+                    <div id="add-form-container"></div>
+                </div>
+
                 <div class="modal-actions">
                     <button type="button" class="btn-secondary" id="btn-close-modal">Batal</button>
                     <button type="submit" class="btn-primary" id="btn-save-product">Simpan Produk</button>
@@ -177,14 +185,14 @@
 
     <!-- Modal Edit Produk -->
     <div class="admin-modal" id="modal-edit-product">
-        <div class="admin-modal-content" style="max-width: 600px;">
+        <div class="admin-modal-content" style="max-width: 700px;">
             <h3 style="margin-bottom: 20px;">Edit Produk</h3>
             <form id="form-edit-product">
                 <input type="hidden" id="edit-id">
                 <div class="form-group"><label>Nama Produk</label><input type="text" id="edit-name" required></div>
                 <div class="form-row">
                     <div class="form-group"><label>Kategori</label><input type="text" id="edit-category" required></div>
-                    <div class="form-group"><label>Harga (Rp)</label><input type="number" id="edit-price" required></div>
+                    <div class="form-group"><label>Harga Dasar (Rp)</label><input type="number" id="edit-price" required></div>
                 </div>
                 <div class="form-group"><label>URL Gambar</label><input type="url" id="edit-image" required></div>
                 <div class="form-group"><label>Deskripsi</label><textarea id="edit-desc" rows="3"></textarea></div>
@@ -196,6 +204,15 @@
                         <button type="button" class="btn-sm btn-outline" id="btn-edit-add-variant-group">+ Tambah Jenis Varian</button>
                     </div>
                     <div id="edit-variant-container"></div>
+                </div>
+
+                <!-- CUSTOM FORM BUILDER EDIT -->
+                <div class="form-group" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <label style="margin: 0; font-weight: bold;">Form Tambahan</label>
+                        <button type="button" class="btn-sm btn-outline" id="btn-edit-add-form-group">+ Tambah Field Form</button>
+                    </div>
+                    <div id="edit-form-container"></div>
                 </div>
 
                 <div class="modal-actions">
@@ -218,6 +235,16 @@
             </div>
         </div>
     </div>
+    <!-- Modal Detail Pesanan -->
+<div class="admin-modal" id="modal-order-detail">
+    <div class="admin-modal-content" style="max-width: 500px;">
+        <h3 style="margin-bottom: 15px;">Detail Pesanan</h3>
+        <div id="order-detail-content"></div>
+        <div class="modal-actions" style="justify-content: flex-end; margin-top: 20px;">
+            <button type="button" class="btn-secondary" id="btn-close-order-detail">Tutup</button>
+        </div>
+    </div>
+</div>
 
     <script type="module" src="../js/admin.js"></script>
 </body>

@@ -210,3 +210,7 @@
     background: #f8fafc;
     cursor: pointer;
 }
+
+#modal-order-detail .admin-modal-content {
+    max-width: 550px;
+}

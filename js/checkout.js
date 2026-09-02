@@ -161,13 +161,14 @@ checkoutForm.addEventListener("submit", async (e) => {
             customerName: document.getElementById("co-name").value,
             customerEmail: document.getElementById("co-email").value,
             customerPhone: document.getElementById("co-phone").value,
-            // MENGIRIM DATA ITEM BESERTA VARIANNYA KE ADMIN
+            // MENGIRIM DATA ITEM BESERTA VARIAN DAN FORM KE ADMIN
             items: cartItemsData.map(item => ({
                 productId: item.productId,
                 name: item.name,
                 price: item.price,
                 quantity: item.quantity,
-                selectedVariants: item.selectedVariants || null 
+                selectedVariants: item.selectedVariants || null,
+                customForms: item.customForms || null // Tambahan
             })),
             total: orderTotal,
             paymentMethod: paymentSelect.value,

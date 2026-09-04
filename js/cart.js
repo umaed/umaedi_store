@@ -44,12 +44,26 @@ function loadCartRealtime(uid) {
 
             const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(item.price);
 
+            // Render varian dengan benar
             let variantHTML = "";
             if (item.selectedVariants && Object.keys(item.selectedVariants).length > 0) {
                 const variantString = Object.entries(item.selectedVariants)
-                                      .map(([key, val]) => `${key}: <strong style="color:var(--text);">${val}</strong>`)
+                                      .map(([key, val]) => {
+                                          // Jika val adalah objek dengan label, ambil label; jika string langsung tampilkan
+                                          const label = typeof val === 'object' && val !== null ? (val.label || val) : val;
+                                          return `${key}: <strong style="color:var(--text);">${label}</strong>`;
+                                      })
                                       .join(" | ");
                 variantHTML = `<div class="cart-item-variant">${variantString}</div>`;
+            }
+
+            // Render form tambahan (jika ada)
+            let formHTML = "";
+            if (item.customForms && Object.keys(item.customForms).length > 0) {
+                const formString = Object.entries(item.customForms)
+                                      .map(([key, val]) => `${key}: <strong style="color:var(--text);">${val}</strong>`)
+                                      .join(" | ");
+                formHTML = `<div class="cart-item-form" style="font-size:0.85rem; color:var(--muted); margin-top:4px;">${formString}</div>`;
             }
 
             const cartHTML = `
@@ -59,6 +73,7 @@ function loadCartRealtime(uid) {
                     <div class="cart-item-body">
                         <div class="cart-item-title">${item.name}</div>
                         ${variantHTML}
+                        ${formHTML}
                         <div class="cart-item-price">${formattedPrice}</div>
                     </div>
 

@@ -10,6 +10,10 @@ const adminDashboard = document.getElementById("admin-dashboard-content");
 let productsData = [];
 let ordersData = [];
 
+// Variabel untuk menyimpan base64 gambar produk saat tambah/edit
+let addImageBase64 = "";
+let editImageBase64 = "";
+
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         try {
@@ -270,7 +274,33 @@ function extractForms(containerId) {
     return forms;
 }
 
+// Fungsi untuk membaca file gambar menjadi base64 (dan preview)
+function handleImageUpload(fileInput, previewImg, setBase64Callback) {
+    if (!fileInput.files || !fileInput.files[0]) {
+        previewImg.style.display = "none";
+        setBase64Callback("");
+        return;
+    }
+    const file = fileInput.files[0];
+    if (file.size > 2000 * 1024) { // Batas 2MB
+        alert("Ukuran gambar maksimal 2MB. Silakan kompres gambar Anda.");
+        fileInput.value = "";
+        previewImg.style.display = "none";
+        setBase64Callback("");
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const base64 = e.target.result;
+        previewImg.src = base64;
+        previewImg.style.display = "block";
+        setBase64Callback(base64);
+    };
+    reader.readAsDataURL(file);
+}
+
 function setupModals() {
+    // Tombol Tambah Varian
     const btnAddVariant = document.getElementById("btn-add-variant-group");
     if (btnAddVariant) {
         btnAddVariant.addEventListener("click", () => createVariantGroup(document.getElementById("add-variant-container")));
@@ -280,6 +310,7 @@ function setupModals() {
         btnEditVariant.addEventListener("click", () => createVariantGroup(document.getElementById("edit-variant-container")));
     }
 
+    // Tombol Tambah Form
     const btnAddForm = document.getElementById("btn-add-form-group");
     if (btnAddForm) {
         btnAddForm.addEventListener("click", () => createFormField(document.getElementById("add-form-container")));
@@ -289,27 +320,55 @@ function setupModals() {
         btnEditForm.addEventListener("click", () => createFormField(document.getElementById("edit-form-container")));
     }
 
+    // Upload gambar produk - Tambah
+    const addFileInput = document.getElementById("add-image-file");
+    const addPreviewImg = document.getElementById("add-image-preview-img");
+    if (addFileInput) {
+        addFileInput.addEventListener("change", function() {
+            handleImageUpload(this, addPreviewImg, (base64) => { addImageBase64 = base64; });
+        });
+    }
+
+    // Upload gambar produk - Edit
+    const editFileInput = document.getElementById("edit-image-file");
+    const editPreviewImg = document.getElementById("edit-image-preview-img");
+    if (editFileInput) {
+        editFileInput.addEventListener("change", function() {
+            handleImageUpload(this, editPreviewImg, (base64) => { editImageBase64 = base64; });
+        });
+    }
+
+    // Modal Tambah Produk
     const modalAdd = document.getElementById("modal-product");
     const formAddProduct = document.getElementById("form-add-product");
     
-    document.getElementById("btn-open-add-product")?.addEventListener("click", () => modalAdd.style.display = "flex");
-    document.getElementById("btn-close-modal")?.addEventListener("click", () => { 
-        modalAdd.style.display = "none"; 
-        formAddProduct.reset(); 
+    document.getElementById("btn-open-add-product")?.addEventListener("click", () => {
+        modalAdd.style.display = "flex";
+        // Reset form saat dibuka
+        formAddProduct.reset();
+        addImageBase64 = "";
+        addPreviewImg.style.display = "none";
         document.getElementById("add-variant-container").innerHTML = "";
         document.getElementById("add-form-container").innerHTML = "";
+    });
+    document.getElementById("btn-close-modal")?.addEventListener("click", () => { 
+        modalAdd.style.display = "none"; 
     });
     
     formAddProduct?.addEventListener("submit", async (e) => {
         e.preventDefault();
         const btn = document.getElementById("btn-save-product");
         btn.disabled = true; btn.textContent = "Menyimpan...";
+
+        // Tentukan gambar: jika base64 ada pakai base64, jika tidak pakai URL
+        let imageValue = addImageBase64 || document.getElementById("add-image").value.trim();
+
         try {
             await addDoc(collection(db, "products"), {
                 name: document.getElementById("add-name").value, 
                 categoryName: document.getElementById("add-category").value,
                 price: Number(document.getElementById("add-price").value), 
-                image: document.getElementById("add-image").value,
+                image: imageValue,
                 description: document.getElementById("add-desc").value, 
                 variants: extractVariants("add-variant-container"),
                 customForms: extractForms("add-form-container"),
@@ -317,7 +376,9 @@ function setupModals() {
                 createdAt: serverTimestamp()
             });
             modalAdd.style.display = "none"; 
-            e.target.reset();
+            formAddProduct.reset();
+            addImageBase64 = "";
+            addPreviewImg.style.display = "none";
             document.getElementById("add-variant-container").innerHTML = "";
             document.getElementById("add-form-container").innerHTML = "";
             alert("Produk berhasil ditambahkan!");
@@ -328,11 +389,14 @@ function setupModals() {
         }
     });
 
+    // Modal Edit Produk
     const modalEdit = document.getElementById("modal-edit-product");
     const formEditProduct = document.getElementById("form-edit-product");
     
     document.getElementById("btn-close-edit")?.addEventListener("click", () => {
         modalEdit.style.display = "none";
+        editImageBase64 = "";
+        editPreviewImg.style.display = "none";
         document.getElementById("edit-variant-container").innerHTML = "";
         document.getElementById("edit-form-container").innerHTML = "";
     });
@@ -342,12 +406,16 @@ function setupModals() {
         const id = document.getElementById("edit-id").value;
         const btn = document.getElementById("btn-update-product");
         btn.disabled = true; btn.textContent = "Mengupdate...";
+
+        // Tentukan gambar: jika editImageBase64 ada pakai base64, jika tidak pakai URL
+        let imageValue = editImageBase64 || document.getElementById("edit-image").value.trim();
+
         try {
             await updateDoc(doc(db, "products", id), {
                 name: document.getElementById("edit-name").value, 
                 categoryName: document.getElementById("edit-category").value,
                 price: Number(document.getElementById("edit-price").value), 
-                image: document.getElementById("edit-image").value,
+                image: imageValue,
                 description: document.getElementById("edit-desc").value,
                 variants: extractVariants("edit-variant-container"),
                 customForms: extractForms("edit-form-container")
@@ -361,6 +429,7 @@ function setupModals() {
         }
     });
 
+    // Modal Banner Promo (tetap seperti sebelumnya)
     const modalBanner = document.getElementById("modal-banner");
     document.getElementById("btn-open-add-banner")?.addEventListener("click", () => modalBanner.style.display = "flex");
     
@@ -458,7 +527,13 @@ document.addEventListener("click", async (e) => {
             document.getElementById("edit-name").value = product.name;
             document.getElementById("edit-category").value = product.categoryName || ''; 
             document.getElementById("edit-price").value = product.price;
-            document.getElementById("edit-image").value = product.image; 
+            document.getElementById("edit-image").value = product.image || '';
+            // Reset preview upload
+            editImageBase64 = "";
+            const editPreviewImg = document.getElementById("edit-image-preview-img");
+            editPreviewImg.style.display = "none";
+            editPreviewImg.src = "";
+            document.getElementById("edit-image-file").value = "";
             document.getElementById("edit-desc").value = product.description || '';
             
             const editVarContainer = document.getElementById("edit-variant-container");

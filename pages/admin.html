@@ -154,7 +154,16 @@
                     <div class="form-group"><label>Kategori</label><input type="text" id="add-category" required></div>
                     <div class="form-group"><label>Harga Dasar (Rp)</label><input type="number" id="add-price" required></div>
                 </div>
-                <div class="form-group"><label>URL Gambar</label><input type="url" id="add-image" required></div>
+                <div class="form-group">
+                    <label>Gambar Produk (Upload atau URL)</label>
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <input type="file" id="add-image-file" accept="image/*" style="flex:1;">
+                        <input type="url" id="add-image" placeholder="Atau isi URL gambar" style="flex:1;">
+                    </div>
+                    <div id="add-image-preview" style="margin-top:8px;">
+                        <img id="add-image-preview-img" src="" alt="Preview" style="max-width:100px; max-height:100px; border-radius:8px; display:none; object-fit:cover;">
+                    </div>
+                </div>
                 <div class="form-group"><label>Deskripsi</label><textarea id="add-desc" rows="3"></textarea></div>
                 
                 <!-- VARIANT BUILDER ADD -->
@@ -194,7 +203,16 @@
                     <div class="form-group"><label>Kategori</label><input type="text" id="edit-category" required></div>
                     <div class="form-group"><label>Harga Dasar (Rp)</label><input type="number" id="edit-price" required></div>
                 </div>
-                <div class="form-group"><label>URL Gambar</label><input type="url" id="edit-image" required></div>
+                <div class="form-group">
+                    <label>Gambar Produk (Upload atau URL)</label>
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <input type="file" id="edit-image-file" accept="image/*" style="flex:1;">
+                        <input type="url" id="edit-image" placeholder="Atau isi URL gambar" style="flex:1;">
+                    </div>
+                    <div id="edit-image-preview" style="margin-top:8px;">
+                        <img id="edit-image-preview-img" src="" alt="Preview" style="max-width:100px; max-height:100px; border-radius:8px; display:none; object-fit:cover;">
+                    </div>
+                </div>
                 <div class="form-group"><label>Deskripsi</label><textarea id="edit-desc" rows="3"></textarea></div>
                 
                 <!-- VARIANT BUILDER EDIT -->
@@ -235,16 +253,17 @@
             </div>
         </div>
     </div>
+
     <!-- Modal Detail Pesanan -->
-<div class="admin-modal" id="modal-order-detail">
-    <div class="admin-modal-content" style="max-width: 500px;">
-        <h3 style="margin-bottom: 15px;">Detail Pesanan</h3>
-        <div id="order-detail-content"></div>
-        <div class="modal-actions" style="justify-content: flex-end; margin-top: 20px;">
-            <button type="button" class="btn-secondary" id="btn-close-order-detail">Tutup</button>
+    <div class="admin-modal" id="modal-order-detail">
+        <div class="admin-modal-content" style="max-width: 550px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="margin:0;">Detail Pesanan</h3>
+                <button type="button" class="btn-secondary" id="btn-close-order-detail">Tutup</button>
+            </div>
+            <div id="order-detail-content"></div>
         </div>
     </div>
-</div>
 
     <script type="module" src="../js/admin.js"></script>
 </body>

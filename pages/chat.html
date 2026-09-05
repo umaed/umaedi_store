@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/chat.css">
 </head>
 <body>
     <header class="navbar">
@@ -18,13 +19,23 @@
         <div class="nav-actions"></div>
     </header>
 
-    <main style="padding: 20px; max-width: 800px; margin: 0 auto; padding-bottom: 80px;">
-        <div id="chat-box" style="background: white; border-radius: 12px; padding: 15px; height: 60vh; overflow-y: auto; border: 1px solid var(--border);">
+    <main class="chat-container">
+        <!-- Header chat -->
+        <div class="chat-header">
+            <div class="chat-header-avatar">U</div>
+            <div class="chat-header-info">
+                <div class="chat-header-name">UmaDigi Store</div>
+                <div class="chat-header-status">Online</div>
+            </div>
+        </div>
+        <div id="chat-box" class="chat-box">
             <!-- Pesan akan muncul di sini -->
         </div>
-        <div style="display: flex; gap: 10px; margin-top: 15px;">
-            <input type="text" id="chat-input" placeholder="Tulis pesan..." style="flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: 8px;">
-            <button id="send-btn" class="btn-primary" style="padding: 12px 20px; border-radius: 8px;">Kirim</button>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Tulis pesan...">
+            <button id="send-btn" class="chat-send-btn">
+                <span class="material-symbols-outlined">send</span>
+            </button>
         </div>
     </main>
 

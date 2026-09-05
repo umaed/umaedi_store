@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/chat.css">
 </head>
 <body>
     <header class="navbar">
@@ -20,21 +21,27 @@
         </div>
     </header>
 
-    <main style="padding: 20px; max-width: 1000px; margin: 0 auto; padding-bottom: 80px;">
-        <div style="display: flex; gap: 20px; height: 70vh;">
-            <!-- Daftar Percakapan -->
-            <div id="conversation-list" style="width: 300px; background: white; border-radius: 12px; border: 1px solid var(--border); overflow-y: auto; padding: 10px;">
-                <h3 style="margin-bottom: 10px;">Percakapan</h3>
-                <div id="conv-items"></div>
-            </div>
-            <!-- Isi Chat -->
-            <div style="flex: 1; background: white; border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column;">
-                <div id="chat-header" style="padding: 15px; border-bottom: 1px solid var(--border); font-weight: 600;"></div>
-                <div id="chat-box" style="flex: 1; overflow-y: auto; padding: 15px;"></div>
-                <div style="padding: 15px; border-top: 1px solid var(--border); display: flex; gap: 10px;">
-                    <input type="text" id="chat-input" placeholder="Tulis pesan..." style="flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: 8px;">
-                    <button id="send-btn" class="btn-primary" style="padding: 12px 20px; border-radius: 8px;">Kirim</button>
+    <main class="admin-chat-wrapper">
+        <!-- Daftar Percakapan -->
+        <div class="admin-chat-list">
+            <div class="admin-chat-list-header">Percakapan</div>
+            <div id="conv-items"></div>
+        </div>
+        <!-- Isi Chat -->
+        <div class="admin-chat-main">
+            <div id="chat-header" class="admin-chat-header">
+                <div class="admin-chat-header-avatar" id="chat-avatar">P</div>
+                <div class="admin-chat-header-info">
+                    <div class="admin-chat-header-name" id="chat-name">Pelanggan</div>
+                    <div class="admin-chat-header-status">Online</div>
                 </div>
+            </div>
+            <div id="chat-box" class="admin-chat-box"></div>
+            <div class="admin-chat-input">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Tulis pesan...">
+                <button id="send-btn" class="chat-send-btn">
+                    <span class="material-symbols-outlined">send</span>
+                </button>
             </div>
         </div>
     </main>

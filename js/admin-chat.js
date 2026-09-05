@@ -39,11 +39,14 @@ function loadChats() {
             chatsData.push({ id: doc.id, ...data });
             
             const chatHTML = `
-                <div class="conv-item" data-id="${doc.id}" style="padding: 10px; border-bottom: 1px solid var(--border); cursor: pointer;">
-                    <strong>${data.userName || "Pelanggan"}</strong>
-                    <div style="font-size: 0.85rem; color: var(--muted);">${data.lastMessage || "Belum ada pesan"}</div>
-                </div>
-            `;
+    <div class="conv-item" data-id="${doc.id}">
+        <div class="conv-item-avatar">${(data.userName || "P").charAt(0).toUpperCase()}</div>
+        <div class="conv-item-info">
+            <div class="conv-item-name">${data.userName || "Pelanggan"}</div>
+            <div class="conv-item-last">${data.lastMessage || "Belum ada pesan"}</div>
+        </div>
+    </div>
+`;
             chatList.insertAdjacentHTML('beforeend', chatHTML);
         });
 
@@ -66,7 +69,9 @@ function selectChat(userId) {
     selectedChatId = userId;
     const chat = chatsData.find(c => c.id === userId);
     if (chat) {
-        chatHeader.textContent = chat.userName || "Pelanggan";
+        const chatName = chat.userName || "Pelanggan";
+        document.getElementById("chat-name").textContent = chatName;
+        document.getElementById("chat-avatar").textContent = chatName.charAt(0).toUpperCase();
         chatBox.innerHTML = "";
         startListeningMessages(userId);
     }

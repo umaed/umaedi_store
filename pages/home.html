@@ -26,7 +26,7 @@
     </header>
 
     <main style="padding: 20px; max-width: 1200px; margin: 0 auto; padding-bottom: 100px;">
-        <!-- Banner Dinamis (Tetap di atas) -->
+        <!-- Banner Dinamis -->
         <div class="banner-wrapper" id="banner-wrapper" style="display: none;">
             <div class="banner-slides" id="banner-slides"></div>
             <div class="banner-dots" id="banner-dots"></div>
@@ -103,6 +103,24 @@
             </div>
         </div>
     </main>
+
+    <!-- Floating Chat Button -->
+    <div class="floating-chat-container" id="floating-chat">
+        <div class="chat-bubble-options" id="chat-options" style="display: none;">
+            <div class="chat-option" onclick="window.location.href='chat.html'">
+                <span class="material-symbols-outlined">support_agent</span>
+                <span>Chat Admin</span>
+            </div>
+            <div class="chat-option" onclick="alert('Fitur UmaDigi Support segera hadir!')">
+                <span class="material-symbols-outlined">chat</span>
+                <span>UmaDigi Support</span>
+                <small>Segera Hadir</small>
+            </div>
+        </div>
+        <button class="floating-chat-btn" id="floating-chat-btn">
+            <span class="material-symbols-outlined">chat</span>
+        </button>
+    </div>
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
@@ -190,6 +208,18 @@
             if (endX - startX > 50) goToSlide(currentSlide - 1);
             startAutoSlide();
         }, {passive: true});
+    </script>
+
+    <script>
+        // Script untuk floating chat
+        document.getElementById('floating-chat-btn').addEventListener('click', function() {
+            const options = document.getElementById('chat-options');
+            if (options.style.display === 'none') {
+                options.style.display = 'block';
+            } else {
+                options.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
